@@ -1,6 +1,6 @@
 # Courses
 
-When I am going through book or going through a course, I use this repo to keep up withe exercises so I can work on them on different machines if needed.
+When I am going through a book/course, I use this repo to keep up wit the exercises so I can work on them on different machines if needed.
 
 Current courses / reading:
 * Test-Driving JavaScript Applications (Venkat Subramaniam)
