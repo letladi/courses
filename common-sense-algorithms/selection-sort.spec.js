@@ -9,6 +9,7 @@ describe('selection-sort', () => {
   for (let [originalList, finalList] of table) {
     it(`should turn [${originalList}] into [${finalList}]`, () => {
       expect(sort(originalList)).to.eql(finalList)
+      console.log('final list', originalList)
     })
   } 
 })

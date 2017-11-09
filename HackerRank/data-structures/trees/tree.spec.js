@@ -91,5 +91,16 @@ describe('Tree Data Structure', () => {
 			expect(height(tree)).to.eql(0)
 		})
 
+		it('should return -1 for an empty tree', () => {
+			const tree = void(0)
+
+			expect(height(tree)).to.eql(-1)
+		})
+
+	})
+
+	// https://www.hackerrank.com/challenges/tree-top-view
+	describe('#topView', () => {
+		it('it should return  [1, 2, 5, 6]')
 	})
 })

@@ -1,0 +1,1 @@
+exports.TEST_DB_NAME = 'mongodb://localhost/test'

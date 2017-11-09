@@ -10,7 +10,7 @@ describe('maxDuffelBagValue', () => {
 
 	capacity = 20
 
-	it(`should return 555 cakes (${cakeTypes.toString()}) with bag capacity 20`, () => {
+	xit(`should return 555 cakes (${cakeTypes.toString()}) with bag capacity 20`, () => {
 		expect(maxDuffelBagValue(cakeTypes, capacity)).toEqual(555)
 	})
 })

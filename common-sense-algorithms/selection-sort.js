@@ -1,13 +1,15 @@
 const sort = (list) => {
-  let minIndex = void(0)
+  let minIndex = 0
 
   for (let i = 0; i < list.length; i++) {
-    let (let j = i + 1; i < list.length; j++) {
-
+    for (let j = i + 1; j < list.length; j++) {
+      minIndex = (list[j] < list[i]) ? j : i
     }
+    [ list[i], list[minIndex] ] = [ list[minIndex], list[i] ]
   }
+
+  return list 
 }
 
-const minIndex
 
 module.exports = sort

@@ -19,8 +19,12 @@ module.exports = {
 			this.connection = db 
 			cb(null)
 		}
-
-		MongoClient.connect(dbname, cacheConnection)
+		try {
+			MongoClient.connect(dbname, cacheConnection)
+		} catch (e) {
+			cb(e)
+		}
+		
 	},
 
 	

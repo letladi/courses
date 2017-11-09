@@ -1,4 +1,5 @@
 const { expect } = require('chai')
+const { TEST_DB_NAME } = require('../../constants')
 const db = require('../../db')
 
 describe('db tests', () => {
@@ -35,6 +36,23 @@ describe('db tests', () => {
 			}
 
 			db.connect('mongodb://localhost/todotest', cb)
+		})
+
+		it(`should reject invalid schema`, (done) => {
+			const cb = (err) => {
+				expect(err).to.be.instanceof(Error)
+				done()
+			}
+
+			db.connect('badschema://localhost/todotest', cb)
+		})
+
+		it('should reject invalid name', (done) => {
+			const cb = (err) => {
+				expect(err).to.be.instanceof(Error)
+				done()
+			}
+			db.connect('mongodb', cb)
 		})
 	}) 
 })
