@@ -2,6 +2,9 @@
 #include "../test.cpp"
 
 int main() {
-    calendarType calendar1(1, 2, 2018, "Thursday");
-    calendar1.print();
+    suite("calendarType");
+    suite("#firstDayOfMonth");
+
+    calendarType cal1(15, 2, 2018);
+    assertEqual("Thursday", cal1.firstDayOfMonth(), "the first day of Feb-2018 is Thursday");
 }

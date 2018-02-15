@@ -8,11 +8,13 @@ std::string calendarType::firstDayOfMonth() {
 //    int firstDayNumber = day.addDays(daysSince1500);
 //    return day.getDayNameFromDayNumber(firstDayNumber);
     extDateType tempDate(1, 1, 1500);
-    while (date.equals(tempDate) == false) {
-        day.setDay(day.getNextDay());
+    dayType tempDay("Monday");
+    while (tempDate.equals(date) == false) {
+        tempDay.setDay(tempDay.getNextDay());
+        std::cout << "Here is the year: " << tempDate.getYear() << std::endl;
         tempDate.addDays(1);
     }
-    return day.getDay();
+    return tempDay.getDay();
 }
 
 int calendarType::dayDifference(int year1, int year2) {
