@@ -1,4 +1,5 @@
 #include "complexType.h"
+#include <math.h>
 
 std::ostream& operator<<(std::ostream& os, const complexType& complex)
 {
@@ -76,4 +77,22 @@ complexType complexType::operator-(const complexType& c) const
     result.imaginaryPart = imaginaryPart - c.imaginaryPart;
 
     return result;
+}
+
+complexType complexType::conjugate() const 
+{
+    complexType result(realPart, -1 * imaginaryPart);
+    return result;
+}
+
+complexType operator~(const complexType c)
+{
+    return c.conjugate();
+}
+
+double operator!(const complexType c) 
+{
+    double aSquared = c.realPart * c.realPart;
+    double bSquared = c.imaginaryPart * c.imaginaryPart;
+    return sqrt( aSquared + bSquared);
 }
