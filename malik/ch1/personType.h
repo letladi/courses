@@ -14,7 +14,6 @@ public:
     bool isSimilarLastName(std::string) const;
     personType();
     personType(std::string, std::string);
-
 private:
     std::string firstName;
     std::string middleName;

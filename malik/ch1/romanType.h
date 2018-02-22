@@ -13,6 +13,5 @@ public:
 private:
     std::string romanNum;
     int decimalNum;
-
     int getDecimalForSymbol(char& c) const;
 };

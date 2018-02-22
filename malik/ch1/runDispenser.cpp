@@ -64,7 +64,6 @@ void sellProduct(dispenserType& product, cashRegister& pCounter) {
              cout << "Please deposit "  << (depositCount++ ? "another " : "") << product.getCost() - amount << " cents" << endl;
             cin >> deposit;
             amount += deposit;
-
         }
 
         pCounter.acceptAmount(amount);
