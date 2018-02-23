@@ -1,11 +1,12 @@
 #include "largeIntegers.h"
 
 largeIntegers::largeIntegers() {
-    setNumbers("");
+    setNumbers("0");
 }
 
-largeIntegers::largeIntegers(std::string init) {
+largeIntegers::largeIntegers(std::string init, bool positive) {
     setNumbers(init);
+    isPositive = positive;
 }
 
 void largeIntegers::setNumbers(std::string newNumberString)
@@ -45,7 +46,12 @@ int largeIntegers::intVal(char& c) const
 }
 
 largeIntegers largeIntegers::operator+(largeIntegers& other) const
-{
+{   
+    const bool numbersHaveDifferentSigns = (isPositive && other.isPositive == false) || (isPositive == false && other.isPositive);
+    
+    if (numbersHaveDifferentSigns) 
+        return (*this) -other;
+
     std::array<int, 100> longer;
     std::array<int, 100> shorter;
     int shorterLength;
@@ -89,7 +95,8 @@ largeIntegers largeIntegers::operator+(largeIntegers& other) const
         sum = std::to_string(currentSum) + sum;
     }
 
-    largeIntegers newLargeInt(sum);
+    bool hasPositiveSign = (isPositive && other.isPositive);
+    largeIntegers newLargeInt(sum, hasPositiveSign);
     return newLargeInt;
 }
 
@@ -155,12 +162,61 @@ largeIntegers largeIntegers::operator-(largeIntegers& other) const
         difference = std::to_string(currentDifference) + difference;
     }
 
-    largeIntegers newLargeInt(difference);
+    bool hasPositiveSign = ((isPositive && other.isPositive) && (*this) > other) || ((*this) < other && (isPositive == false && other.isPositive));
+
+    largeIntegers newLargeInt(difference, hasPositiveSign);
     return newLargeInt;
 }
 
 
-std::string largeIntegers::getNumber() const {
-    return numberString;
+std::string largeIntegers::getNumber() const 
+{
+    return (isPositive ? "" : "-") + numberString;
 }
 
+bool largeIntegers::operator==(largeIntegers& other) const 
+{
+    return (getNumber() == other.getNumber()) && (isPositive == other.isPositive);
+}
+
+bool largeIntegers::operator>(largeIntegers& other) const 
+{
+    if (*this == other) return false;
+
+    if (isPositive && other.isPositive == false) return true;
+
+    if (length > other.length) return true;
+
+    if ((isPositive == false && other.isPositive == false) && (length < other.length)) return true;
+
+
+    if (length == other.length)
+    {
+        const bool bothNumbersArePositive = isPositive && other.isPositive;
+        const bool bothNumbersAreNegative = (isPositive == false) && (other.isPositive == false);
+
+        for (int i = 0; i < length; i++) {
+            if (((numbers[i] > other.numbers[i]) && bothNumbersArePositive) || ((numbers[i] < other.numbers[i]) && bothNumbersAreNegative)) 
+                return true;
+        }
+    }
+
+    return false;
+}
+
+bool largeIntegers::operator<(largeIntegers& other) const 
+{
+    return (*this > other) == false;
+}
+
+largeIntegers largeIntegers::operator=(largeIntegers& other)
+{
+    largeIntegers newInt;
+
+    newInt.isPositive = other.isPositive;
+    newInt.numbers = other.numbers;
+    newInt.length = other.length;
+    newInt.numberString = other.numberString;
+
+    return newInt;
+}
