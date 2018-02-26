@@ -208,15 +208,3 @@ bool largeIntegers::operator<(largeIntegers& other) const
 {
     return (*this > other) == false;
 }
-
-largeIntegers largeIntegers::operator=(largeIntegers& other)
-{
-    largeIntegers newInt;
-
-    newInt.isPositive = other.isPositive;
-    newInt.numbers = other.numbers;
-    newInt.length = other.length;
-    newInt.numberString = other.numberString;
-
-    return newInt;
-}

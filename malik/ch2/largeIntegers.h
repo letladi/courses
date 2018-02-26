@@ -14,7 +14,6 @@ public:
     bool operator==(largeIntegers&) const;
     bool operator>(largeIntegers&) const;
     bool operator<(largeIntegers&) const;
-    largeIntegers operator=(largeIntegers&);
     void setNumbers(std::string);
     std::string getNumber() const;
 private:

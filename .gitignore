@@ -2,3 +2,5 @@ node_modules/
 coverage/
 db/
 .idea
+.DS_Store
+.vscode

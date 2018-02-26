@@ -5,6 +5,6 @@ int main()
 {
     largeIntegers one("3");
     largeIntegers two("255");
-    largeIntegers sum = two + one;
-    std::cout << sum;
+    largeIntegers x = one;
+    std::cout << x.getNumber() << std::endl;
 }
