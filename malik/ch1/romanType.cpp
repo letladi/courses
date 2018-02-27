@@ -1,21 +1,21 @@
 #include "romanType.h"
 #include <iostream>
 
-romanType::romanType(std::string romanNum) 
+romanType::romanType(std::string romanNum)
 {
     romanNum = romanNum;
-    decimalNum = 0;
+    decimalNum = -1;
 }
 
-romanType::romanType() 
+romanType::romanType()
 {
     romanNum = "";
     decimalNum = 0;
 }
 
-int romanType::getDecimalNum() 
+int romanType::getDecimalNum()
 {
-    if (decimalNum == 0) {
+    if (decimalNum == -1) {
         convertToDecimal();
     }
     return decimalNum;
@@ -41,7 +41,7 @@ void romanType::convertToDecimal()
         currNum = getDecimalForSymbol(c);
         decimalNum += currNum;
 
-        if (prevNum > 0 && prevNum < currNum) 
+        if (prevNum > 0 && prevNum < currNum)
             decimalNum -= prevNum * 2;
 
         prevNum = currNum;
@@ -61,6 +61,3 @@ int romanType::getDecimalForSymbol(char& c) const
         default: return 0;
     }
 }
-
-
-

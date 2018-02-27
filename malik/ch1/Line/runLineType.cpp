@@ -55,9 +55,9 @@ int main() {
     //assertEqual(intersection3[0], -3.0, "");
 
     suite("#isParallel");
-    assertEqual(line1.isParallel(line2), true, "horizontal lines are parallel");
-    assertEqual(line1a.isParallel(line2a), true, "vertical lines are parallel");
-    assertEqual(line1d.isParallel(line2d), true, "parallel lines that are not vertical or horizontal");
+    assertEqual(line1 || line2, true, "horizontal lines are parallel");
+    assertEqual(line1a || line2a , true, "vertical lines are parallel");
+    assertEqual(line1d || line2d, true, "parallel lines that are not vertical or horizontal");
 
     suite("#slope");
     assertEqual(std::isnan(line1a.slope()), true, "vertical lines don't have a slope");
@@ -70,15 +70,14 @@ int main() {
     lineType line1g(2, 3, 5);
     lineType line2g(4, 6, 10);
     lineType line3g(20, 30, 50);
-    assertEqual(line1g.equals(line2g), true, "2x + 3y = 5 equals 4x + 6y = 10");
-    assertEqual(line1g.equals(line3g), true, "2x + 3y = 5 equals 20x + 30y = 50");
+    assertEqual(line1g == line2g, true, "2x + 3y = 5 equals 4x + 6y = 10");
+    assertEqual(line1g == line3g, true, "2x + 3y = 5 equals 20x + 30y = 50");
 
     suite("#isPerpendicular:");
     lineType line1i(-5, 3, 15);
     lineType line2i(3, 5, -10);
-    assertEqual(line1i.isPerpendicular(line2i), true, "-5x + 3y = 15 is perpendicular to 3x + 5y = -10");
+    assertEqual(line1i && line2i, true, "-5x + 3y = 15 is perpendicular to 3x + 5y = -10");
     lineType line1j(-3, 1, 4);
     lineType line2j(-5, 1, -5);
-    assertEqual(line1j.isPerpendicular(line2j), false, "y = 3x + 4 is not perpendicular to y = 5x -5");
+    assertEqual(line1j && line2j , false, "y = 3x + 4 is not perpendicular to y = 5x -5");
 }
-

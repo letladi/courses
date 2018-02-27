@@ -56,7 +56,7 @@ double quadraticEq::discriminant() const
     return pow(b, 2) - 4 * a * c;
 }
 
-bool quadraticEq::hasReadRoots() const
+bool quadraticEq::hasRealRoots() const
 {
     return discriminant() >= 0;
 }
@@ -64,6 +64,23 @@ bool quadraticEq::hasReadRoots() const
 void quadraticEq::realRoots(double& x1, double& x2) const
 {
     const double disc = discriminant();
-    x1 = ( -1 * b - sqrt(disc)) / (2 * a);
-    x2 = (-1 * b + sqrt(disc)) / (2 * a);
+    const double divisor = 2 * a;
+    x1 = ( -1 * b - sqrt(disc)) / divisor;
+    x2 = (-1 * b + sqrt(disc)) / divisor;
+}
+
+void quadraticEq::complexRoots(complexType& c1, complexType& c2) const
+{
+    const double disc = discriminant();
+    const double divisor = 2 * a;
+    const double realNum = (-1 * b) / divisor;
+    const double imaginaryNum = sqrt(fabs(disc)) / divisor;
+
+    c1.setComplex(realNum, -1 * imaginaryNum);
+    c2.setComplex(realNum, imaginaryNum);
+}
+
+double quadraticEq::root() const
+{
+    return (-1 * b) / (2 * a);
 }

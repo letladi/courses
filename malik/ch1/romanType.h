@@ -1,6 +1,6 @@
 #include <string>
 
-class romanType 
+class romanType
 {
 public:
     romanType(std::string);
@@ -10,8 +10,9 @@ public:
     std::string getRomanNum() const;
     void setRomanNum(std::string);
 
-private:
+protected:
     std::string romanNum;
     int decimalNum;
+private:
     int getDecimalForSymbol(char& c) const;
 };

@@ -13,8 +13,9 @@ public:
     bool operator==(const quadraticEq& other) const;
     bool operator!=(const quadraticEq& other) const;
     double discriminant() const;
-    bool hasReadRoots() const;
+    bool hasRealRoots() const;
     void realRoots(double& x1, double& x2) const;
+    double root() const;
     void complexRoots(complexType& c1, complexType& c2) const;
 private:
     double a;

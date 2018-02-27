@@ -1,6 +1,6 @@
 #include "lineType.h"
-#include "../../../../../../Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/array"
 #include <limits>
+#include <array>
 #include <exception>
 
 lineType::lineType(double initA, double initB, double initC) {
@@ -9,33 +9,40 @@ lineType::lineType(double initA, double initB, double initC) {
     c = initC;
 }
 
-double lineType::slope() {
+lineType::lineType(const lineType& line)
+{
+    a = line.a;
+    b = line.b;
+    c = line.c;
+}
+
+double lineType::slope() const {
     if (hasSlope() == false) return std::numeric_limits<double>::quiet_NaN();
     else if (a == 0) return 0;
     else return -a/b;
 }
 
-bool lineType::hasSlope() {
+bool lineType::hasSlope() const {
     return b != 0;
 }
 
-bool lineType::isParallel(lineType& otherLine) {
+bool lineType::operator||(lineType& otherLine) {
     return (a == 0 && otherLine.a == 0) || (b == 0 && otherLine.b == 0) || (slope() == otherLine.slope());
 }
 
-bool lineType::isPerpendicular(lineType& otherLine) {
+bool lineType::operator&&(lineType& otherLine) {
     if (hasSlope() && otherLine.hasSlope()) {
         return (slope() * otherLine.slope()) == -1;
-    } else if (isParallel(otherLine)) {
+    } else if (*this || otherLine) {
         return false;
     } else {
         return (a == 0 && otherLine.b == 0) || (b == 0 && otherLine.a == 0);
     }
-    
+
 }
 
-bool lineType::equals(lineType& otherLine) {
-    if (isParallel(otherLine)) {
+bool lineType::operator==(lineType& otherLine) {
+    if (*this || otherLine) {
         std::array<double, 2> slopeIntercept1 = slopeInterceptForm();
         std::array<double, 2> slopeIntercept2 = otherLine.slopeInterceptForm();
 
@@ -47,9 +54,9 @@ bool lineType::equals(lineType& otherLine) {
 
 std::array<double, 2> lineType::interSection(lineType& otherLine) {
     std::array<double, 2> result = { std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN() };
-    if (isParallel(otherLine)) {
+    if ((*this)|| otherLine) {
         return result;
-    } 
+    }
 
     if (b == 0) {
         double x = c / a;
@@ -102,4 +109,38 @@ double lineType::getY(double x) {
 std::array<double, 2> lineType::slopeInterceptForm() {
     std::array<double, 2> result = { -1.0 * (a / b), c / b };
     return result;
+}
+
+std::ostream& operator<<(std::ostream& os, lineType& line)
+{
+    os << std::endl << "Line: " << line.a << "x + " << line.b << "y" << " = " << line.c;
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, lineType& line)
+{
+    std::cout << "Please input the coefficients of a line: ";
+    is >> line.a >> line.b >> line.c;
+    return is;
+}
+
+lineType& lineType::operator=(const lineType& line)
+{
+    if (&line == this) return *this;
+
+    a = line.a;
+    b = line.b;
+    c = line.c;
+
+    return *this;
+}
+
+bool lineType::operator+() const
+{
+    return hasSlope() == false;
+}
+
+bool lineType::operator-() const
+{
+    return slope() == 0;
 }

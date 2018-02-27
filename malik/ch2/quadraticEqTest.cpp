@@ -2,6 +2,7 @@
 
 #include "../catch.hpp"
 #include "quadraticEq.h"
+#include "complexType.h"
 
 TEST_CASE("quadraticEq")
 {
@@ -61,5 +62,26 @@ TEST_CASE("quadraticEq")
         eq.realRoots(x1, x2);
         REQUIRE( x1 == -4 );
         REQUIRE( x2 == 1 );
+    }
+
+    SECTION("#complexRoots")
+    {
+        quadraticEq eq(5, 2, 1);
+        complexType c1(-0.2, -0.4);
+        complexType c2(-0.2, 0.4);
+
+        complexType c3, c4;
+        eq.complexRoots(c3, c4);
+        REQUIRE( c3 == c1 );
+        REQUIRE( c4 == c2 );
+    }
+
+    SECTION("#root")
+    {
+        quadraticEq eq(-4, 12, -9);
+        double x = eq.root();
+        double expectedRoot = 1.5;
+
+        REQUIRE( expectedRoot == x);
     }
 }
