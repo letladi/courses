@@ -7,15 +7,8 @@ int main() {
 	romanType roman;
 
     do {
-		std::cout << "Please enter some roman numeral number: ";
-		std::getline(std::cin, input);
-
-        if (input.compare(exitCommand) != 0) {
-            roman.setRomanNum(input);
-        }
-
-		std::cout << "Here is the equivalent decimal number: " << roman.getDecimalNum() << std::endl << std::endl;
-
+		std::cin >> roman;
+		std::cout << roman;
     } while (input.compare(exitCommand) != 0);
 
     std::cout << "\n***************\nGOOD BYE!\n***************\n";
