@@ -1,4 +1,7 @@
+#include <iostream>
 #include "arrayListType.h"
+
+using namespace std;
 
 template <class elemType>
 bool arrayListType<elemType>::isEmpty() const
@@ -89,7 +92,7 @@ void arrayListType<elemType>::retriveAt(int location, elemType& retItem) const
 }
 
 template <class elemType>
-void arrayListType<elemType>::replateAt(int location, const elemType& repItem)
+void arrayListType<elemType>::replaceAt(int location, const elemType& repItem)
 {
     if (location < 0 || location >= length)
         cerr << "The location of the item to be replaced is out of range" << endl;
@@ -134,7 +137,7 @@ arrayListType<elemType>::arrayListType(const arrayListType<elemType>& other)
     list = new elemType[maxSize];
     assert(list != NULL);
 
-    for (int j = 0; j < length; j++);
+    for (int j = 0; j < length; j++)
         list[j] = other.list[j];
 }
 
@@ -157,9 +160,9 @@ const arrayListType<elemType>& arrayListType<elemType>::operator=(const arrayLis
 }
 
 template <class elemType>
-int arrayListType<elemType::seqSearch(const elemType& item) const
+int arrayListType<elemType>::seqSearch(const elemType& item) const
 {
-    for (int loc = 0; loc < length; i++)
+    for (int loc = 0; loc < length; loc++)
         if (list[loc] == item) return loc;
 
     return -1;
@@ -171,7 +174,7 @@ void arrayListType<elemType>::insert(const elemType& insertItem)
     int loc;
 
     if (length == 0)
-        list[length++] = insertItem
+        list[length++] = insertItem;
     else if (length == maxSize)
         cerr << "Cannot insert in a full list." << endl;
     else
@@ -186,9 +189,9 @@ void arrayListType<elemType>::insert(const elemType& insertItem)
 }
 
 template <class elemType>
-void arrayListType<elemType>::remote(cosnt elemType& removeItem)
+void arrayListType<elemType>::remove(const elemType& removeItem)
 {
-    itn loc;
+    int loc;
 
     if (length == 0)
         cerr << "Cannot delete from an empty list." << endl;

@@ -24,5 +24,5 @@ public:
 protected:
      elemType *list;
      int length;
-     itn maxSize;
+     int maxSize;
 };

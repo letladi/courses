@@ -1,26 +1,53 @@
 #include <iostream>
+#include <string>
+#include "arrayListType.h"
 
 using namespace std;
 
 int main()
 {
-    int *p;
-    int num1 = 5;
-    int num2 = 8;
+    arrayListType<int> intList(100);
+    arrayListType<string> stringList;
 
-    p = &num1;
+    int number;
 
-    cout << "Line 9: &num1 = " << &num1 << ", p = " << p << endl;
-    cout << "Line 10: num1 = " << num1 << ", *p = " << *p << endl;
+    cout << "List 14: Enter 5 integers: ";
 
-    *p = 10;
-    cout << "Line 12: num1 = " << num1 << ", *p = " << *p << endl << endl;
+    for (int counter = 0; counter < 5; counter++)
+    {
+        cin >> number;
+        intList.insertAt(counter, number);
+    }
 
-    p = &num2;
+    cout << endl;
+    cout << "List 23: The list you entered is: ";
+    intList.print();
+    cout << endl;
 
-    cout << "Line 14: &num2 = " << &num2 << ", p = " << p << endl;
-    cout << "Line 15: num2 = " << num2 << ", *p = " << *p << endl;
+    cout << "Line 27: After removing " << number << ", the list is:" << endl;
+    intList.print();
+    cout << endl;
 
-    *p = 2 * (*p);
-    cout << "Line 17: num2 = " << num2 << ", *p = " << *p << endl;
+    string str;
+
+    cout << "Line 33: Enter 5 strings: ";
+
+    for (int counter = 0; counter < 5; counter++)
+    {
+        cin >> str;
+        stringList.insertAt(counter, str);
+    }
+
+    cout << endl;
+    cout << "Line 42: The list you entered is: " << endl;
+    stringList.print();
+    cout << endl;
+
+    cout << "Line 37: Enter the string to be deleted: ";
+    cin >> str;
+    stringList.remove(str);
+    cout << "Line 49: after removing " << str << ", the list is: " << endl;
+
+    stringList.print();
+    cout << endl;
 }
