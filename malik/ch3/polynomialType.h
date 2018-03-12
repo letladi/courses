@@ -1,4 +1,6 @@
 #include "arrayListType.h"
+#include <iostream>
+using namespace std;
 
 class polynomialType: public arrayListType<double>
 {

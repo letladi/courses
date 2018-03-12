@@ -1,4 +1,5 @@
 #include "polynomialType.h"
+#include <cmath>
 
 polynomialType::polynomialType(int size) : arrayListType<double>(size)
 {
@@ -30,7 +31,7 @@ polynomialType polynomialType::operator+(const polynomialType& other)
     if (size == length) {
         for (int i = min(length, other.length); i < length; i++) result.list[i] = list[i];
     } else {
-        for (int i = min(length, other.length); i < right.length; i++) result.list[i] = other.list[i];
+        for (int i = min(length, other.length); i < other.length; i++) result.list[i] = other.list[i];
     }
 
     return result;
@@ -46,7 +47,7 @@ polynomialType polynomialType::operator-(const polynomialType& other)
     }
 
     if (size == length) {
-        for (int = min(length, other.length); i < length; i++)
+        for (int i = min(length, other.length); i < length; i++)
             result.list[i] = list[i];
     } else {
         for (int i = min(length, other.length); i < other.length; i++)
@@ -57,15 +58,15 @@ polynomialType polynomialType::operator-(const polynomialType& other)
 
 int polynomialType::min(int x, int y) const
 {
-    return (x <= y) x : y;
+    return (x <= y) ? x : y;
 }
 
 int polynomialType::max(int x, int y) const
 {
-    return (x >= y) x : y;
+    return (x >= y) ? x : y;
 }
 
-ostream& opeator<<(ostream& os, const polynomialType& p)
+ostream& operator<<(ostream& os, const polynomialType& p)
 {
     int indexFirstNonZeroCoeff = 0;
 
@@ -77,6 +78,31 @@ ostream& opeator<<(ostream& os, const polynomialType& p)
     }
 
     if (indexFirstNonZeroCoeff < p.length) {
-        
+        if (indexFirstNonZeroCoeff == 0) {
+            os << p.list[indexFirstNonZeroCoeff] << " ";
+        } else {
+            os << p.list[indexFirstNonZeroCoeff] << "x^" << indexFirstNonZeroCoeff << " ";
+        }
+
+        for (int i = indexFirstNonZeroCoeff + 1; i < p.length; i++) {
+            if (p.list[i] != 0.0) {
+                os << ((p.list[i] >= 0.0) ? "+ " : "- ") << p.list[i] << "x^" << i << " ";
+            }
+        }
+    } else {
+        os << "0";
     }
+
+    return os;
+}
+
+istream& operator>>(istream& is, polynomialType& p)
+{
+    cout << "The degree of this polynomial is: " << p.length - 1 << endl;
+
+    for (int i = 0; i < p.length; i++) {
+        cout << "Enter the coefficients of x^" << i << ": ";
+        is >> p.list[i];
+    }
+    return is;
 }
