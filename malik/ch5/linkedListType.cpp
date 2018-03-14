@@ -102,7 +102,7 @@ void linkedListType<Type>::copyList(const linkedListType<Type>& other)
         current = other.first;
         count = other.count;
 
-        first = new NodeType<Type>;
+        first = new nodeType<Type>;
         first->info = current->info;
         first->link = NULL;
         last = first;
@@ -135,8 +135,8 @@ linkedListType<Type>::linkedListType(const linkedListType<Type>& other)
 }
 
 template <class Type>
-onst linkedListType<Type>& linkedListType<Type>::operator=(const linkedListType<Type>& other)
+const linkedListType<Type>& linkedListType<Type>::operator=(const linkedListType<Type>& other)
 {
     if (this != &other) copyList(other);
-    return
+    return *this;
 }

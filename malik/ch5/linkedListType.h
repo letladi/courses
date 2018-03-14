@@ -1,5 +1,5 @@
 #include "linkedListIterator.h"
-
+#include "nodeType.cpp"
 template <class Type>
 class linkedListType
 {
@@ -9,7 +9,7 @@ public:
     bool isEmptyList() const;
     void print() const;
     int length() const;
-    void destroyList() const;
+    void destroyList();
     Type front() const;
     Type back() const;
     virtual bool search(const Type& searchItem) const = 0;

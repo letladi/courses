@@ -1,4 +1,4 @@
-
+#include "nodeType.cpp"
 template <class Type>
 class linkedListIterator
 {
