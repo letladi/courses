@@ -24,6 +24,7 @@ public:
     void deleteNode(const Type& item);
     doublyLinkedList();
     doublyLinkedList(const doublyLinkedList<Type>& other);
+    ~doublyLinkedList();
 protected:
     int count;
     nodeType<Type> *first;
