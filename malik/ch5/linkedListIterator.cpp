@@ -20,7 +20,7 @@ Type linkedListIterator<Type>::operator*()
 }
 
 template <class Type>
-linkedListIterator<Type> linke<Type>::operator++()
+linkedListIterator<Type> linkedListIterator<Type>::operator++()
 {
     current = current->link;
     return *this;

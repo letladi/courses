@@ -8,7 +8,7 @@ class videoType
     friend ostream& operator<<(ostream&, const videoType&);
 public:
     void setVideoInfo(string title, string start1, string star2, string producer,
-        strind director, string productionCo, int setInStock);
+        string director, string productionCo, int setInStock);
     int getNoOfCopiesInStock() const;
     void checkOut();
     void checkIn();

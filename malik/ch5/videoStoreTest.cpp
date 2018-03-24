@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "videoType.h"
-#include "videoListType.h"
+#include "videoType.cpp"
+#include "videoListType.cpp"
 
 using namespace std;
 
@@ -136,5 +136,5 @@ void displayMenu()
     cout << "4: To check whether a particular video is in stock." << endl;
     cout << "5: To print only the titles of all the videos." << endl;
     cout << "6: To print a list of all the videos" << endl;
-    cout << "9: To exit" << endl; 
+    cout << "9: To exit" << endl;
 }

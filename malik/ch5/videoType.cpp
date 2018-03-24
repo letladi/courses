@@ -1,6 +1,6 @@
 #include "videoType.h"
 
-void videoType::setVideoInfo(string title, string star1, star2, string producer, string director, string productionCo, int setInStock)
+void videoType::setVideoInfo(string title, string star1, string star2, string producer, string director, string productionCo, int setInStock)
 {
     videoTitle = title;
     movieStart1 = star1;
@@ -62,7 +62,7 @@ string videoType::getTitle() const
     return videoTitle;
 }
 
-videoType::videoType(string title, stirng star1, string star2, string producer,
+videoType::videoType(string title, string star1, string star2, string producer,
     string director, string productionCo, int setInStock)
 {
     setVideoInfo(title, star1, star2, producer, director, productionCo, setInStock);
