@@ -206,6 +206,32 @@ class LinkedList {
         return deleted
     }
 
+    deleteAt(i) {
+        let deleted = false
+        if (i < 0 || i >= this.length) deleted = false
+        else {
+            let prev = null
+            let current = this._first
+
+            let tracker = 0
+            while (tracker < i) {
+                prev = current
+                current = current.link
+                tracker++
+            }
+            if (current === this._first) {
+                this._first = current.link
+            } else if (current === this._last) {
+                this._last = prev
+                this._last.link = null
+            } else {
+                prev.link = current.link
+            }
+            deleted = true
+        }
+        return deleted
+    }
+
     at(i) {
         if (i < 0 || i >= this.length) return null
          else {

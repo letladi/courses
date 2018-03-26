@@ -161,6 +161,8 @@ describe('UnorderedLinkedList', () => {
             list.insertFirst(1)
             expect(list.delete(11)).toEqual(false)
         })
+        test('should decrement the length if succeeded')
+        test('should not decrement length is failed')
     })
 
     describe('#deleteMin', () => {
@@ -205,6 +207,8 @@ describe('UnorderedLinkedList', () => {
         test('should return false if deletion failed (i.e, when list is empty)', () => {
             expect(list.deleteMin()).toEqual(false)
         })
+        test('should decrement the length if succeeded')
+        test('should not decrement length is failed')
     })
     describe('#deleteAll', () => {
         test('should delete all occurrences of a given info value', () => {
@@ -239,6 +243,15 @@ describe('UnorderedLinkedList', () => {
             list.deleteAll(-22)
             expect(list.back).toEqual(0)
         })
+        test('should re-assign first and last value if there are only two items in the list', () => {
+            list.insertLast(1)
+            list.insertLast(2)
+            list.deleteAll(1)
+            expect(list.front).toEqual(2)
+            expect(list.back).toEqual(2)
+        })
+        test('should decrement the length if succeeded')
+        test('should not decrement length is failed')
     })
 
     describe('#at()', () => {
@@ -268,10 +281,47 @@ describe('UnorderedLinkedList', () => {
     })
 
     describe('#deleteAt', () => {
-        test('should delete element at the given index')
-        test('should re-assign first element if it is deleted')
-        test('should re-assign last element if it is deleted')
-        test('should return true if deletion is successful')
-        test('should return false if deletion fails')
+        test('should delete element at the given index', () => {
+            const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0, -22]
+            nums.forEach((el) => list.insertLast(el))
+            list.deleteAt(5)
+            expect(list.entries()).toEqual([-1, 1, 2, 0, 3, 4, 5, 0, -22])
+        })
+        test('should re-assign first element if it is deleted', () => {
+            const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0, -22]
+            nums.forEach((el) => list.insertLast(el))
+            list.deleteAt(0)
+            expect(list.front).toEqual(1)
+        })
+        test('should re-assign last element if it is deleted', () => {
+            const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0, -22]
+            nums.forEach((el) => list.insertLast(el))
+            list.deleteAt(9)
+            expect(list.last).toEqual(0)
+        })
+        test('should re-assign first and last value if there are only two items in the list', () => {
+            list.insertLast(1)
+            list.insertLast(2)
+            list.deleteAt(0)
+            expect(list.front).toEqual(2)
+            expect(list.back).toEqual(2)
+        })
+        test('should return true if deletion is successful', () => {
+            const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0, -22]
+            nums.forEach((el) => list.insertLast(el))
+            expect(list.deleteAt(5)).toEqual(true)
+        })
+        test('should return false if deletion fails - if list is empty', () => {
+            expect(list.deleteAt(0)).toEqual(false)
+        })
+        test('should return false if deletion fails - if index does not exist in list', () => {
+            const nums = [-1, 1, 2, 0]
+            nums.forEach((el) => list.insertLast(el))
+            list.deleteAt(5)
+            expect(list.deleteAt(-1)).toEqual(false)
+            expect(list.deleteAt(6)).toEqual(false)
+        })
+        test('should decrement the length if succeeded')
+        test('should not decrement length is failed')
     })
 })
