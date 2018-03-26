@@ -2,10 +2,10 @@ const Node = require('./Node');
 
 class LinkedList {
     constructor() {
-        this.__reset()
+        this._reset()
     }
 
-    __reset() {
+    _reset() {
         this._first = null
         this._last = null
         this._count = 0
@@ -34,8 +34,17 @@ class LinkedList {
         for (const el of this) cb(el, count++)
     }
 
+    rEach(cb, node = this._first, index = this._count - 1) {
+        if (index >= 0) {
+            console.log('here is the index', index)
+            console.log('here is the info: ', node.info)
+            this.rEach(cb, node.link, index)
+            cb(node.info, index)
+        }
+    }
+
     destroy() {
-        this.__reset()
+        this._reset()
     }
 
     iterator() {
@@ -54,10 +63,10 @@ class LinkedList {
         return {
             next() {
                 if (current) {
-                    const temp = current
+                    const value = current.info
                     current = current.link
                     return {
-                        value: temp.info,
+                        value,
                         done: false,
                     }
                 } else {
@@ -128,6 +137,87 @@ class LinkedList {
         }
 
         return deleted
+    }
+
+    deleteMin() {
+        // case 1: list is empty, return false
+        // case 2: search for smallest value
+        // we need to keep track of two currents and two prev's (one for searching the list and another for the min)
+        // if the element to be deleted is the first element, we must re-assign the first element
+        let deleted = false
+
+        if (this.isEmpty()) deleted = false
+        else if (this.length === 1) {
+            this._reset()
+            deleted = true
+        }
+        else {
+            let prev = this._first
+            let current = this._first.link
+
+            let minPrev = null
+            let min = this._first
+
+            while (current != null) {
+                if (current.info < min.info) {
+                    min = current
+                    minPrev = prev
+                }
+                prev = current
+                current = current.link
+            }
+
+            if (this._first === min) this._first = min.link
+            else if (this._last === min) {
+                this._last = minPrev
+                this._last.link = null
+            } else {
+                minPrev.link = min.link
+            }
+            deleted = true
+        }
+        return deleted
+    }
+
+    deleteAll(item) {
+        let deleted = false
+        if (this.isEmpty()) deleted = false
+        else {
+            let found = false
+            let prev = null
+            let current = this._first
+
+            while (current !== null) {
+                if (current.info === item) {
+                    if (current === this._first) {
+                        this._first = current.link
+                    } else if (current === this._last) {
+                        this._last = prev
+                        this._last.link = null
+                    } else {
+                        prev.link = current.link
+                    }
+                    deleted = true
+                }
+                prev = current
+                current = current.link
+            }
+        }
+        return deleted
+    }
+
+    at(i) {
+        if (i < 0 || i >= this.length) return null
+         else {
+             let tracker = 0
+             let current = this._first
+
+             while (tracker < i) {
+                current = current.link
+                 tracker++
+             }
+             return current.info
+         }
     }
 
     search(item) {
