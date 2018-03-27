@@ -161,8 +161,20 @@ describe('UnorderedLinkedList', () => {
             list.insertFirst(1)
             expect(list.delete(11)).toEqual(false)
         })
-        test('should decrement the length if succeeded')
-        test('should not decrement length is failed')
+        test('should decrement the length if succeeded', () => {
+            const nums = [1, 2, 3, 4, 5]
+            nums.forEach((el) => list.insertLast(el))
+            expect(list.length).toEqual(5)
+            list.delete(1)
+            expect(list.length).toEqual(4)
+        })
+        test('should not decrement length if failed', () => {
+            const nums = [1, 2, 3, 4, 5]
+            nums.forEach((el) => list.insertLast(el))
+            expect(list.length).toEqual(5)
+            list.delete(6)
+            expect(list.length).toEqual(5)
+        })
     })
 
     describe('#deleteMin', () => {
@@ -207,8 +219,18 @@ describe('UnorderedLinkedList', () => {
         test('should return false if deletion failed (i.e, when list is empty)', () => {
             expect(list.deleteMin()).toEqual(false)
         })
-        test('should decrement the length if succeeded')
-        test('should not decrement length is failed')
+        test('should decrement the length if succeeded', () => {
+            const nums = [1, 2, 3, 0, 4, 5]
+            nums.forEach((el) => list.insertLast(el))
+            expect(list.length).toEqual(6)
+            list.deleteMin()
+            expect(list.length).toEqual(5)
+        })
+        test('should not decrement length is failed', () => {
+            expect(list.length).toEqual(0)
+            list.deleteMin()
+            expect(list.length).toEqual(0)
+        })
     })
     describe('#deleteAll', () => {
         test('should delete all occurrences of a given info value', () => {
@@ -250,8 +272,20 @@ describe('UnorderedLinkedList', () => {
             expect(list.front).toEqual(2)
             expect(list.back).toEqual(2)
         })
-        test('should decrement the length if succeeded')
-        test('should not decrement length is failed')
+        test('should decrement the length if succeeded', () => {
+            const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0, -22]
+            nums.forEach((el) => list.insertLast(el))
+            expect(list.length).toEqual(10)
+            list.deleteAll(0)
+            expect(list.length).toEqual(7)
+        })
+        test('should not decrement length is failed', () => {
+            const nums = [1, 2, 3, 0, 4, 5]
+            nums.forEach((el) => list.insertLast(el))
+            expect(list.length).toEqual(6)
+            list.deleteAll(7)
+            expect(list.length).toEqual(6)
+        })
     })
 
     describe('#at()', () => {
@@ -297,7 +331,7 @@ describe('UnorderedLinkedList', () => {
             const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0, -22]
             nums.forEach((el) => list.insertLast(el))
             list.deleteAt(9)
-            expect(list.last).toEqual(0)
+            expect(list.back).toEqual(0)
         })
         test('should re-assign first and last value if there are only two items in the list', () => {
             list.insertLast(1)
@@ -321,7 +355,19 @@ describe('UnorderedLinkedList', () => {
             expect(list.deleteAt(-1)).toEqual(false)
             expect(list.deleteAt(6)).toEqual(false)
         })
-        test('should decrement the length if succeeded')
-        test('should not decrement length is failed')
+        test('should decrement the length if succeeded', () => {
+            const nums = [-1, 1, 2, 0]
+            nums.forEach((el) => list.insertLast(el))
+            expect(list.length).toEqual(4)
+            list.deleteAt(0)
+            expect(list.length).toEqual(3)
+        })
+        test('should not decrement length is failed', () => {
+            const nums = [-1, 1, 2, 0]
+            nums.forEach((el) => list.insertLast(el))
+            expect(list.length).toEqual(4)
+            list.deleteAt(5)
+            expect(list.length).toEqual(4)
+        })
     })
 })

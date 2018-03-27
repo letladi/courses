@@ -174,6 +174,7 @@ class LinkedList {
             } else {
                 minPrev.link = min.link
             }
+            this._count--
             deleted = true
         }
         return deleted
@@ -198,6 +199,7 @@ class LinkedList {
                         prev.link = current.link
                     }
                     deleted = true
+                    this._count--
                 }
                 prev = current
                 current = current.link
@@ -221,12 +223,14 @@ class LinkedList {
             }
             if (current === this._first) {
                 this._first = current.link
-            } else if (current === this._last) {
+            }
+            else if (current === this._last) {
                 this._last = prev
                 this._last.link = null
             } else {
                 prev.link = current.link
             }
+            this._count--
             deleted = true
         }
         return deleted
