@@ -370,4 +370,29 @@ describe('UnorderedLinkedList', () => {
             expect(list.length).toEqual(4)
         })
     })
+
+    describe('#divideMid', () => {
+        test('split list with odd number of elements', () => {
+            const nums = [34, 65, 27, 89, 12]
+            nums.forEach((el) => list.insertLast(el))
+            const list2 = list.divideMid()
+            expect(list2.entries()).toEqual([89, 12])
+        })
+        test('split list with even number of elements', () => {
+            const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0, -22]
+            nums.forEach((el) => list.insertLast(el))
+            const list2 = list.divideMid()
+            expect(list2.entries()).toEqual([0, 4, 5, 0, -22])
+        })
+        test('should empty list if the list has only one element', () => {
+            const nums = [-1]
+            nums.forEach((el) => list.insertLast(el))
+            const list2 = list.divideMid()
+            expect(list2.isEmpty()).toEqual(true)
+        })
+        test('should return empty list if the list is empty', () => {
+            const list2 = list.divideMid()
+            expect(list2.isEmpty()).toEqual(true)
+        })
+    })
 })

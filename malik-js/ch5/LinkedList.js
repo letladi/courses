@@ -260,6 +260,16 @@ class LinkedList {
 
         return found
     }
+
+    divideMid() {
+        const list = new LinkedList()
+
+        if (this.length === 1 || this.isEmpty()) return list
+
+        const startIndexOfSecondList = Math.ceil(this.length / 2)
+
+        return list
+    }
 }
 
 module.exports = LinkedList
