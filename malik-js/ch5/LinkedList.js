@@ -34,11 +34,9 @@ class LinkedList {
         for (const el of this) cb(el, count++)
     }
 
-    rEach(cb, node = this._first, index = this._count - 1) {
-        if (index >= 0) {
-            console.log('here is the index', index)
-            console.log('here is the info: ', node.info)
-            this.rEach(cb, node.link, index)
+    rEach(cb, node = this._first, index = this.length - 1) {
+        if (node !== null) {
+            this.rEach(cb, node.link, index - 1)
             cb(node.info, index)
         }
     }
@@ -140,11 +138,7 @@ class LinkedList {
     }
 
     deleteMin() {
-        // case 1: list is empty, return false
-        // case 2: search for smallest value
-        // we need to keep track of two currents and two prev's (one for searching the list and another for the min)
-        // if the element to be deleted is the first element, we must re-assign the first element
-        let deleted = false
+       let deleted = false
 
         if (this.isEmpty()) deleted = false
         else if (this.length === 1) {

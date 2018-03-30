@@ -83,25 +83,39 @@ describe('UnorderedLinkedList', () => {
             nums.forEach((el) => list.insertLast(el))
             let count = 0
             list.each((el, i) => {
-                expect(el).toEqual(nums[count])
+                expect(el).toEqual(nums[count++])
+            })
+        })
+        test('should iterate over each element in the list with the index', () => {
+            const nums = [1, 2, 3, 4, 5]
+            nums.forEach((el) => list.insertLast(el))
+            let count = 0
+            list.each((_, i) => {
                 expect(i).toEqual(count++)
             })
         })
     })
 
-    // describe('#rEach', () => {
-    //     test('should iterate over each element in the list in reverse', () => {
-    //         const nums = [1, 2, 3, 4, 5]
-    //         const rnums = [5, 4, 3, 2, 1]
-    //         nums.forEach((el) => list.insertLast(el))
-    //         let count = 4
-    //         list.rEach((el, i) => {
-    //             console.log('here is a cb: ', count)
-    //             //expect(el).toEqual(rnums[count])
-    //             expect(i).toEqual(count--)
-    //         })
-    //     })
-    // })
+    describe('#rEach', () => {
+        test('should iterate over each element in the list in reverse', () => {
+            const nums = [1, 2, 3, 4, 5]
+            let count = 4
+            nums.forEach((el) => list.insertLast(el))
+            list.rEach((el) => {
+                expect(el).toEqual(nums[count--])
+            })
+        })
+        test('should iterate over each element in the list in reverse with the index', () => {
+            const nums = [1, 2, 3, 4, 5]
+            nums.forEach((el) => list.insertLast(el))
+            let count = 4
+            list.rEach((el, i) => {
+                expect(i).toEqual(count)
+                expect(el).toEqual(nums[count])
+                count--
+            })
+        })
+    })
 
     describe('#entries', () => {
         test('should return an array containing all list elements', () => {
@@ -371,28 +385,28 @@ describe('UnorderedLinkedList', () => {
         })
     })
 
-    describe('#divideMid', () => {
-        test('split list with odd number of elements', () => {
-            const nums = [34, 65, 27, 89, 12]
-            nums.forEach((el) => list.insertLast(el))
-            const list2 = list.divideMid()
-            expect(list2.entries()).toEqual([89, 12])
-        })
-        test('split list with even number of elements', () => {
-            const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0, -22]
-            nums.forEach((el) => list.insertLast(el))
-            const list2 = list.divideMid()
-            expect(list2.entries()).toEqual([0, 4, 5, 0, -22])
-        })
-        test('should empty list if the list has only one element', () => {
-            const nums = [-1]
-            nums.forEach((el) => list.insertLast(el))
-            const list2 = list.divideMid()
-            expect(list2.isEmpty()).toEqual(true)
-        })
-        test('should return empty list if the list is empty', () => {
-            const list2 = list.divideMid()
-            expect(list2.isEmpty()).toEqual(true)
-        })
-    })
+    // describe('#divideMid', () => {
+    //     test('split list with odd number of elements', () => {
+    //         const nums = [34, 65, 27, 89, 12]
+    //         nums.forEach((el) => list.insertLast(el))
+    //         const list2 = list.divideMid()
+    //         expect(list2.entries()).toEqual([89, 12])
+    //     })
+    //     test('split list with even number of elements', () => {
+    //         const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0, -22]
+    //         nums.forEach((el) => list.insertLast(el))
+    //         const list2 = list.divideMid()
+    //         expect(list2.entries()).toEqual([0, 4, 5, 0, -22])
+    //     })
+    //     test('should empty list if the list has only one element', () => {
+    //         const nums = [-1]
+    //         nums.forEach((el) => list.insertLast(el))
+    //         const list2 = list.divideMid()
+    //         expect(list2.isEmpty()).toEqual(true)
+    //     })
+    //     test('should return empty list if the list is empty', () => {
+    //         const list2 = list.divideMid()
+    //         expect(list2.isEmpty()).toEqual(true)
+    //     })
+    // })
 })
