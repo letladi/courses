@@ -34,9 +34,9 @@ class LinkedList {
         for (const el of this) cb(el, count++)
     }
 
-    rEach(cb, node = this._first, index = this.length - 1) {
+    rEach(cb, node = this._first, index = 0) {
         if (node !== null) {
-            this.rEach(cb, node.link, index - 1)
+            this.rEach(cb, node.link, index + 1)
             cb(node.info, index)
         }
     }

@@ -15,7 +15,7 @@ describe('LinkedList Iterator', () => {
     })
 })
 
-describe('UnorderedLinkedList', () => {
+describe('LinkedList', () => {
     let list = null
     beforeEach(() => list = new LinkedList())
     afterEach(() => list = null)
