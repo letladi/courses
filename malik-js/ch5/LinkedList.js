@@ -1,5 +1,7 @@
 const Node = require('./Node');
 
+const isEven = (n) => n % 2 === 0
+
 class LinkedList {
     constructor() {
         this._reset()
@@ -256,11 +258,40 @@ class LinkedList {
     }
 
     divideMid() {
+        // case 1: list is empty, return an empty list
+        // case 2: list has one element, return an empty list
+        // case 3: list has only two elements, return list with one element
+        // case 4: list has odd number of elements (current list should have one element
+        // than the one being returned)
+        // case 5: list has even number of elements, both lists should have the same number of elements
+        // both lists should have properly assigned front and back values
         const list = new LinkedList()
 
         if (this.length === 1 || this.isEmpty()) return list
 
-        const startIndexOfSecondList = Math.ceil(this.length / 2)
+        const len = this.length
+        const dividedLen = len / 2
+        let numElementsInCurrentList = isEven(len) ? (dividedLen) : (Math.floor(dividedLen) + 1)
+
+        let prev = null
+        let current = this._first
+        while (this._count > numElementsInCurrentList) {
+            prev = current
+            current = current.link
+            this._count--
+        }
+
+        this._last = current
+        this._count = numElementsInCurrentList
+
+        current = current.link
+
+        while (current !== null) {
+            list.insertLast(current.info)
+            current = current.link
+        }
+
+        this._last.link = null
 
         return list
     }

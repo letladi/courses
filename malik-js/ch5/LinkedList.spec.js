@@ -385,28 +385,49 @@ describe('LinkedList', () => {
         })
     })
 
-    // describe('#divideMid', () => {
-    //     test('split list with odd number of elements', () => {
-    //         const nums = [34, 65, 27, 89, 12]
-    //         nums.forEach((el) => list.insertLast(el))
-    //         const list2 = list.divideMid()
-    //         expect(list2.entries()).toEqual([89, 12])
-    //     })
-    //     test('split list with even number of elements', () => {
-    //         const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0, -22]
-    //         nums.forEach((el) => list.insertLast(el))
-    //         const list2 = list.divideMid()
-    //         expect(list2.entries()).toEqual([0, 4, 5, 0, -22])
-    //     })
-    //     test('should empty list if the list has only one element', () => {
-    //         const nums = [-1]
-    //         nums.forEach((el) => list.insertLast(el))
-    //         const list2 = list.divideMid()
-    //         expect(list2.isEmpty()).toEqual(true)
-    //     })
-    //     test('should return empty list if the list is empty', () => {
-    //         const list2 = list.divideMid()
-    //         expect(list2.isEmpty()).toEqual(true)
-    //     })
-    // })
+    describe('#divideMid', () => {
+        test('split list with odd number of elements', () => {
+            const nums = [34, 65, 27, 89, 12]
+            nums.forEach((el) => list.insertLast(el))
+            const list2 = list.divideMid()
+            expect(list2.entries()).toEqual([89, 12])
+        })
+        test('split list with even number of elements', () => {
+            const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0, -22]
+            nums.forEach((el) => list.insertLast(el))
+            const list2 = list.divideMid()
+            expect(list2.entries()).toEqual([0, 4, 5, 0, -22])
+        })
+        test('split list two lists each containing one element for list containing 2 elements', () => {
+            const nums = [1, 2]
+            nums.forEach((el) => list.insertLast(el))
+            const list2 = list.divideMid()
+            expect(list2.entries()).toEqual([2])
+            expect(list.entries()).toEqual([1])
+        })
+        test('should properly assign first pointer(s) of both lists', () => {
+            const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0, -22]
+            nums.forEach((el) => list.insertLast(el))
+            const list2 = list.divideMid()
+            expect(list.front).toEqual(-1)
+            expect(list2.front).toEqual(0)
+        })
+        test('should properly assign last pointer(s) of both lists', () => {
+            const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0, -22]
+            nums.forEach((el) => list.insertLast(el))
+            const list2 = list.divideMid()
+            expect(list.back).toEqual(3)
+            expect(list2.back).toEqual(-22)
+        })
+        test('should return empty list if the first list has only one element', () => {
+            const nums = [-1]
+            nums.forEach((el) => list.insertLast(el))
+            const list2 = list.divideMid()
+            expect(list2.isEmpty()).toEqual(true)
+        })
+        test('should return empty list if the first list is empty', () => {
+            const list2 = list.divideMid()
+            expect(list2.isEmpty()).toEqual(true)
+        })
+    })
 })
