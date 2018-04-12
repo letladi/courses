@@ -429,5 +429,11 @@ describe('LinkedList', () => {
             const list2 = list.divideMid()
             expect(list2.isEmpty()).toEqual(true)
         })
+        test('should properly assign length of first list', () => {
+            const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0, -22]
+            nums.forEach((el) => list.insertLast(el))
+            list.divideMid()
+            expect(list.length).toEqual(5)
+        })
     })
 })

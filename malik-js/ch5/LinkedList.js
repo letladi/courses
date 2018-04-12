@@ -271,28 +271,25 @@ class LinkedList {
 
         const len = this.length
         const dividedLen = len / 2
-        let numElementsInCurrentList = isEven(len) ? (dividedLen) : (Math.floor(dividedLen) + 1)
-
-        let prev = null
+        let numElementsInCurrentList = isEven(len) ? dividedLen : Math.floor(dividedLen) + 1
+        this._count = numElementsInCurrentList
+        let indexOfFirstElementInSecondList = numElementsInCurrentList
+        let count = 0
         let current = this._first
-        while (this._count > numElementsInCurrentList) {
+        let prev = null
+        while (count < numElementsInCurrentList) {
             prev = current
             current = current.link
-            this._count--
+            count++
         }
 
-        this._last = current
-        this._count = numElementsInCurrentList
-
-        current = current.link
+        this._last = prev
+        this._last.link = null
 
         while (current !== null) {
             list.insertLast(current.info)
             current = current.link
         }
-
-        this._last.link = null
-
         return list
     }
 }
