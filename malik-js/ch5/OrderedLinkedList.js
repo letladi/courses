@@ -21,6 +21,7 @@ class OrderedLinkedList extends LinkedList {
 
     insert(item) {
         if (this.search(item)) return false
+
         let current = new Node()
         let prev = new Node()
         let newNode = new Node(item)
@@ -50,6 +51,7 @@ class OrderedLinkedList extends LinkedList {
                 this._count++
             }
         }
+        
         return true
     }
 
