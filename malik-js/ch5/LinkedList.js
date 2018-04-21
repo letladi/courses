@@ -258,13 +258,6 @@ class LinkedList {
     }
 
     divideMid() {
-        // case 1: list is empty, return an empty list
-        // case 2: list has one element, return an empty list
-        // case 3: list has only two elements, return list with one element
-        // case 4: list has odd number of elements (current list should have one element
-        // than the one being returned)
-        // case 5: list has even number of elements, both lists should have the same number of elements
-        // both lists should have properly assigned front and back values
         const list = new LinkedList()
 
         if (this.length === 1 || this.isEmpty()) return list
@@ -321,8 +314,7 @@ class LinkedList {
             else this._last.link = null
 
             while (current) {
-                console.log('the value at this point', )
-                list.insertLast(current.val)
+                list.insertLast(current.info)
                 current = current.link
             }
             return list

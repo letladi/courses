@@ -453,7 +453,7 @@ describe('LinkedList', () => {
             test('should move the item to the current list', () => {
                 list.insertLast(1)
                 const list2 = list.divideAt(1)
-                expect(list.front).toEqual(1)
+                expect(list2.front).toEqual(1)
             })
         })
         test('should properly adjust the last item of the current list', () => {
