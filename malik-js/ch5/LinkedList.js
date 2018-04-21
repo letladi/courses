@@ -292,6 +292,42 @@ class LinkedList {
         }
         return list
     }
+
+    divideAt(val) {
+        const list = new LinkedList()
+
+        if (this.isEmpty()) return list
+
+        let found = false
+        let index = 0
+        let prev = null
+        let current = this._first
+
+        while (current && found === false) {
+            if (current.info === val) found = true
+            else {
+                prev = current
+                current = current.link
+                index++
+            }
+        }
+
+        if (found === false) return list
+        else {
+            this._count = index
+            this._last = prev
+
+            if (index === 0) this._first = this._last = null
+            else this._last.link = null
+
+            while (current) {
+                console.log('the value at this point', )
+                list.insertLast(current.val)
+                current = current.link
+            }
+            return list
+        }
+    }
 }
 
 module.exports = LinkedList

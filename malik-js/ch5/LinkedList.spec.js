@@ -436,4 +436,49 @@ describe('LinkedList', () => {
             expect(list.length).toEqual(5)
         })
     })
+
+    describe('#divideAt', () => {
+        test('should return an empty list if the element does not exist in the list', () => {
+            const nums = [34, 65, 27, 89, 12]
+            nums.forEach((el) => list.insertLast(el))
+            const list2 = list.divideAt(22)
+            expect(list2.isEmpty()).toEqual(true)
+        })
+        describe('case where the list has only one element', () => {
+            test('should empty the current list', () => {
+                list.insertLast(1)
+                list.divideAt(1)
+                expect(list.isEmpty()).toEqual(true)
+            })
+            test('should move the item to the current list', () => {
+                list.insertLast(1)
+                const list2 = list.divideAt(1)
+                expect(list.front).toEqual(1)
+            })
+        })
+        test('should properly adjust the last item of the current list', () => {
+            const nums = [34, 65, 27, 89, 12]
+            nums.forEach((el) => list.insertLast(el))
+            list.divideAt(27)
+            expect(list.back).toEqual(65)
+        })
+        test('should properly adjust the length of the current list', () => {
+            const nums = [34, 65, 27, 89, 12]
+            nums.forEach((el) => list.insertLast(el))
+            list.divideAt(27)
+            expect(list.length).toEqual(2)
+        })
+        it('should return a list all the elements from the given value onwards', () => {
+            const nums = [34, 65, 18, 39, 27, 89, 12]
+            nums.forEach((el) => list.insertLast(el))
+            const list2 = list.divideAt(18)
+            expect(list2.entries()).toEqual([18, 39, 27, 89, 12])
+        })
+        it('should leave all the elements before the given value inside the current list', () => {
+            const nums = [34, 65, 18, 39, 27, 89, 12]
+            nums.forEach((el) => list.insertLast(el))
+            list.divideAt(18)
+            expect(list.entries()).toEqual([34, 65])
+        })
+    })
 })
