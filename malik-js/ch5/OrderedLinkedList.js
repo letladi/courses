@@ -20,6 +20,7 @@ class OrderedLinkedList extends LinkedList {
     }
 
     insert(item) {
+        if (this.search(item)) return false
         let current = new Node()
         let prev = new Node()
         let newNode = new Node(item)
@@ -49,6 +50,7 @@ class OrderedLinkedList extends LinkedList {
                 this._count++
             }
         }
+        return true
     }
 
     insertFirst(item) {
@@ -92,6 +94,41 @@ class OrderedLinkedList extends LinkedList {
             }
         }
         return deleted
+    }
+
+    merge(other) {
+        const list = new OrderedLinkedList()
+        if (this.isEmpty()) {
+            other.each((el) => list.insert(el))
+        } else if (other.isEmpty()) {
+            this.each((el) => list.insert(el))
+        } else {
+            let current1 = this._first
+            let current2 = other._first
+
+            while (current1 && current2) {
+                if (current1.info < current2.info) {
+                    list.insert(current1.info)
+                    current1 = current1.link
+                } else if (current1.info > current2.info) {
+                    list.insert(current2.info)
+                    current2 = current2.link
+                } else if (current1.info === current2.info) {
+                    list.insert(current1.info)
+                    list.insert(current2.info)
+                }
+            }
+
+            while (current1) {
+                list.insert(current1.info)
+                current1 = current1.link
+            }
+            while (current2) {
+                list.insert(current2.info)
+                current2 = current2.link
+            }
+        }
+        return list
     }
 }
 
