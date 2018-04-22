@@ -7,4 +7,7 @@ describe('toBinary function', () => {
     test('toBin(294) = 100100110', () => {
         expect(toBin(294)).toEqual('100100110')
     })
+    test('toBin(57) = 111001', () => {
+        expect(toBin(57)).toEqual('111001')
+    })
 })
