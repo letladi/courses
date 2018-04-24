@@ -10,7 +10,6 @@ function stars(n) {
 
 function downStars(n, max) {
     if (n === 0) return
-
     downStars(n - 1, max)
     console.log(pad(n, max))
 }
