@@ -1,5 +1,6 @@
-const fact = (num, product = 1) => {
- return num === 0 ? product : fact(num - 1, num * product )
+function fact(n, product = 1) {
+    if (n === 0) return product
+    else return fact(n - 1, n * product)
 }
 
 module.exports = fact
