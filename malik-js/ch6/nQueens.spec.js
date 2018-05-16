@@ -85,5 +85,11 @@ describe('n-queens', () => {
         })
     })
 
+    // describe('8-queens', () => {
+    //     test('solution is [1, 3, 0, 2]', () => {
+    //         const puzzle = new Puzzle(4)
+    //         expect(puzzle.solve()).toEqual([1, 3, 0, 2])
+    //     })
+    // })
 
 })
