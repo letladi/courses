@@ -36,7 +36,12 @@ class Sudoku {
     }
 
     numAlreadyInCol(col, x) {
-
+        const grid = this.grid
+        const len = grid.length
+        for (let row = 0; row < len; row++) {
+            if (grid[row][col] === x) return true
+        }
+        return false
     }
 
     numAlreadyInBox(smallGridRow, smallGridCol, x) {

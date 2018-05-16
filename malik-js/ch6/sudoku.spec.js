@@ -32,6 +32,25 @@ describe(`Sudoku for board: \n [
             expect(puzzle.numAlreadyInRow(7, 7)).toEqual(true)
         })
     })
+
+    describe('#numAlreadyInCol', () => {
+        let puzzle = null
+        beforeEach(() => puzzle = new Sudoku())
+        afterEach(() => puzzle = null)
+        test('numAlreadyInCol(0, 5) = false', () => {
+            expect(puzzle.numAlreadyInCol(0, 5)).toEqual(false)
+        })
+        test('numAlreadyInCol(1, 1) = true', () => {
+            expect(puzzle.numAlreadyInCol(1, 1)).toEqual(true)
+        })
+        test('numAlreadyInCol(7, 9) = true', () => {
+            expect(puzzle.numAlreadyInCol(7, 9)).toEqual(true)
+        })
+        test('numAlreadyInCol(8, 8) = false', () => {
+            expect(puzzle.numAlreadyInCol(8, 8)).toEqual(false)
+        })
+    })
+
     xdescribe('#solve', () => {
         test(`return the solution;\n [
             [6,5,3,1,2,8,7,9,4],
