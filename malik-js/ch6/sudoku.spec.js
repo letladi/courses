@@ -51,6 +51,15 @@ describe(`Sudoku for board: \n [
         })
     })
 
+    describe('#numAlreadyInBox', () => {
+        let puzzle = null
+        beforeEach(() => puzzle = new Sudoku())
+        afterEach(() => puzzle = null)
+        test('numAlreadyInBox(2,2, 2) = true')
+        test('numAlreadyInBox(1, 5, 6) = false')
+        test('numAlreadyInBox(4, 3, 2) = false')
+    })
+
     xdescribe('#solve', () => {
         test(`return the solution;\n [
             [6,5,3,1,2,8,7,9,4],
