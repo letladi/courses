@@ -1,6 +1,6 @@
 class Sudoku {
-    constructor() {
-        this.grid = [
+    constructor(grid) {
+        this.grid = grid || [
             [6,0,3,0,2,0,0,9,0],
             [0,0,0,0,5,0,0,8,0],
             [0,2,0,4,0,7,0,0,1],
@@ -13,15 +13,23 @@ class Sudoku {
         ]
     }
 
-    initializeGrid(grid) {
-
-    }
-
     solve(grid = this.grid) {
+        const slot = this.findEmptySlot()
 
-    }
+        if (slot === void(0)) return true
+        else {
+            const { row, col } = slot
+            for (let num = 1; num <= 9; num++) {
+                if (this.canPlaceNum(row, col, num)) {
+                    this.grid[row][col] = num
+                    if (this.solve())
+                        return true
+                    grid[row][col] = 0
+                }
+            }
+            return false
+        }
 
-    slotIsEmpty(row, col) {
 
     }
 
@@ -30,13 +38,12 @@ class Sudoku {
             && this.numAlreadyInBox(row, col, x) === false
     }
 
-    numAlreadyInRow(row, x) {
-        const rowList = this.grid[row]
+    numAlreadyInRow(row, x, grid = this.grid) {
+        const rowList = grid[row]
         return rowList.includes(x)
     }
 
-    numAlreadyInCol(col, x) {
-        const grid = this.grid
+    numAlreadyInCol(col, x, grid = this.grid) {
         const len = grid.length
         for (let row = 0; row < len; row++) {
             if (grid[row][col] === x) return true
@@ -60,17 +67,15 @@ class Sudoku {
         return { start, end }
     }
 
-    numAlreadyInBox(smallGridRow, smallGridCol, x) {
+    numAlreadyInBox(smallGridRow, smallGridCol, x, grid = this.grid) {
         let rowCoordinates = this._beginningAndEndCoordinates(smallGridRow)
         let colCoordinates = this._beginningAndEndCoordinates(smallGridCol)
 
         let rowStart = rowCoordinates.start
         let rowEnd = rowCoordinates.end
 
-        let colStart = rowCoordinates.start
-        let colEnd = rowCoordinates.end
-
-        const grid = this.grid
+        let colStart = colCoordinates.start
+        let colEnd = colCoordinates.end
 
         for (let i = rowStart ; i <= rowEnd; i++) {
             for (let j = colStart; j <= colEnd; j++) {
@@ -80,8 +85,16 @@ class Sudoku {
         return false
     }
 
-    findEmptySlot() {
+    findEmptySlot(grid = this.grid) {
+        const rowLen = grid.length
+        const colLen = rowLen
 
+        for (let row = 0; row < rowLen; row++) {
+            for (let col = 0; col < colLen; col++) {
+                if (grid[row][col] === 0) return { row, col }
+            }
+        }
+        return void(0)
     }
 }
 
