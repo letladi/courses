@@ -80,7 +80,7 @@ describe(`Sudoku for board: \n [
         ]`, () => {
             const puzzle = new Sudoku()
             expect(puzzle.solve()).toEqual(true)
-            expect(puzzle.grid).toEqual([
+            expect(puzzle.getGrid()).toEqual([
                 [6,5,3,1,2,8,7,9,4],
                 [1,7,4,3,5,9,6,8,2],
                 [9,2,8,4,6,7,5,3,1],

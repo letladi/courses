@@ -21,18 +21,19 @@ class Sudoku {
             const { row, col } = slot
             for (let num = 1; num <= 9; num++) {
                 if (this.canPlaceNum(row, col, num)) {
-                    this.grid[row][col] = num
-                    if (this.solve())
-                        return true
+                    grid[row][col] = num
+                    if (this.solve()) return true
                     grid[row][col] = 0
                 }
             }
             return false
         }
-
-
     }
 
+    getGrid() {
+        return this.grid
+    }
+    
     canPlaceNum(row, col, x) {
         return this.numAlreadyInCol(col, x) === false && this.numAlreadyInRow(row, x) === false
             && this.numAlreadyInBox(row, col, x) === false

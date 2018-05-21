@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "deep-equal": "^1.0.1",
     "jest": "^22.4.3"
   }
 }
