@@ -1,23 +1,30 @@
+const LinkedList = require('../ch5/LinkedList')
+
 class Stack {
     constructor() {
-        this.list = []
-        this.topI = -1
+        this.list = new LinkedList
     }
 
     push(val) {
-        this.list[++this.topI] = val
+        this.list.insertFirst(val)
     }
 
     pop() {
-        return (this.topI >= 0) ?  this.list[this.topI--] : null
+        const val = this.top()
+        this.list.deleteAt(0)
+        return val
     }
 
     top() {
-        return this.list[this.topI] || null
+        try {
+            return this.list.front
+        } catch (e) {
+            return null
+        }
     }
 
     isEmpty() {
-        return this.topI === -1
+        return this.list.isEmpty()
     }
 }
 
