@@ -11,16 +11,12 @@ class Stack {
 
     pop() {
         const val = this.top()
-        this.list.deleteAt(0)
+        if (val) this.list.deleteAt(0)
         return val
     }
 
     top() {
-        try {
-            return this.list.front
-        } catch (e) {
-            return null
-        }
+        return this.isEmpty() ? null : this.list.front
     }
 
     isEmpty() {
