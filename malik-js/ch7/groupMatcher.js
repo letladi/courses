@@ -20,21 +20,21 @@ const isBalanced = (str) => {
     for (let i = 0; i < str.length; i++) {
         const c = str[i]
         if (isOpeningParens(c)) stack.push(c)
-        else if (isClosingParens(c)) {
+        else {
             const opener = stack.pop()
-
-            if (isOpeningParens(opener) === false) return false
-            if (isMatchingClosingParens(opener, c) === false) return false
+            if ((isOpeningParens(opener) === false) || isMatchingClosingParens(opener, c) === false)
+                return false
         }
     }
 
     while (stack.isEmpty() == false) {
         const c = stack.pop()
 
-        if (c == void(0) || isOpeningParens(c)) return false
-        else if (isClosingParens(c)) {
+        if (isOpeningParens(c)) return false
+        else {
             const opener = stack.pop()
-            if (opener == void(0) || isMatchingClosingParens(opener, c) === false) return false
+            if (opener == void(0) || isOpeningParens(opener) === false || isMatchingClosingParens(opener, c) === false)
+                return false
         }
     }
     return true
