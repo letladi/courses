@@ -14,6 +14,32 @@ describe("Knight's Tour Problem", () => {
 
             expect(deepEqual(moves, expectedMoves)).toEqual(true)
         })
+
+    })
+
+    describe('#findMovesThatHaveNotBeenMade', () => {
+        test('should not return any points if they are all filled in', () => {
+            const grid = [
+                [1, 6, 15, 10, 11],
+                [14, 9, 20, 5, 16],
+                [19, 2, 7, 22, 11],
+                [8, 13, 24, 17, 4],
+                [25, 18, 3, 12, 23],
+            ]
+            const tour = new Tour(5)
+            expect(tour.findMovesThatHaveNotBeenMade(0,0, grid)).toEqual([])
+        })
+        test('should only return points that are not filled in', () => {
+            const grid = [
+                [1, 6, 15, 10, 11],
+                [14, 9, 20, 5, 16],
+                [19, void(0), 7, 22, 11],
+                [8, 13, 24, 17, 4],
+                [25, 18, 3, 12, 23],
+            ]
+            const tour = new Tour(5)
+            expect(tour.findMovesThatHaveNotBeenMade(0, 0, grid)).toEqual([ [2, 1] ])
+        })
     })
     describe('#solve', () => {
         test('should return a grid containing all the moves sequences', () => {
