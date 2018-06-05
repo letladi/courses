@@ -56,6 +56,26 @@ class Queue {
         if (this.isEmpty()) throw new Error('You may not read an empty queue')
         return this.last.info
     }
+
+    moveNthFront(n) {
+        const i = n - 1
+        if (n > this.length) throw new Error('index of bounds error (the index to be moved does not exist)')
+        let current = this.first
+        let prev = null
+        let count = 0
+        while (count < i) {
+            prev = current
+            current = current.next
+            count++
+
+        }
+
+        if (current === this.last) {
+            prev.next = null
+        }
+        current.next = this.first
+        this.first = current
+    }
 }
 
 module.exports = Queue
