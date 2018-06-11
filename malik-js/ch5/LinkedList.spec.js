@@ -202,7 +202,7 @@ describe('LinkedList', () => {
         test('should delete element if it is the only one in the list', () => {
             list.insertLast(-1)
             list.deleteMin()
-            expect(list.search(0)).toEqual(false)
+            expect(list.search(-1)).toEqual(false)
             expect(list.entries()).toEqual([])
         })
         test('should delete only the first occurrence of the min value', () => {
@@ -212,11 +212,11 @@ describe('LinkedList', () => {
             expect(list.search(0)).toEqual(true)
             expect(list.entries()).toEqual([1, 2, 3, 0, 4, 5, 0])
         })
-        test('should return true if deletion succeeded', () => {
+        test('should return the min item if deletion succeeded', () => {
             const nums = [1, 2, 3, 0, 4, 5]
             nums.forEach((el) => list.insertLast(el))
-            list.deleteMin()
-            expect(list.deleteMin()).toEqual(true)
+            expect(list.deleteMin()).toEqual(0)
+            expect(list.deleteMin()).toEqual(1)
         })
         test('should properly re-assign first element', () => {
             const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0]
@@ -245,7 +245,137 @@ describe('LinkedList', () => {
             list.deleteMin()
             expect(list.length).toEqual(0)
         })
+        test('should be able to delete from an index onwards', () => {
+          const nums = [-100, 1, 2, 0, 3, -23, 4, 5, 0, -22]
+          nums.forEach((el) => list.insertLast(el))
+          list.deleteMin(5)
+          expect(list.entries()).toEqual([-100, 1, 2, 0, 3, 4, 5, 0, -22])
+        })
+        test('should be able to delete from an index onwards (previous minimums are untouched)', () => {
+          const nums = [-100, 1, 2, 0, 3, -23, 4, 5, 0, -22]
+          nums.forEach((el) => list.insertLast(el))
+          list.deleteMin(6)
+          expect(list.entries()).toEqual([-100, 1, 2, 0, 3, -23, 4, 5, 0])
+        })
+        test('should be able to delete from an index onwards (returns false if the index is out of bounds)', () => {
+          const nums = [-100, 1, 2, 0, 3, -23, 4, 5, 0, -22]
+          nums.forEach((el) => list.insertLast(el))
+          expect(list.deleteMin(-1)).toEqual(false)
+          expect(list.deleteMin(10)).toEqual(false)
+        })
+        test('should be able to delete from an index onwards (should work for lists with 2 elements)', () => {
+          const nums = [-100, -22]
+          nums.forEach((el) => list.insertLast(el))
+          list.deleteMin(1)
+          expect(list.entries()).toEqual([-100])
+        })
+        test('should be able to delete from an index onwards (should work for lists with 3 elements)', () => {
+          const nums = [-100, -22, 1]
+          nums.forEach((el) => list.insertLast(el))
+          list.deleteMin(1)
+          expect(list.entries()).toEqual([-100, 1])
+        })
+        test('should be able to delete from an index onwards (should for index = 0)', () => {
+          const nums = [-100, -22, 1]
+          nums.forEach((el) => list.insertLast(el))
+          list.deleteMin(0)
+          expect(list.entries()).toEqual([-22, 1])
+        })
     })
+
+    describe('#deleteMax', () => {
+        test('should delete node with largest info', () => {
+            const nums = [1, 2, 3, 0, 4, 5]
+            nums.forEach((el) => list.insertLast(el))
+            list.deleteMax()
+            expect(list.search(5)).toEqual(false)
+            expect(list.entries()).toEqual([1, 2, 3, 0, 4])
+        })
+        test('should delete element if it is the only one in the list', () => {
+            list.insertLast(-1)
+            list.deleteMax()
+            expect(list.search(-1)).toEqual(false)
+            expect(list.entries()).toEqual([])
+        })
+        test('should delete only the first occurrence of the max value', () => {
+            const nums = [1, 2, 5, 3, 0, 4, 5, 0]
+            nums.forEach((el) => list.insertLast(el))
+            list.deleteMax()
+            expect(list.search(5)).toEqual(true)
+            expect(list.entries()).toEqual([1, 2, 3, 0, 4, 5, 0])
+        })
+        test('should return the max item if deletion succeeded', () => {
+            const nums = [1, 2, 3, 0, 4, 5]
+            nums.forEach((el) => list.insertLast(el))
+            expect(list.deleteMax()).toEqual(5)
+            expect(list.deleteMax()).toEqual(4)
+            expect(list.entries()).toEqual([1, 2, 3, 0])
+        })
+        test('should properly re-assign first element', () => {
+            const nums = [10, 1, 2, 0, 3, 0, 4, 5, 0]
+            nums.forEach((el) => list.insertLast(el))
+            list.deleteMax()
+            expect(list.front).toEqual(1)
+        })
+        test('should properly re-assing last element', () => {
+            const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0, 22]
+            nums.forEach((el) => list.insertLast(el))
+            list.deleteMax()
+            expect(list.back).toEqual(0)
+        })
+        test('should return false if deletion failed (i.e, when list is empty)', () => {
+            expect(list.deleteMax()).toEqual(false)
+        })
+        test('should decrement the length if succeeded', () => {
+            const nums = [1, 2, 3, 0, 4, 5]
+            nums.forEach((el) => list.insertLast(el))
+            expect(list.length).toEqual(6)
+            list.deleteMax()
+            expect(list.length).toEqual(5)
+        })
+        test('should not decrement length is failed', () => {
+            expect(list.length).toEqual(0)
+            list.deleteMax()
+            expect(list.length).toEqual(0)
+        })
+        test('should be able to delete from an index onwards', () => {
+          const nums = [100, 1, 2, 0, 3, 23, 4, 5, 0, 22]
+          nums.forEach((el) => list.insertLast(el))
+          list.deleteMax(5)
+          expect(list.entries()).toEqual([100, 1, 2, 0, 3, 4, 5, 0, 22])
+        })
+        test('should be able to delete from an index onwards (previous maximums are untouched)', () => {
+          const nums = [100, 1, 2, 0, 3, 23, 4, 5, 0, 22]
+          nums.forEach((el) => list.insertLast(el))
+          list.deleteMax(6)
+          expect(list.entries()).toEqual([100, 1, 2, 0, 3, 23, 4, 5, 0])
+        })
+        test('should be able to delete from an index onwards (returns false if the index is out of bounds)', () => {
+          const nums = [100, 1, 2, 0, 3, 23, 4, 5, 0, 22]
+          nums.forEach((el) => list.insertLast(el))
+          expect(list.deleteMax(-1)).toEqual(false)
+          expect(list.deleteMax(10)).toEqual(false)
+        })
+        test('should be able to delete from an index onwards (should work for lists with 2 elements)', () => {
+          const nums = [100, 22]
+          nums.forEach((el) => list.insertLast(el))
+          list.deleteMax(1)
+          expect(list.entries()).toEqual([100])
+        })
+        test('should be able to delete from an index onwards (should work for lists with 3 elements)', () => {
+          const nums = [100, 22, 1]
+          nums.forEach((el) => list.insertLast(el))
+          list.deleteMax(1)
+          expect(list.entries()).toEqual([100, 1])
+        })
+        test('should be able to delete from an index onwards (should for from = 0)', () => {
+          const nums = [100, 22, 1]
+          nums.forEach((el) => list.insertLast(el))
+          list.deleteMax(0)
+          expect(list.entries()).toEqual([22, 1])
+        })
+    })
+
     describe('#deleteAll', () => {
         test('should delete all occurrences of a given info value', () => {
             const nums = [-1, 1, 2, 0, 3, 0, 4, 5, 0, -22]

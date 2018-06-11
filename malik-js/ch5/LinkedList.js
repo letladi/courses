@@ -139,11 +139,14 @@ class LinkedList {
         return deleted
     }
 
-    deleteMin() {
+    deleteMin(from = 0) {
        let deleted = false
+       let min = null
+       let minPrev = null
 
-        if (this.isEmpty()) deleted = false
+        if (this.isEmpty() || (from < 0 || from >= this.length)) deleted = false
         else if (this.length === 1) {
+            min = this._first
             this._reset()
             deleted = true
         }
@@ -151,8 +154,16 @@ class LinkedList {
             let prev = this._first
             let current = this._first.link
 
-            let minPrev = null
-            let min = this._first
+            minPrev = null
+            min = prev
+
+            let i = 0
+            while (i < from) {
+              minPrev = min
+              min = prev = current
+              current = current.link
+              i++
+            }
 
             while (current != null) {
                 if (current.info < min.info) {
@@ -173,7 +184,7 @@ class LinkedList {
             this._count--
             deleted = true
         }
-        return deleted
+        return deleted ? min.info : false
     }
 
     deleteAll(item) {
@@ -319,6 +330,60 @@ class LinkedList {
             }
             return list
         }
+    }
+
+    selectionSort() {
+      for (let i = 0, len = this.length; i < len; i++) {
+        this.insertFirst(this.deleteMax(i))
+      }
+    }
+
+    deleteMax(from = 0) {
+       let deleted = false
+       let max = null
+       let maxPrev = null
+
+        if (this.isEmpty() || (from < 0 || from >= this.length)) deleted = false
+        else if (this.length === 1) {
+            max = this._first
+            this._reset()
+            deleted = true
+        }
+        else {
+            let prev = this._first
+            let current = this._first.link
+
+            maxPrev = null
+            max = prev
+
+            let i = 0
+            while (i < from) {
+              maxPrev = max
+              max = prev = current
+              current = current.link
+              i++
+            }
+
+            while (current != null) {
+                if (current.info > max.info) {
+                    max = current
+                    maxPrev = prev
+                }
+                prev = current
+                current = current.link
+            }
+
+            if (this._first === max) this._first = max.link
+            else if (this._last === max) {
+                this._last = maxPrev
+                this._last.link = null
+            } else {
+                maxPrev.link = max.link
+            }
+            this._count--
+            deleted = true
+        }
+        return deleted ? max.info : false
     }
 }
 
