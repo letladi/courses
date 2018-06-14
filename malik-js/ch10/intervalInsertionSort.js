@@ -1,6 +1,5 @@
 const sort = (list, h) => {
   let passes = 0
-
   let index = 0
   while (passes < h) {
     for (let iBefore = index, i = index + h, lastIndex = list.length - 1; list[i]; iBefore = i, i += h) {
