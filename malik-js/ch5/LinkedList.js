@@ -1,4 +1,5 @@
 const Node = require('./Node');
+const sort = require('../ch10/quickSort')
 
 const isEven = (n) => n % 2 === 0
 
@@ -384,6 +385,13 @@ class LinkedList {
             deleted = true
         }
         return deleted ? max.info : false
+    }
+
+    quickSort() {
+      const entries = this.entries()
+      sort(entries)
+      this.destroy()
+      entries.forEach((el) => this.insertLast(el))
     }
 }
 

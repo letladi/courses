@@ -611,4 +611,25 @@ describe('LinkedList', () => {
             expect(list.entries()).toEqual([34, 65])
         })
     })
+
+    describe('#quickSort', () => {
+      test('#quickSort({ 34->67->23->12->78->56->36->79->5->32->66 }) = { 5->12->23->32->34->36->56->66->67->78->79 }', () => {
+          const nums = [34, 67, 23, 12, 78, 56, 36, 79, 5, 32, 66]
+          nums.forEach((el) => list.insertLast(el))
+          list.quickSort()
+          expect(list.entries()).toEqual([5, 12, 23, 32, 34, 36, 56, 66, 67, 78, 79])
+      })
+      test('#quickSort({ 13->7->15->8->12->30->3->20 }) = { 3->7->8->12->13->15->20->30 }', () => {
+          const nums = [13, 7, 15, 8, 12, 30, 3, 20]
+          nums.forEach((el) => list.insertLast(el))
+          list.quickSort()
+          expect(list.entries()).toEqual([3, 7, 8, 12, 13, 15, 20, 30])
+      })
+      test('#quickSort({ 10->18->25->30->23->17->45->35 }) = { 10->17->18->23->25->30->35->45 }', () => {
+          const nums = [10, 18, 25, 30, 23, 17, 45, 35]
+          nums.forEach((el) => list.insertLast(el))
+          list.quickSort()
+          expect(list.entries()).toEqual([10, 17, 18, 23, 25, 30, 35, 45])
+      })
+    })
 })
