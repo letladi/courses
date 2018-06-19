@@ -123,6 +123,21 @@ describe('LinkedList', () => {
             nums.forEach((el) => list.insertLast(el))
             expect(list.entries()).toEqual(nums)
         })
+        test('should return entries up to a certain index if an index is given', () => {
+          const nums = [1, 2, 3, 4, 5]
+          nums.forEach((el) => list.insertLast(el))
+          expect(list.entries(0)).toEqual([1])
+          expect(list.entries(1)).toEqual([1, 2])
+          expect(list.entries(2)).toEqual([1, 2, 3])
+          expect(list.entries(3)).toEqual([1, 2, 3, 4])
+          expect(list.entries(4)).toEqual([1, 2, 3, 4, 5])
+        })
+        test('should throw an exception if the index given is out of bounds', () => {
+          const nums = [1, 2, 3, 4, 5]
+          nums.forEach((el) => list.insertLast(el))
+          expect(() => list.entries(-1)).toThrow()
+          expect(() => list.entries(5)).toThrow()
+        })
     })
 
     describe('#search', () => {
@@ -630,6 +645,118 @@ describe('LinkedList', () => {
           nums.forEach((el) => list.insertLast(el))
           list.quickSort()
           expect(list.entries()).toEqual([10, 17, 18, 23, 25, 30, 35, 45])
+      })
+    })
+
+    describe('#swap', () => {
+      test('{ List: 1->2->3->4->5 } : swap(0, 4) = { List: 5->2->3->4->1 }', () => {
+        const nums = [1,2,3,4,5]
+        nums.forEach((el) => list.insertLast(el))
+        list.swap(0, 4)
+        expect(list.entries()).toEqual([5,2,3,4,1])
+      })
+      test('should throw exception if either one of the indices (or both) indices are out of bounds', () => {
+        const nums = [1,2,3,4,5]
+        nums.forEach((el) => list.insertLast(el))
+        expect(() => list.swap(-1, 3)).toThrow()
+        expect(() => list.swap(-1,5)).toThrow()
+        expect(() => list.swap(3, -1)).toThrow()
+      })
+    })
+
+    describe('#quickSort', () => {
+      test('#quickSort({ 34->67->23->12->78->56->36->79->5->32->66 }) = { 5->12->23->32->34->36->56->66->67->78->79 }', () => {
+          const nums = [34, 67, 23, 12, 78, 56, 36, 79, 5, 32, 66]
+          nums.forEach((el) => list.insertLast(el))
+          list.quickSort()
+          expect(list.entries()).toEqual([5, 12, 23, 32, 34, 36, 56, 66, 67, 78, 79])
+      })
+      test('#quickSort({ 13->7->15->8->12->30->3->20 }) = { 3->7->8->12->13->15->20->30 }', () => {
+          const nums = [13, 7, 15, 8, 12, 30, 3, 20]
+          nums.forEach((el) => list.insertLast(el))
+          list.quickSort()
+          expect(list.entries()).toEqual([3, 7, 8, 12, 13, 15, 20, 30])
+      })
+      test('#quickSort({ 10->18->25->30->23->17->45->35 }) = { 10->17->18->23->25->30->35->45 }', () => {
+          const nums = [10, 18, 25, 30, 23, 17, 45, 35]
+          nums.forEach((el) => list.insertLast(el))
+          list.quickSort()
+          expect(list.entries()).toEqual([10, 17, 18, 23, 25, 30, 35, 45])
+      })
+    })
+
+    describe('#slowQuickSort', () => {
+      test('#slowQuickSort({ 34->67->23->12->78->56->36->79->5->32->66 }) = { 5->12->23->32->34->36->56->66->67->78->79 }', () => {
+          const nums = [34, 67, 23, 12, 78, 56, 36, 79, 5, 32, 66]
+          nums.forEach((el) => list.insertLast(el))
+          list.slowQuickSort()
+          expect(list.entries()).toEqual([5, 12, 23, 32, 34, 36, 56, 66, 67, 78, 79])
+      })
+      test('#slowQuickSort({ 13->7->15->8->12->30->3->20 }) = { 3->7->8->12->13->15->20->30 }', () => {
+          const nums = [13, 7, 15, 8, 12, 30, 3, 20]
+          nums.forEach((el) => list.insertLast(el))
+          list.slowQuickSort()
+          expect(list.entries()).toEqual([3, 7, 8, 12, 13, 15, 20, 30])
+      })
+      test('#slowQuickSort({ 10->18->25->30->23->17->45->35 }) = { 10->17->18->23->25->30->35->45 }', () => {
+          const nums = [10, 18, 25, 30, 23, 17, 45, 35]
+          nums.forEach((el) => list.insertLast(el))
+          list.slowQuickSort()
+          expect(list.entries()).toEqual([10, 17, 18, 23, 25, 30, 35, 45])
+      })
+    })
+
+    describe('#partition', () => {
+      test('should return the partition index', () => {
+        const nums = [32, 55, 87, 13, 78, 96, 52, 48, 22, 11, 58, 66, 88, 45]
+        nums.forEach((el) => list.insertLast(el))
+        const index = list.partition()
+        expect(index).toEqual(6)
+      })
+      test('elements to the left of the partition should be less than the partition', () => {
+        const nums = [32, 55, 87, 13, 78, 96, 52, 48, 22, 11, 58, 66, 88, 45]
+        nums.forEach((el) => list.insertLast(el))
+        const index = list.partition()
+        expect(list.entries(index)).toEqual([45, 13, 32, 48, 22, 11, 52])
+      })
+      test('elements to the right of the partition should be greater than the partition', () => {
+        const nums = [32, 55, 87, 13, 78, 96, 52, 48, 22, 11, 58, 66, 88, 45]
+        nums.forEach((el) => list.insertLast(el))
+        const index = list.partition()
+        expect(list.entries().slice(index + 1)).toEqual([55, 78, 96, 58, 66, 88, 87])
+      })
+    })
+
+    describe('#merge', () => {
+      test('should merge with another list', () => {
+        const  nums1 = [1,2,3]
+        const  nums2 = [5,6,7]
+        const list1 = new LinkedList()
+        const list2 = new LinkedList()
+        nums1.forEach((el) => list1.insertLast(el))
+        nums2.forEach((el) => list2.insertLast(el))
+        list2.merge(list1)
+        expect(list2.entries()).toEqual([5,6,7,1,2,3])
+      })
+      test('should properly assign the "last" element pointer of the current list', () => {
+        const  nums1 = [1,2,3]
+        const  nums2 = [5,6,7]
+        const list1 = new LinkedList()
+        const list2 = new LinkedList()
+        nums1.forEach((el) => list1.insertLast(el))
+        nums2.forEach((el) => list2.insertLast(el))
+        list2.merge(list1)
+        expect(list2.back).toEqual(3)
+      })
+      test('should leave the merged list intact', () => {
+        const  nums1 = [1,2,3]
+        const  nums2 = [5,6,7]
+        const list1 = new LinkedList()
+        const list2 = new LinkedList()
+        nums1.forEach((el) => list1.insertLast(el))
+        nums2.forEach((el) => list2.insertLast(el))
+        list2.merge(list1)
+        expect(list1.entries()).toEqual([1,2,3])
       })
     })
 })

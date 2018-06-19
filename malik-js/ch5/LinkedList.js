@@ -52,9 +52,15 @@ class LinkedList {
         return this[Symbol.iterator]()
     }
 
-    entries() {
+    entries(lastIndex) {
+      if (this._indexIsOutOfBounds(lastIndex)) throw new Error('Index is out bounds')
         const entries = []
-        for (const el of this) entries.push(el)
+        let i = 0
+        for (const el of this) {
+          entries.push(el)
+          if ((lastIndex !== void(0)) && (i === lastIndex)) break
+          i++
+        }
         return entries
     }
 
@@ -145,7 +151,7 @@ class LinkedList {
        let min = null
        let minPrev = null
 
-        if (this.isEmpty() || (from < 0 || from >= this.length)) deleted = false
+        if (this.isEmpty() || this._indexIsOutOfBounds(from)) deleted = false
         else if (this.length === 1) {
             min = this._first
             this._reset()
@@ -218,7 +224,7 @@ class LinkedList {
 
     deleteAt(i) {
         let deleted = false
-        if (i < 0 || i >= this.length) deleted = false
+        if (this._indexIsOutOfBounds(i)) deleted = false
         else {
             let prev = null
             let current = this._first
@@ -245,7 +251,7 @@ class LinkedList {
     }
 
     at(i) {
-        if (i < 0 || i >= this.length) return null
+        if (this._indexIsOutOfBounds(i)) return null
          else {
              let tracker = 0
              let current = this._first
@@ -344,7 +350,7 @@ class LinkedList {
        let max = null
        let maxPrev = null
 
-        if (this.isEmpty() || (from < 0 || from >= this.length)) deleted = false
+        if (this.isEmpty() || this._indexIsOutOfBounds(from)) deleted = false
         else if (this.length === 1) {
             max = this._first
             this._reset()
@@ -392,6 +398,77 @@ class LinkedList {
       sort(entries)
       this.destroy()
       entries.forEach((el) => this.insertLast(el))
+    }
+
+    _indexIsOutOfBounds(i) {
+      return (i < 0 || i >= this.length)
+    }
+
+    swap(i, j) {
+      if (this._indexIsOutOfBounds(i) || this._indexIsOutOfBounds(j)) throw new Error('index is out of bounds')
+
+      let first_current = this._first
+      let second_current = this._first
+      let index = 0
+
+      while ((index < i || index < j) && (first_current && second_current)) {
+        if (index < i) {
+          first_current = first_current.link
+        }
+        if (index < j) {
+          second_current = second_current.link
+        }
+        index++
+      }
+
+      const tempInfo = first_current.info
+      first_current.info = second_current.info
+      second_current.info = tempInfo
+    }
+
+    merge(otherList) {
+      for (const el of otherList) {
+        this.insertLast(el)
+      }
+    }
+
+    partition(start = 0, end = this.length - 1) {
+      const pivotIdx = Math.floor((start + end) / 2)
+      this.swap(start, pivotIdx)
+
+      let current = this._first
+
+      let i = 0
+      while (i < start) {
+        current = current.link
+        i++
+      }
+
+      let pivot = current
+      let smallIndex = i
+
+      for (let j = i + 1, jCurrent = current.link; j <= end; j++) {
+        if (jCurrent.info < pivot.info) {
+          current = current.link
+          smallIndex++
+          const tempInfo = jCurrent.info
+          jCurrent.info = current.info
+          current.info = tempInfo
+        }
+        jCurrent = jCurrent.link
+      }
+
+      this.swap(smallIndex, start)
+
+      return smallIndex
+    }
+
+    slowQuickSort(lo = 0, hi = this.length - 1) {
+      if (lo < hi) {
+        const index = this.partition(lo, hi)
+        this.slowQuickSort(lo, index - 1)
+        this.slowQuickSort(index + 1, hi)
+      }
     }
 }
 

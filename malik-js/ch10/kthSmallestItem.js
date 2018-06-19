@@ -4,7 +4,7 @@ const swap = (list, i, j) => {
   list[j] = temp
 }
 
-const partition = (list, first, last) => {
+const partition = (list, first = 0, last = list.length - 1) => {
   const pivotIdx = Math.floor((first + last) / 2)
   const pivot = list[pivotIdx]
   swap(list, first, pivotIdx)
@@ -17,7 +17,6 @@ const partition = (list, first, last) => {
       swap(list, smallIndex, i)
     }
   }
-
   swap(list, first, smallIndex)
   return smallIndex
 }
@@ -30,4 +29,16 @@ function quickSort(list, lo = 0, hi = list.length - 1) {
   }
 }
 
-module.exports = quickSort
+const kThSmallestItem = (list, k) => {
+    const pivotIdx = partition(list)
+    const lo = 0
+    const hi = list.length - 1
+
+    if (pivotIdx === k) return list[pivotIdx]
+    else if (pivotIdx < k) quickSort(list, lo, pivotIdx - 1)
+    else quickSort(list, pivotIdx + 1, hi)
+
+    return list[k]
+}
+
+module.exports = kThSmallestItem
