@@ -12,5 +12,8 @@
   "devDependencies": {
     "deep-equal": "^1.0.1",
     "jest": "^22.4.3"
+  },
+  "dependencies": {
+    "linebyline": "^1.3.0"
   }
 }
