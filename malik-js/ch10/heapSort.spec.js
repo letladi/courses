@@ -1,6 +1,6 @@
 const sort = require('./heapSort')
 
-describe('insertionSort', () => {
+describe('heapSort', () => {
     test('sort([34, 67, 23, 12, 78, 56, 36, 79, 5, 32, 66]) = [5, 12, 23, 32, 34, 36, 56, 66, 67, 78, 79]', () => {
         const list = [34, 67, 23, 12, 78, 56, 36, 79, 5, 32, 66]
         sort(list)
