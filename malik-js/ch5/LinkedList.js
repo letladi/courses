@@ -470,6 +470,38 @@ class LinkedList {
         this.slowQuickSort(index + 1, hi)
       }
     }
+
+    mergeSort() {
+      if (this.length === 1) return this
+      const sublist = this.divideMid()
+      const resultingSublist1 = sublist.mergeSort()
+      const resultingSublist2 = this.mergeSort()
+
+      let walker1 = resultingSublist1[Symbol.iterator]()
+      let walker2 = resultingSublist2[Symbol.iterator]()
+
+      let walker1Val = walker1.next()
+      let walker2Val = walker2.next()
+
+      this.destroy()
+
+      while (walker1Val.done === false || walker2Val.done === false) {
+        if (walker1Val.done) {
+          this.insertLast(walker2Val.value)
+          walker2Val = walker2.next()
+        } else if (walker2Val.done) {
+          this.insertLast(walker1Val.value)
+          walker1Val = walker1.next()
+        } else if (walker1Val.value < walker2Val.value) {
+          this.insertLast(walker1Val.value)
+          walker1Val = walker1.next()
+        } else {
+          this.insertLast(walker2Val.value)
+          walker2Val = walker2.next()
+        }
+      }
+      return this
+    }
 }
 
 module.exports = LinkedList
