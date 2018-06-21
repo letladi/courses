@@ -16,4 +16,14 @@ describe('quickSort', () => {
         sort(list)
         expect(list).toEqual([10, 17, 18, 23, 25, 30, 35, 45])
     })
+    test('should be able to sort objects given a compare function', () => {
+      const list = [{ name: 'Kim', age: 39 }, { name: 'Beyonce', age: 35 }, { name: 'Adele', age: 25 }, { name: 'Kanye', age: '42' }]
+      sort(list, (a, b) => (a.name < b.name) ? -1 : 1)
+      expect(list).toEqual([{ name: 'Adele', age: 25 }, { name: 'Beyonce', age: 35 }, { name: 'Kanye', age: '42' }, { name: 'Kim', age: 39 }])
+    })
+    test('should sort primitives according to the sort function', () => {
+      const list = [10, 18, 25, 30, 23, 17, 45, 35]
+      sort(list, (a, b) => (a < b) ? 1 : -1)
+      expect(list).toEqual([45, 35, 30, 25, 23, 18, 17, 10])
+    })
 })

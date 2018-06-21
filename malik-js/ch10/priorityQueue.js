@@ -1,8 +1,4 @@
-const swap = (list, i, j) => {
-  const temp = list[i]
-  list[i] = list[j]
-  list[j] = temp
-}
+const { swap } = require('./util')
 
 class PriorityQueue {
   constructor() {

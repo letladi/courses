@@ -31,7 +31,6 @@ describe('priorityQueue', () => {
     test('should return the element with the highest priority', () => {
       const nums = [10, 20, 55, 200, 100]
       nums.forEach((n) => queue.enqueue(n))
-      console.log('the queue', queue)
       const el = queue.dequeue()
       expect(el).toEqual(200)
     })
