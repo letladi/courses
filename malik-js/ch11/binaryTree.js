@@ -29,7 +29,6 @@ class BinaryTree {
   insert(val) {
     if (this.isEmpty()) {
       this.root = new Node(val)
-      return true
     } else {
       let current = this.root
       let trailCurrent = null
@@ -39,8 +38,6 @@ class BinaryTree {
         current = (val > current.data) ? current.right : current.left
       }
 
-      console.log('here is the trailCurrent value', trailCurrent)
-
       if (trailCurrent === null) {
         this.root = new Node(val)
       } else if (val > trailCurrent.data) {
@@ -48,10 +45,9 @@ class BinaryTree {
       } else {
         trailCurrent.left = new Node(val)
       }
-      console.log('here is the final tree', this.root)
-      this.count++
-      return true
     }
+    this.count++
+    return true
   }
 
   get leaveCount() {
@@ -76,6 +72,42 @@ class BinaryTree {
 
   isLeaf(node) {
     return (node.left === null && node.right === null)
+  }
+
+  _inOrderTraversal(node, cb) {
+    if (node !== null) {
+      this._inOrderTraversal(node.left, cb)
+      cb(node.data)
+      this._inOrderTraversal(node.right, cb)
+    }
+  }
+
+  inOrder(cb) {
+    this._inOrderTraversal(this.root, cb)
+  }
+
+  preOrder(cb) {
+    this._preOrderTraversal(this.root, cb)
+  }
+
+  _preOrderTraversal(node, cb) {
+    if (node !== null) {
+      cb(node.data)
+      this._preOrderTraversal(node.left, cb)
+      this._preOrderTraversal(node.right, cb)
+    }
+  }
+
+  postOrder(cb) {
+    this._postOrderTraversal(this.root, cb)
+  }
+
+  _postOrderTraversal(node, cb) {
+    if (node !== null) {
+      this._postOrderTraversal(node.left, cb)
+      this._postOrderTraversal(node.right, cb)
+      cb(node.data)
+    }
   }
 }
 

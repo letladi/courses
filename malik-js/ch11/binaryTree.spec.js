@@ -47,10 +47,52 @@ describe('BinaryTree', () => {
       expect(tree.leaveCount).toEqual(1)
     })
     test('count the number of leaves in a tree', () => {
-      const nums = [1, 3, 4, 5, 7, 8, 9, 11, 12]
+      const nums = [60, 70, 50, 30, 58, 80, 77, 46]
       nums.forEach((n) => tree.insert(n))
-      console.log('here is the tree', JSON.stringify(tree))
-      expect(tree.leaveCount).toEqual(4)
+      expect(tree.leaveCount).toEqual(3)
     })
+  })
+
+  describe('inOrder', () => {
+    test('in-order tree traversal', () => {
+      const nums = [60, 70, 50, 30, 58, 80, 77, 46]
+      nums.forEach((n) => tree.insert(n))
+      const expectedInOrderSequence = [30, 46, 50, 58, 60, 70, 77, 80]
+      const resultingInOrderSequence = []
+      tree.inOrder(function(el) {
+        resultingInOrderSequence.push(el)
+      })
+      expect(expectedInOrderSequence).toEqual(resultingInOrderSequence)
+    })
+  })
+
+  describe('preOrder', () => {
+    test('pre-order tree traversal', () => {
+      const nums = [60, 70, 50, 30, 58, 80, 77, 46]
+      nums.forEach((n) => tree.insert(n))
+      const expectedPreOrderSequence = [60, 50, 30, 46, 58, 70, 80, 77]
+      const resultingPreOrderSequence = []
+      tree.preOrder(function(el) {
+        resultingPreOrderSequence.push(el)
+      })
+      expect(expectedPreOrderSequence).toEqual(resultingPreOrderSequence)
+    })
+  })
+
+  describe('postOrder', () => {
+    test('post-order tree traversal', () => {
+      const nums = [60, 70, 50, 30, 58, 80, 77, 46]
+      nums.forEach((n) => tree.insert(n))
+      const expectedPostOrderSequence = [46, 30, 58, 50, 77, 80, 70, 60]
+      const resultingPostOrderSequence = []
+      tree.postOrder(function(el) {
+        resultingPostOrderSequence.push(el)
+      })
+      expect(expectedPostOrderSequence).toEqual(resultingPostOrderSequence)
+    })
+  })
+
+  describe('#swapSubtrees', () => {
+    test('should swap left and right subtrees')
   })
 })
