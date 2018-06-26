@@ -72,9 +72,7 @@ describe('BinaryTree', () => {
       nums.forEach((n) => tree.insert(n))
       const expectedPreOrderSequence = [60, 50, 30, 46, 58, 70, 80, 77]
       const resultingPreOrderSequence = []
-      tree.preOrder(function(el) {
-        resultingPreOrderSequence.push(el)
-      })
+      tree.preOrder((el) => resultingPreOrderSequence.push(el))
       expect(expectedPreOrderSequence).toEqual(resultingPreOrderSequence)
     })
   })
@@ -85,14 +83,23 @@ describe('BinaryTree', () => {
       nums.forEach((n) => tree.insert(n))
       const expectedPostOrderSequence = [46, 30, 58, 50, 77, 80, 70, 60]
       const resultingPostOrderSequence = []
-      tree.postOrder(function(el) {
-        resultingPostOrderSequence.push(el)
-      })
+      tree.postOrder((el) => resultingPostOrderSequence.push(el))
       expect(expectedPostOrderSequence).toEqual(resultingPostOrderSequence)
     })
   })
 
   describe('#swapSubtrees', () => {
-    test('should swap left and right subtrees')
+    test('should swap left and right subtrees', () => {
+      const nums = [60, 70, 50, 30, 58, 80, 77, 46]
+      nums.forEach((n) => tree.insert(n))
+
+      tree.swapSubtrees()
+
+      const expectedInOrderSequenceOfSwappedTree = [80, 77, 70, 60, 58, 50, 46, 30]
+      const resultingInOrderSequenceOfSwappedTree = []
+      tree.inOrder((el) => resultingInOrderSequenceOfSwappedTree.push(el))
+
+      expect(expectedInOrderSequenceOfSwappedTree).toEqual(resultingInOrderSequenceOfSwappedTree)
+    })
   })
 })

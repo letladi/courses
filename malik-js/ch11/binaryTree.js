@@ -109,6 +109,17 @@ class BinaryTree {
       cb(node.data)
     }
   }
+
+  swapSubtrees(node = this.root) {
+    if ((node === null) || (node.left === null && node.right === null)) return void(0)
+
+    const temp = node.left
+    node.left = node.right
+    node.right = temp
+
+    this.swapSubtrees(node.left)
+    this.swapSubtrees(node.right)
+  }
 }
 
 module.exports = BinaryTree
