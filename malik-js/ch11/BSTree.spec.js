@@ -1,8 +1,8 @@
-const BinaryTree = require('./BinaryTree')
+const BSTree = require('./BSTree')
 
-describe('BinaryTree', () => {
+describe('BSTree', () => {
   let tree = null
-  beforeEach(() => tree = new BinaryTree())
+  beforeEach(() => tree = new BSTree())
   afterEach(() =>  tree = null)
   describe('.nodeCount', () => {
     test('returns 0 if there are no nodes in the tree', () => {
@@ -28,7 +28,7 @@ describe('BinaryTree', () => {
     })
   })
 
-  describe('#leaveCount', () => {
+  describe('.leaveCount', () => {
     test('returns 0 if the tree is empty', () => {
       expect(tree.leaveCount).toEqual(0)
     })
@@ -53,7 +53,7 @@ describe('BinaryTree', () => {
     })
   })
 
-  describe('inOrder', () => {
+  describe('#inOrder', () => {
     test('in-order tree traversal', () => {
       const nums = [60, 70, 50, 30, 58, 80, 77, 46]
       nums.forEach((n) => tree.insert(n))
@@ -66,7 +66,7 @@ describe('BinaryTree', () => {
     })
   })
 
-  describe('preOrder', () => {
+  describe('#preOrder', () => {
     test('pre-order tree traversal', () => {
       const nums = [60, 70, 50, 30, 58, 80, 77, 46]
       nums.forEach((n) => tree.insert(n))
@@ -77,7 +77,7 @@ describe('BinaryTree', () => {
     })
   })
 
-  describe('postOrder', () => {
+  describe('#postOrder', () => {
     test('post-order tree traversal', () => {
       const nums = [60, 70, 50, 30, 58, 80, 77, 46]
       nums.forEach((n) => tree.insert(n))
@@ -100,6 +100,66 @@ describe('BinaryTree', () => {
       tree.inOrder((el) => resultingInOrderSequenceOfSwappedTree.push(el))
 
       expect(expectedInOrderSequenceOfSwappedTree).toEqual(resultingInOrderSequenceOfSwappedTree)
+    })
+  })
+
+  describe('#singleParent', () => {
+    test('returns 0 for an empty tree', () => {
+      expect(tree.singleParent()).toEqual(0)
+    })
+    test('returns 0 for a tree with only one node', () => {
+      tree.insert(1)
+      expect(tree.singleParent()).toEqual(0)
+    })
+    test('returns number of parents with only one node', () => {
+      const nums = [60, 70, 50, 30, 58, 80, 77, 46]
+      nums.forEach((n) => tree.insert(n))
+      expect(tree.singleParent()).toEqual(3)
+    })
+    test('returns zero for a tree with many nodes but no single parent', () => {
+      const nums = [60, 50, 90, 40, 55, 85, 95]
+      nums.forEach((n) => tree.insert(n))
+      expect(tree.singleParent()).toEqual(0)
+    })
+    test('n elements inserted in sorted order will result in n-1 single parents', () => {
+      const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      nums.forEach((n) => tree.insert(n))
+      expect(tree.singleParent()).toEqual(9)
+    })
+  })
+
+  describe('#iterativeInOrder', () => {
+    test('in-order tree traversal', () => {
+      const nums = [60, 70, 50, 30, 58, 80, 77, 46]
+      nums.forEach((n) => tree.insert(n))
+      const expectedInOrderSequence = [30, 46, 50, 58, 60, 70, 77, 80]
+      const resultingInOrderSequence = []
+      tree.iterativeInOrder(function(el) {
+        resultingInOrderSequence.push(el)
+      })
+      expect(expectedInOrderSequence).toEqual(resultingInOrderSequence)
+    })
+  })
+
+  describe('#iterativePreOrder', () => {
+    test('pre-order tree traversal', () => {
+      const nums = [60, 70, 50, 30, 58, 80, 77, 46]
+      nums.forEach((n) => tree.insert(n))
+      const expectedPreOrderSequence = [60, 50, 30, 46, 58, 70, 80, 77]
+      const resultingPreOrderSequence = []
+      tree.iterativePreOrder((el) => resultingPreOrderSequence.push(el))
+      expect(expectedPreOrderSequence).toEqual(resultingPreOrderSequence)
+    })
+  })
+
+  describe('#iterativePostOrder', () => {
+    test('post-order tree traversal', () => {
+      const nums = [60, 70, 50, 30, 58, 80, 77, 46]
+      nums.forEach((n) => tree.insert(n))
+      const expectedPostOrderSequence = [46, 30, 58, 50, 77, 80, 70, 60]
+      const resultingPostOrderSequence = []
+      tree.iterativePostOrder((el) => resultingPostOrderSequence.push(el))
+      expect(expectedPostOrderSequence).toEqual(resultingPostOrderSequence)
     })
   })
 })
