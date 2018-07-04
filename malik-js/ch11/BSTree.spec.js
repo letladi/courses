@@ -4,6 +4,7 @@ describe('BSTree', () => {
   let tree = null
   beforeEach(() => tree = new BSTree())
   afterEach(() =>  tree = null)
+
   describe('.nodeCount', () => {
     test('returns 0 if there are no nodes in the tree', () => {
       expect(tree.nodeCount).toEqual(0)
@@ -18,13 +19,6 @@ describe('BSTree', () => {
       tree.insert(3)
       tree.insert(4)
       expect(tree.nodeCount).toEqual(5)
-    })
-    test('returns true if insertion succeeded', () => {
-      expect(tree.insert(10)).toEqual(true)
-    })
-    test('returns false if insertion failed (like in the case of duplicates)', () => {
-      tree.insert(10)
-      expect(tree.insert(10)).toEqual(false)
     })
   })
 
@@ -50,6 +44,27 @@ describe('BSTree', () => {
       const nums = [60, 70, 50, 30, 58, 80, 77, 46]
       nums.forEach((n) => tree.insert(n))
       expect(tree.leaveCount).toEqual(3)
+    })
+  })
+
+  describe('#insert', () => {
+    test('returns true if insertion succeeded', () => {
+      expect(tree.insert(10)).toEqual(true)
+    })
+    test('returns false if insertion failed (like in the case of duplicates)', () => {
+      tree.insert(10)
+      expect(tree.insert(10)).toEqual(false)
+    })
+    test('shoule increase number of nodes in the tree', () => {
+      tree.insert(0)
+      expect(tree.nodeCount).toEqual(1)
+      tree.insert(1)
+      expect(tree.nodeCount).toEqual(2)
+      tree.insert(2)
+      expect(tree.nodeCount).toEqual(3)
+      tree.insert(3)
+      tree.insert(4)
+      expect(tree.nodeCount).toEqual(5)
     })
   })
 
@@ -160,6 +175,59 @@ describe('BSTree', () => {
       const resultingPostOrderSequence = []
       tree.iterativePostOrder((el) => resultingPostOrderSequence.push(el))
       expect(expectedPostOrderSequence).toEqual(resultingPostOrderSequence)
+    })
+  })
+
+  describe('#delete', () => {
+    test('should delete a node with no right subtree', () => {
+      const nums = [60, 50, 70, 30, 53, 80, 75, 77, 57, 35, 32, 40, 48, 45]
+      nums.forEach((n) => tree.insert(n))
+      const expectedInOrderSequenceAfterDeletion = [30, 32, 35, 40, 48, 50, 53, 57, 60, 70, 75, 77, 80]
+      const resultingInOrderSequenceAfterDeletion = []
+      tree.delete(45)
+      tree.inOrder((el) => resultingInOrderSequenceAfterDeletion.push(el))
+      expect(resultingInOrderSequenceAfterDeletion).toEqual(expectedInOrderSequenceAfterDeletion)
+    })
+    test('should delete a node with no left subtree', () => {
+      const nums = [60, 50, 70, 30, 53, 80, 75, 77, 57, 35, 32, 40, 48, 45]
+      nums.forEach((n) => tree.insert(n))
+      const expectedInOrderSequenceAfterDeletion = [32, 35, 40, 45, 48, 50, 53, 57, 60, 70, 75, 77, 80]
+      const resultingInOrderSequenceAfterDeletion = []
+      tree.delete(30)
+      tree.inOrder((el) => resultingInOrderSequenceAfterDeletion.push(el))
+      expect(resultingInOrderSequenceAfterDeletion).toEqual(expectedInOrderSequenceAfterDeletion)
+    })
+    test('should delete a node no left and right subtree', () => {
+      const nums = [60, 50, 70, 30, 53, 80, 75, 77, 57, 35, 32, 40, 48, 45]
+      nums.forEach((n) => tree.insert(n))
+      const expectedInOrderSequenceAfterDeletion = [30, 32, 35, 40, 45, 48, 50, 53, 57, 60, 70, 75, 77]
+      const resultingInOrderSequenceAfterDeletion = []
+      tree.delete(80)
+      tree.inOrder((el) => resultingInOrderSequenceAfterDeletion.push(el))
+      expect(resultingInOrderSequenceAfterDeletion).toEqual(expectedInOrderSequenceAfterDeletion)
+    })
+    test('should delete a node with non-empty left and right subtree', () => {
+      const nums = [60, 50, 70, 30, 53, 80, 75, 77, 57, 35, 32, 40, 48, 45]
+      nums.forEach((n) => tree.insert(n))
+      const expectedInOrderSequenceAfterDeletion = [30, 32, 35, 40, 45, 48, 53, 57, 60, 70, 75, 77, 80]
+      const resultingInOrderSequenceAfterDeletion = []
+      tree.delete(50)
+      tree.inOrder((el) => resultingInOrderSequenceAfterDeletion.push(el))
+      expect(resultingInOrderSequenceAfterDeletion).toEqual(expectedInOrderSequenceAfterDeletion)
+    })
+    test('should return true if deletion succeeded', () => {
+      const nums = [60, 50, 70, 30, 53, 80, 75, 77, 57, 35, 32, 40, 48, 45]
+      nums.forEach((n) => tree.insert(n))
+      expect(tree.delete(50)).toEqual(true)
+    })
+    test('should return false if we try delete from empty tree', () => {
+      const nums = [60, 50, 70, 30, 53, 80, 75, 77, 57, 35, 32, 40, 48, 45]
+      expect(tree.delete(120)).toEqual(false)
+    })
+    test('should return false if the item being deleted is not in the tree', () => {
+      const nums = [60, 50, 70, 30, 53, 80, 75, 77, 57, 35, 32, 40, 48, 45]
+      nums.forEach((n) => tree.insert(n))
+      expect(tree.delete(150)).toEqual(false)
     })
   })
 })
