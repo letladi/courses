@@ -25,7 +25,6 @@ describe('AVLTree', () => {
   describe('.height', () => {
     test('returns the height of the tree', () => {
       const nums = [60, 70, 90, 20, 55, 88, 28]
-      const tree = new BSTree()
       nums.forEach((n) => tree.insert(n))
       expect(tree.height).toEqual(3)
     })
@@ -142,9 +141,14 @@ describe('AVLTree', () => {
     it('returns true if deletion succeeded', () => {
       const nums = [44, 17, 32, 78, 50, 88, 48, 62]
       nums.forEach((n) => tree.insert(n))
-      tree.delete(32)
-      const expectedInOrderSequenceAfterDeletion = [17, 44, 48, 50, 62, 78, 88]
+      expect(tree.delete(32)).toEqual(true)
     })
-    it('should work')
+    it('should work', () => {
+      const nums = [44, 17, 32, 78, 50, 88, 48, 62]
+      nums.forEach((n) => tree.insert(n))
+      expect(tree.height).toEqual(3)
+      tree.delete(32)
+      expect(tree.height).toEqual(2)
+    })
   })
 })

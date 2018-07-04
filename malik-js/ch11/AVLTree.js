@@ -12,6 +12,10 @@ class Node {
     return this._val
   }
 
+  set data(val) {
+    this._val = val
+  }
+
   get bf() {
     return this._balanceFactor
   }
@@ -23,7 +27,7 @@ class Node {
 
 const rotateToLeft = (node) => {
   if (node === null) throw new Error('Tree in invalid state; cannot rotate to left on an empty node')
-  else if (node.right === null) throw new Error('Tree in invalid state; cannot rotate to left when there is not right subtree')
+  else if (node.right === null) throw new Error('Tree in invalid state; cannot rotate to left when there is no right subtree')
 
   const temp = node.right
   node.right = temp.left
@@ -111,6 +115,13 @@ const balanceFromRight = (node) => {
   }
 }
 
+const max = (x, y) => (x > y) ? x : y
+
+const height = (node) => {
+  if (node == null) return -1;
+  return 1 + max(height(node.left), height(node.right));
+}
+
 class AVLTree {
 
   constructor() {
@@ -128,6 +139,10 @@ class AVLTree {
 
   get nodeCount() {
     return this._count
+  }
+
+  get height() {
+    return height(this.root)
   }
 
   _inOrderTraversal(node, cb) {
@@ -185,52 +200,115 @@ class AVLTree {
       this.isTaller = true
       return newNode
     }
-    else if (root.data === newNode.data) throw new Error('Duplicates are allowed')
+    else if (root.data === newNode.data) throw new Error('Duplicates are not allowed')
     else if (root.data > newNode.data) {
       root.left = this._insertionHelper(root.left, newNode)
 
       if (this.isTaller) {
-        switch (root.bf) {
-          case -1:
-            const newRoot = balanceFromLeft(root)
-            this.isTaller = false
-            return newRoot
-
-          case 0:
-            root.bf = -1
-            this.isTaller = true
-            return root
-
-          case 1:
-            root.bf = 0
-            this.isTaller = false
-            return root
-        }
+        return this.balanceGrowthFromLeftSubtree(root)
       } else return root
     } else {
       root.right = this._insertionHelper(root.right, newNode)
 
       if (this.isTaller) {
-        switch (root.bf) {
-          case -1:
-            root.bf = 0
-            this.isTaller = false
-            return root
-
-          case 0:
-            root.bf = 1
-            this.isTaller = true
-            return root
-
-          case 1:
-            const newRoot = balanceFromRight(root)
-            this.isTaller = false
-            return newRoot
-        }
+        return this.balanceGrowthFromRightSubtree(root)
       } else return root
     }
   }
 
+  balanceGrowthFromLeftSubtree(node) {
+    switch (node.bf) {
+      case -1:
+        const newRoot = balanceFromLeft(node)
+        this.isTaller = false
+        return newRoot
+
+      case 0:
+        node.bf = -1
+        this.isTaller = true
+        return node
+
+      case 1:
+        node.bf = 0
+        this.isTaller = false
+        return node
+    }
+  }
+
+  balanceGrowthFromRightSubtree(node) {
+    switch (node.bf) {
+      case -1:
+        node.bf = 0
+        this.isTaller = false
+        return node
+
+      case 0:
+        node.bf = 1
+        this.isTaller = true
+        return node
+
+      case 1:
+        const newRoot = balanceFromRight(node)
+        this.isTaller = false
+        return newRoot
+    }
+  }
+
+  delete(deleteVal) {
+    if (this.root === null) {
+      return false
+    } else {
+      let current = this.root
+      let trailCurrent = this.root
+      let found = false
+
+      while (current !== null && found === false) {
+        if (current.data === deleteVal) found = true
+        else {
+          trailCurrent = current
+          current = (current.data > deleteVal) ? current.left : current.right
+        }
+      }
+
+      if (current === null) return false
+      else if (found) {
+        if (current === this.root) this.root = this._deleteHelper(this.root)
+        else if (trailCurrent.data > deleteVal) trailCurrent.left = this._deleteHelper(trailCurrent.left)
+        else trailCurrent.right = this._deleteHelper(trailCurrent.right)
+      }
+    }
+    return true
+  }
+
+  _deletionHelper(val, root) {
+
+  }
+
+  _deleteHelper(node) {
+    if (node === null) throw new Error('Cannot delete "null" from a tree')
+    else if (node.left === null && node.right === null) {
+      return null
+    } else if (node.left === null) {
+      return node.right
+    } else if (node.right === null) {
+      return node.left
+    } else {
+      let current = node.left
+      let trailCurrent = null
+
+      while (current.right !== null) {
+        trailCurrent = current
+        current = current.right
+      }
+
+      node.data = current.data
+
+      if (trailCurrent === null) node.left = current.left // we didn't move
+      else trailCurrent.right = current.left
+
+      return node
+    }
+  }
 }
 
 module.exports = AVLTree
