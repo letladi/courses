@@ -150,5 +150,6 @@ describe('AVLTree', () => {
       tree.delete(32)
       expect(tree.height).toEqual(2)
     })
+    it('should decrease the number of elements')
   })
 })

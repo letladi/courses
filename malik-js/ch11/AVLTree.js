@@ -1,4 +1,5 @@
 const BST = require('./BSTree')
+const Stack = require('../ch7/stack')
 
 class Node {
   constructor(val) {
@@ -203,25 +204,19 @@ class AVLTree {
     else if (root.data === newNode.data) throw new Error('Duplicates are not allowed')
     else if (root.data > newNode.data) {
       root.left = this._insertionHelper(root.left, newNode)
-
-      if (this.isTaller) {
-        return this.balanceGrowthFromLeftSubtree(root)
-      } else return root
+      return (this.isTaller) ? this.balanceGrowthFromLeftSubtree(root) : root
     } else {
       root.right = this._insertionHelper(root.right, newNode)
-
-      if (this.isTaller) {
-        return this.balanceGrowthFromRightSubtree(root)
-      } else return root
+      return (this.isTaller) ? this.balanceGrowthFromRightSubtree(root) : root
     }
   }
 
   balanceGrowthFromLeftSubtree(node) {
     switch (node.bf) {
       case -1:
-        const newRoot = balanceFromLeft(node)
+        const newNode = balanceFromLeft(node)
         this.isTaller = false
-        return newRoot
+        return newNode
 
       case 0:
         node.bf = -1
@@ -231,6 +226,44 @@ class AVLTree {
       case 1:
         node.bf = 0
         this.isTaller = false
+        return node
+    }
+  }
+
+  balanceShrinkageFromLeftSubtree(node) {
+    switch (node.bf) {
+      case -1:
+        node.bf = 0
+        this.isShorter = true
+        return node
+
+      case 0:
+        node.bf = 1
+        this.isShorter = false
+        return node
+
+      case 1:
+        const newNode = balanceFromRight(node)
+        this.isShorter = false
+        return newNode
+    }
+  }
+
+  balanceShrinkageFromRightSubtree(node) {
+    switch (node.bf) {
+      case -1:
+        const newNode = balanceFromLeft(node)
+        this.isShorter = false
+        return newNode
+
+      case 0:
+        node.bf = -1
+        this.isShorter = false
+        return node
+
+      case 1:
+        node.bf = 0
+        this.isShorter = true
         return node
     }
   }
@@ -254,58 +287,92 @@ class AVLTree {
     }
   }
 
-  delete(deleteVal) {
-    if (this.root === null) {
+  // delete(deleteVal) {
+  //   if (this.root === null) {
+  //     return false
+  //   } else {
+  //     let current = this.root
+  //     let trailCurrent = this.root
+  //     let found = false
+  //
+  //     while (current !== null && found === false) {
+  //       if (current.data === deleteVal) found = true
+  //       else {
+  //         trailCurrent = current
+  //         current = (current.data > deleteVal) ? current.left : current.right
+  //       }
+  //     }
+  //
+  //     if (current === null) return false
+  //     else if (found) {
+  //       if (current === this.root) this.root = this._deleteHelper(this.root)
+  //       else if (trailCurrent.data > deleteVal) trailCurrent.left = this._deleteHelper(trailCurrent.left)
+  //       else trailCurrent.right = this._deleteHelper(trailCurrent.right)
+  //     }
+  //   }
+  //   return true
+  // }
+
+  delete(val) {
+    try {
+      this.isShorter = false
+      const newRoot = this._deletionHelper(val, this.root)
+      this.root = newRoot
+      this.isShorter = false
+      this._decrementNodeCount()
+      return true
+    } catch (e) {
       return false
-    } else {
-      let current = this.root
-      let trailCurrent = this.root
-      let found = false
-
-      while (current !== null && found === false) {
-        if (current.data === deleteVal) found = true
-        else {
-          trailCurrent = current
-          current = (current.data > deleteVal) ? current.left : current.right
-        }
-      }
-
-      if (current === null) return false
-      else if (found) {
-        if (current === this.root) this.root = this._deleteHelper(this.root)
-        else if (trailCurrent.data > deleteVal) trailCurrent.left = this._deleteHelper(trailCurrent.left)
-        else trailCurrent.right = this._deleteHelper(trailCurrent.right)
-      }
     }
-    return true
   }
 
   _deletionHelper(val, root) {
-
+    if (root === null) throw new Error('Cannot delete an element that is not in the tree')
+    else if (root.data === val) return this._removeNode(root)
+    else if (root.data > val) {
+      root.left = this._deletionHelper(val, root.left)
+      return (this.isShorter) ? this.balanceShrinkageFromLeftSubtree(root) : root
+    } else {
+      root.right = this._deletionHelper(val, root.right)
+      return (this.isShorter) ? this.balanceShrinkageFromRightSubtree(root) : root
+    }
   }
 
-  _deleteHelper(node) {
+  _removeNode(node) {
     if (node === null) throw new Error('Cannot delete "null" from a tree')
-    else if (node.left === null && node.right === null) {
+
+    this.isShorter = true
+
+    if (node.left === null && node.right === null) {
       return null
     } else if (node.left === null) {
       return node.right
     } else if (node.right === null) {
       return node.left
     } else {
+      //const stack = new Stack()
       let current = node.left
       let trailCurrent = null
+      let parent = node
 
       while (current.right !== null) {
+        //stack.push(current)
         trailCurrent = current
         current = current.right
       }
 
       node.data = current.data
 
-      if (trailCurrent === null) node.left = current.left // we didn't move
-      else trailCurrent.right = current.left
+      if (trailCurrent === null) { // we didn't move
+        node.left = current.left
+      } else {
+        trailCurrent.right = current.left
 
+        // let parent = trailCurrent
+        // while (stack.isEmpty() === false) {
+        //   parent.right =
+        // }
+      }
       return node
     }
   }
