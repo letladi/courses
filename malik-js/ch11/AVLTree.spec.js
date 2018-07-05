@@ -129,6 +129,7 @@ describe('AVLTree', () => {
     })
   })
 
+  // http://www.mathcs.emory.edu/~cheung/Courses/323/Syllabus/Trees/AVL-delete.html
   describe('#delete', () => {
     it('returns false if deleting from an empty tree', () => {
       expect(tree.delete(50)).toEqual(false)
@@ -159,6 +160,12 @@ describe('AVLTree', () => {
       tree.inOrder((el) => resultingInOrderSequenceAfterDeletion.push(el))
       expect(resultingInOrderSequenceAfterDeletion).toEqual(expectedInOrderSequenceAfterDeletion)
     })
-    it('should decrease the number of elements')
+    it('should decrease the number of elements', () => {
+      const nums = [44, 78, 17, 32, 50, 88, 48, 62]
+      nums.forEach((n) => tree.insert(n))
+      expect(tree.nodeCount).toEqual(8)
+      tree.delete(32)
+      expect(tree.nodeCount).toEqual(7)
+    })
   })
 })

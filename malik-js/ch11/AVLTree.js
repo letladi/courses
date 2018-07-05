@@ -374,12 +374,10 @@ class AVLTree {
         let parentTrail = trailCurrent
 
         while (parent !== node) {
-          if (this.isShorter) {
-            parentTrail = this.balanceShrinkageFromRightSubtree(parentTrail)
-            parent.right = parentTrail
-          } else {
-            parent.right = parentTrail
-          }
+          if (this.isShorter) parentTrail = this.balanceShrinkageFromRightSubtree(parentTrail)
+
+          parent.right = parentTrail
+
           parentTrail = parent
           parent = stack.pop()
         }
