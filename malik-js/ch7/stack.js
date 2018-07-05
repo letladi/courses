@@ -21,8 +21,7 @@ class Stack {
     }
 
     top() {
-        if (this.isEmpty()) return null
-        return this.front.info
+        return (this.isEmpty()) ? null : this.front.info
     }
 
     pop() {

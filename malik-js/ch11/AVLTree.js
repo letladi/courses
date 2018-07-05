@@ -350,13 +350,14 @@ class AVLTree {
     } else if (node.right === null) {
       return node.left
     } else {
-      //const stack = new Stack()
+      const stack = new Stack()
+      stack.push(node)
       let current = node.left
       let trailCurrent = null
       let parent = node
 
       while (current.right !== null) {
-        //stack.push(current)
+        stack.push(current)
         trailCurrent = current
         current = current.right
       }
@@ -365,15 +366,33 @@ class AVLTree {
 
       if (trailCurrent === null) { // we didn't move
         node.left = current.left
+        return node
       } else {
         trailCurrent.right = current.left
 
-        // let parent = trailCurrent
-        // while (stack.isEmpty() === false) {
-        //   parent.right =
-        // }
+        let parent = stack.pop()
+        let parentTrail = trailCurrent
+
+        while (parent !== node) {
+          if (this.isShorter) {
+            parentTrail = this.balanceShrinkageFromRightSubtree(parentTrail)
+            parent.right = parentTrail
+          } else {
+            parent.right = parentTrail
+          }
+          parentTrail = parent
+          parent = stack.pop()
+        }
+
+        if (this.isShorter) {
+          return parent.left = trailParent
+          return parent
+        } else {
+          parent.left = this.balanceShrinkageFromLeftSubtree(trailParent)
+          return parent
+        }
       }
-      return node
+
     }
   }
 }

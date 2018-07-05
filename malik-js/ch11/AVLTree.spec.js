@@ -139,16 +139,25 @@ describe('AVLTree', () => {
       expect(tree.delete(10)).toEqual(false)
     })
     it('returns true if deletion succeeded', () => {
-      const nums = [44, 17, 32, 78, 50, 88, 48, 62]
+      const nums = [44, 78, 17, 32, 50, 88, 48, 62]
       nums.forEach((n) => tree.insert(n))
       expect(tree.delete(32)).toEqual(true)
     })
     it('should work', () => {
-      const nums = [44, 17, 32, 78, 50, 88, 48, 62]
+      const nums = [44, 78, 17, 32, 50, 88, 48, 62]
       nums.forEach((n) => tree.insert(n))
       expect(tree.height).toEqual(3)
       tree.delete(32)
       expect(tree.height).toEqual(2)
+    })
+    it('should work - (in order sequene should be proper)', () => {
+      const nums = [44, 78, 17, 32, 50, 88, 48, 62]
+      nums.forEach((n) => tree.insert(n))
+      tree.delete(32)
+      const expectedInOrderSequenceAfterDeletion = [17, 44, 48, 50, 62, 78, 88]
+      const resultingInOrderSequenceAfterDeletion = []
+      tree.inOrder((el) => resultingInOrderSequenceAfterDeletion.push(el))
+      expect(resultingInOrderSequenceAfterDeletion).toEqual(expectedInOrderSequenceAfterDeletion)
     })
     it('should decrease the number of elements')
   })
