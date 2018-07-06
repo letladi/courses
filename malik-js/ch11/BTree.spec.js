@@ -11,6 +11,12 @@ describe('BTree - order 5 tree', () => {
     })
   })
 
+  describe('.order', () => {
+    it('should return the order of the tree', () => {
+      expect(tree.order).toEqual(5)
+    })
+  })
+
   describe('#inOrder', () => {
     it('should do in order traversal')
   })
@@ -26,8 +32,16 @@ describe('BTree - order 5 tree', () => {
   })
   describe('#insert', () => {
     // page 667. malik book
-    it('returns false if the insertion failed (like when there is a duplicate)')
-    it('returns true if the insertion succeeded')
+    it('returns false if the insertion failed (like when there is a duplicate)', () => {
+      const initElements = [5, 30, 40, 70]
+      initElements.forEach((n) => tree.insert(n))
+      expect(tree.insert(5)).toEqual(false)
+    })
+    it('returns true if the insertion succeeded', () => {
+      const initElements = [5, 30, 40, 70]
+      initElements.forEach((n) => tree.insert(n))
+      expect(tree.insert(80)).toEqual(true)
+    })
     it('should increase the height of the tree', () => {
       const initElements = [5, 30, 40, 70]
       initElements.forEach((n) => tree.insert(n))
