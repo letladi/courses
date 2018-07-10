@@ -164,6 +164,18 @@ const balanceTreeSiblings = (node, location) => {
   }
 }
 
+const swapWithChildPredessor = (node, location, item) => {
+  let trailCurrent = null
+  let current = node.children[location]
+  while (current) {
+    trailCurrent = current
+    current = getLastChild(current)
+  }
+  const temp = trailCurrent.list[trailCurrent.count - 1]
+  node.list[location] = temp
+  trailCurrent.list[trailCurrent.count - 1] = item
+}
+
 class BTree {
   constructor(order) {
     this._order = order
@@ -276,36 +288,18 @@ class BTree {
   _deletionHelper(node, item) {
     if (isFalsy(node)) throw new Error('Cannot delete an item that is not in the tree')
     else if (isLeaf(node)) {
-
       const { found, location } = searchNode(node, item)
       if (found === false) throw new Error('Cannot delete an item that is not in the tree')
-      else {
-        deleteFromNode(node, item, location)
-        return node
-      }
+      else deleteFromNode(node, item, location)
     } else {
       const { found, location } = searchNode(node, item)
-      if (found) {
-        let trailCurrent = null
-        let current = node.children[location]
-        while (current) {
-          trailCurrent = current
-          current = getLastChild(current)
-        }
-        const temp = trailCurrent.list[trailCurrent.count - 1]
-        node.list[location] = temp
-        trailCurrent.list[trailCurrent.count - 1] = item
-        node.children[location] = this._deletionHelper(node.children[location], item)
-      } else {
-        let i = location
-        let j = location + 1
-        node.children[location] = this._deletionHelper(node.children[location], item)
-      }
+      if (found) swapWithChildPredessor(node, location, item)
+      node.children[location] = this._deletionHelper(node.children[location], item)
       if (keysLessThanRequiredMinimum(node.children[location])) {
         node = balanceTreeSiblings(node, location)
       }
-      return node
     }
+    return node
   }
 }
 
