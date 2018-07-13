@@ -230,4 +230,17 @@ describe('BSTree', () => {
       expect(tree.delete(150)).toEqual(false)
     })
   })
+
+  describe('#topView', () => {
+    test('example-1', () => {
+      const nums = [20, 8, 22, 4, 12, 10, 14, 25]
+      nums.forEach((n) => tree.insert(n))
+      expect(tree.topView()).toEqual([20, 8, 22, 4, 25])
+    })
+    test('example-2', () => {
+      const nums = [1, 2, 5, 3, 6, 4]
+      nums.forEach((n) => tree.insert(n))
+      expect(tree.topView()).toEqual([1, 2, 5, 6])
+    })
+  })
 })
