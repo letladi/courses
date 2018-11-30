@@ -284,32 +284,6 @@ class BinaryTree {
     }
     return true
   }
-
-  topView() {
-    const queue = new Queue()
-    const view = []
-
-    if (this.root === null) return view
-
-    queue.enqueue(current)
-
-    while (queue.isEmpty() === false) {
-      const nodeCountOnLevel = queue.length
-
-      let wePrintedLeftMostElement = false
-
-      while (nodeCountOnLevel) {
-        view.push(node.data)
-        wePrintedLeftMostElement = true
-        if (node.left !== null) queue.enqueue(node.left)
-        if (node.right !== null) queue.enqueue(node.right)
-        nodeCountOnLevel--
-        if (nodeCountOnLevel ==)
-      }
-
-    }
-
-  }
 }
 
 module.exports = BinaryTree

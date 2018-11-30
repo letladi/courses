@@ -1,0 +1,8 @@
+{
+  "test": "jest",
+  "jest": {
+    "testMatch": [
+      "**/?(*.)+spec.js"
+    ]
+  }
+}

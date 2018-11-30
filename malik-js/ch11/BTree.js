@@ -184,11 +184,8 @@ class BTree {
 
   search(item) {
     let current = this.root
-    let insertPosition = null
-
     while (current !== null) {
       const { found, location } = searchNode(current, item)
-      insertPosition = location
       if (found) return true
       else current = current.children[location]
     }
