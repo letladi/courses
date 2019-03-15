@@ -1,8 +1,6 @@
 {
-  "test": "jest",
-  "jest": {
-    "testMatch": [
-      "**/?(*.)+spec.js"
-    ]
+  "test": "jest ch1/**/*.spec.js",
+  "devDependencies": {
+    "jest": "^23.6.0"
   }
 }
