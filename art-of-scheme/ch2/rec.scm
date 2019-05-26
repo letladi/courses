@@ -224,3 +224,16 @@
     )
   )
 )
+
+(define swapper
+  (lambda (a b ls)
+    (cond
+      ((null? ls) '())
+      ((equal? (car ls) a) (cons b (swapper a b (cdr ls))))
+      ((equal? (car ls) b) (cons a (swapper a b (cdr ls))))
+      (else
+        (cons (car ls) (swapper a b (cdr ls)))
+      )
+    )
+  )
+)
