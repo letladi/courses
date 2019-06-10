@@ -31,6 +31,13 @@
 
 (define fib-it
   (lambda (n acc1 acc2)
+    (display "n = ")
+    (display n)
+    (display ", acc1 = ")
+    (display acc1)
+    (display ", acc2 = ")
+    (display acc2)
+    (newline)
     (if (= n 1)
       acc2
       (fib-it (1- n) acc2 (+ acc1 acc2))
