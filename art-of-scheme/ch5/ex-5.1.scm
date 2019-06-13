@@ -121,25 +121,24 @@
   (lambda (ls n)
     (letrec
       ((list-ref-helper
-        (lambda (ls count)
+        (lambda (ls2 count)
           (cond
-            ((null? ls)
+            ((null? ls2)
               (begin
                 (display "list-ref: Index ")
                 (display n)
-                (display " out of range for list")
+                (display " out of range for list ")
                 (display ls)
-                '()
               )
             )
-            ((eq? count n) (car ls))
+            ((eq? count n) (car ls2))
             (else
-              (left-ref-helper (cdr ls) (1+ count))
+              (list-ref-helper (cdr ls2) (1+ count))
             )
           )
         )
       ))
-      (list-ref-helper ls n)
+      (list-ref-helper ls 0)
     )
   )
 )
