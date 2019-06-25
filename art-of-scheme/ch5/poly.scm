@@ -1,3 +1,60 @@
+(define zero-poly '(0))
+
+(define list-of-zeroes
+  (lambda (n)
+    (cond
+      ((zero? n) '())
+      (else (cons 0 (list-of-zeroes (1- n))))
+    )
+  )
+)
+
+(define degree
+  (lambda (poly)
+    (1- (length poly))
+  )
+)
+
+(define leading-coef
+  (lambda (poly)
+    (car poly)
+  )
+)
+
+(define rest-of-poly
+  (lambda (poly)
+    (cond
+      ((zero? (degree poly)) zero-poly)
+      ((zero? (leading-coef (cdr poly))) (rest-of-poly (cdr poly)))
+      (else (cdr poly))
+    )
+  )
+)
+
+(define poly-cons
+  (lambda (deg coef poly)
+    (let ((deg-p (degree poly)))
+      (cond
+        ((and (zero? deg) (equal? poly zero-poly)) (list coef))
+        ((>= deg-p deg)
+          (begin
+            (display "poly-cons: Degree too high in ")
+            (display poly)
+            (newline)
+         )
+       )
+       ((zero? coef) poly)
+       (else
+         (cons
+           coef
+           (append (list-of-zeroes (1- (- deg deg-p))) poly)
+         )
+       )
+      )
+    )
+  )
+)
+
 (define zero-poly?
   (lambda (poly)
     (and
@@ -9,7 +66,7 @@
 
 (define make-term
   (lambda (def coef)
-    (poly-cons deg coef the-zero-poly)
+    (poly-cons deg coef zero-poly)
   )
 )
 
@@ -51,7 +108,7 @@
     (
       (t* (lambda (trm poly)
         (if (zero-poly? poly)
-          the-zero-poly
+          zero-poly
           (poly-cons
             (+ (degree trm) (degree poly))
             (* (leading-coef trm) (leading-coef poly))
@@ -66,7 +123,7 @@
           (
             (p*-helper (lambda (p1)
               (if (zero-poly? p1)
-                the-zero-poly
+                zero-poly
                 (p+
                   (t* (leading-term p1) poly2)
                   (p*-helper (rest-of-poly p1))
@@ -106,8 +163,11 @@
               (let ((rest (rest-of-poly p)))
                 (if (< (degree rest) (1- n))
                   (pvalue
-                    (poly-cons (1- n) (* num (leading-coef p)))
-                    rest
+                    (poly-cons
+                      (1- n)
+                      (* num (leading-coef p))
+                      rest
+                    )
                   )
                   (pvalue
                     (poly-cons
@@ -125,6 +185,7 @@
           )
         ))
       )
+
       (pvalue poly)
     )
   )
