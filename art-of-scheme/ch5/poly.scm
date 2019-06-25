@@ -1,4 +1,4 @@
-(define zero-poly '(0))
+(define zero-poly '((0 0)))
 
 (define list-of-zeroes
   (lambda (n)
@@ -11,22 +11,21 @@
 
 (define degree
   (lambda (poly)
-    (1- (length poly))
+    (caar poly)
   )
 )
 
 (define leading-coef
   (lambda (poly)
-    (car poly)
+    (cadar poly)
   )
 )
 
 (define rest-of-poly
   (lambda (poly)
-    (cond
-      ((zero? (degree poly)) zero-poly)
-      ((zero? (leading-coef (cdr poly))) (rest-of-poly (cdr poly)))
-      (else (cdr poly))
+    (if (null? (cdr poly))
+      zero-poly
+      (cdr poly)
     )
   )
 )
@@ -35,21 +34,16 @@
   (lambda (deg coef poly)
     (let ((deg-p (degree poly)))
       (cond
-        ((and (zero? deg) (equal? poly zero-poly)) (list coef))
+        ((and (zero? deg) (equal? poly zero-poly)) (list (list 0 coef)))
         ((>= deg-p deg)
           (begin
             (display "poly-cons: Degree too high in ")
             (display poly)
             (newline)
-         )
+          )
        )
        ((zero? coef) poly)
-       (else
-         (cons
-           coef
-           (append (list-of-zeroes (1- (- deg deg-p))) poly)
-         )
-       )
+       (else (cons (list deg coef) poly))
       )
     )
   )
@@ -130,10 +124,10 @@
                 )
               )
             ))
-          )
+         )
 
-          (p*-helper poly1)
-        )
+        (p*-helper poly1)
+      )
     )
   )
 )
