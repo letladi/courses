@@ -27,16 +27,35 @@
       (else (let (
           (n1 (degree poly1))
           (n2 (degree poly2))
-          (a1 (leading-coef poly1))
-          (a2 (leading-coef poly2))
-          (rest1 (rest-of-poly poly1))
-          (rest2 (rest-of-poly poly2))
       )
         (cond
-          ((> n1 n2) (poly-cons n1 a1 (p+ rest1 poly2)))
-          ((< n1 n2) (poly-cons n2 a2 (p+ poly1 rest2)))
+          ((> n1 n2)
+            (let (
+              (a1 (leading-coef poly1))
+              (rest1 (rest-of-poly poly1))
+              )
+              (poly-cons n1 a1 (p+ rest1 poly2))
+            )
+          )
+
+          ((< n1 n2)
+            (let (
+                (rest2 (rest-of-poly poly2))
+                (a2 (leading-coef poly2))
+              )
+              (poly-cons n2 a2 (p+ poly1 rest2))
+            )
+          )
+
           (else
-            (poly-cons n1 (+ a1 a2) (p+ rest1 rest2))
+            (let (
+                (a1 (leading-coef poly1))
+                (a2 (leading-coef poly2))
+                (rest1 (rest-of-poly poly1))
+                (rest2 (rest-of-poly poly2))
+              )
+              (poly-cons n1 (+ a1 a2) (p+ rest1 rest2))
+            )
           )
         )
       )
@@ -153,6 +172,55 @@
           (cons (list deg coef) poly)
         )
       )
+    )
+  )
+)
+
+(define divide-term
+  (lambda (num den)
+    (if (zero? (leading-coef den))
+      (begin
+        (newline)
+        (display "You cannot divide a polynomial term by zero")
+        (newline)
+      )
+
+      (let (
+          (num-coef (leading-coef num))
+          (num-deg (degree num))
+          (den-coef (leading-coef den))
+          (den-deg (degree den))
+        )
+        (make-term (- num-deg den-deg) (/ num-coef den-coef))
+      )
+    )
+  )
+)
+
+(define poly-quotient
+  (lambda (num den)
+    (letrec
+      (
+        (den-leading-term (leading-term den))
+        (den-degree (degree den))
+        (helper (lambda (num quot)
+            (cond
+              ((< (degree num) den-degree) quot)
+              (else
+                (letrec* (
+                    (num-leading-term (leading-term num))
+                    (first-terms-quot (divide-term num-leading-term den-leading-term))
+                    (product-of-first-terms-quot-and-den (p* first-terms-quot den))
+                    (new-quot (p+ quot first-terms-quot))
+                  )
+                  (helper (p- num product-of-first-terms-quot-and-den) new-quot)
+                )
+              )
+            )
+        ))
+      )
+
+      (helper num the-zero-poly)
     )
   )
 )
