@@ -65,17 +65,35 @@
 )
 
 (define p*
-  (letrec
-    ((t* (lambda (trm poly)
-      (if (zero-poly? poly)
-        the-zero-poly
-        (poly-cons
-          (+ (degree trm) (degree poly))
-          (* (leading-coef trm) (leading-coef poly))
-          (t* trm (rest-of-poly poly))
-        )
+  (let
+    (
+      (t* (lambda (trm poly)
+            (let
+              (
+                (deg (degree trm))
+                (lc (leading-coef trm))
+              )
+
+              (letrec
+                (
+                  (t*-helper (lambda (poly)
+                    (if (zero-poly? poly)
+                      the-zero-poly
+                      (poly-cons
+                        (+ deg (degree poly))
+                        (* lc (leading-coef poly))
+                        (t*-helper (rest-of-poly poly))
+                      )
+                    )
+                  ))
+                )
+
+                (t*-helper poly)
+              )
+            )
+          )
       )
-    )))
+    )
 
     (lambda (poly1 poly2)
       (letrec
@@ -197,7 +215,7 @@
   )
 )
 
-(define poly-quotient
+(define poly-long-division
   (lambda (num den)
     (letrec
       (
@@ -205,7 +223,7 @@
         (den-degree (degree den))
         (helper (lambda (num quot)
             (cond
-              ((< (degree num) den-degree) quot)
+              ((< (degree num) den-degree) (list quot num))
               (else
                 (letrec* (
                     (num-leading-term (leading-term num))
@@ -222,5 +240,17 @@
 
       (helper num the-zero-poly)
     )
+  )
+)
+
+(define poly-quotient
+  (lambda (num den)
+    (car (poly-long-division num den))
+  )
+)
+
+(define poly-remainder
+  (lambda (num den)
+    (cadr (poly-long-division num den))
   )
 )

@@ -17,3 +17,13 @@
     )
   )
 )
+
+(define q1
+  (poly-cons 2 1
+    (poly-cons 1 3
+      (poly-cons 0 6 the-zero-poly)))
+)
+
+(define q2
+  (poly-cons 1 1
+    (poly-cons 0 1 the-zero-poly)))
