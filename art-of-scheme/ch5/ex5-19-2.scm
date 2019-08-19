@@ -1,4 +1,5 @@
 (load "../util.scm")
+(load "zeros.scm")
 
 (define one?
     (lambda (num)
@@ -10,6 +11,16 @@
     (lambda (bin1 bin2)
         (letrec*
             (
+            (len1 (length bin1))
+            (len2 (length bin2))
+            (final-bin1 (cond
+                    ((> len2 len1) (append (list-of-zeros (- len2 len1)) bin1))
+                    (else bin1)
+            ))
+            (final-bin2 (cond
+                ((> len1 len2) (append (list-of-zeros (- len1 len2)) bin2))
+                (else bin2)
+            ))
             (sum-two (lambda (n1 n2)
                 (cond
                     ((and (one? n1) (one? n2)) (list 0 1))
@@ -61,11 +72,26 @@
 
             (reverse
                 (add
-                    (reverse bin1)
-                    (reverse bin2)
+                    (reverse final-bin1)
+                    (reverse final-bin2)
                     0
                 )
             )
         )
     )
 )
+
+; (define binary-product
+;     (lambda (bin1 bin2)
+;         (letrec*
+;             (
+;                 (pad-right (lambda (ls spaces num)
+;                     (cond
+;                         ((zero? spaces) ls)
+;
+;                     )
+;                 ))
+;             )
+;         )
+;     )
+; )
