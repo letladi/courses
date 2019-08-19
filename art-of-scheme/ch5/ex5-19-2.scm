@@ -81,17 +81,44 @@
     )
 )
 
-; (define binary-product
-;     (lambda (bin1 bin2)
-;         (letrec*
-;             (
-;                 (pad-right (lambda (ls spaces num)
-;                     (cond
-;                         ((zero? spaces) ls)
-;
-;                     )
-;                 ))
-;             )
-;         )
-;     )
-; )
+(define binary-product
+    (lambda (bin1 bin2)
+        (letrec*
+            (
+                (bin1-rev (reverse bin1))
+                (bin2-rev (reverse bin2))
+                (bin1-len (length bin1))
+                (zero-bin '(0-0))
+                (multiply-by-term (lambda (bin bin-term pad-length)
+                    (if (one? bin-term)
+                        (append (list-of-zeros pad-length) bin)
+                        zero-bin
+                    )
+                ))
+                (multiply (lambda (bin bin-sum pad-length)
+                    (cond
+                        ((null? bin) bin-sum)
+                        (else
+                            (let
+                                (
+                                    (term-product (multiply-by-term bin1-rev (car bin) pad-length))
+                                )
+
+                                (cond
+                                    ((equal? term-product zero-bin)
+                                        (multiply (cdr bin) bin-sum (1+ pad-length))
+                                    )
+                                    (else
+                                        (multiply (cdr bin) (binary-sum bin-sum term-product) (1+ pad-length))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ))
+            )
+
+            (multiply bin2-rev (list-of-zeros bin1-len) 0)
+        )
+    )
+)
