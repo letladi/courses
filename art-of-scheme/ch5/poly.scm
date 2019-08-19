@@ -128,7 +128,7 @@
   )
 )
 
-(define pvalue
+(define poly-value
   (lambda (poly num)
     (letrec
       ((pvalue (lambda (p)
