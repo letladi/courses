@@ -85,7 +85,6 @@
     (lambda (bin1 bin2)
         (letrec*
             (
-                (bin1-rev (reverse bin1))
                 (bin2-rev (reverse bin2))
                 (bin1-len (length bin1))
                 (zero-bin '(0-0))
