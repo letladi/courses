@@ -91,25 +91,25 @@
                 (zero-bin '(0-0))
                 (multiply-by-term (lambda (bin bin-term pad-length)
                     (if (one? bin-term)
-                        (append (list-of-zeros pad-length) bin)
+                        (append bin (list-of-zeros pad-length))
                         zero-bin
                     )
                 ))
-                (multiply (lambda (bin bin-sum pad-length)
+                (multiply (lambda (bin bin-product pad-length)
                     (cond
-                        ((null? bin) bin-sum)
+                        ((null? bin) bin-product)
                         (else
                             (let
                                 (
-                                    (term-product (multiply-by-term bin1-rev (car bin) pad-length))
+                                    (term-product (multiply-by-term bin1 (car bin) pad-length))
                                 )
 
                                 (cond
                                     ((equal? term-product zero-bin)
-                                        (multiply (cdr bin) bin-sum (1+ pad-length))
+                                        (multiply (cdr bin) bin-product (1+ pad-length))
                                     )
                                     (else
-                                        (multiply (cdr bin) (binary-sum bin-sum term-product) (1+ pad-length))
+                                        (multiply (cdr bin) (binary-sum bin-product term-product) (1+ pad-length))
                                     )
                                 )
                             )
@@ -118,7 +118,11 @@
                 ))
             )
 
-            (multiply bin2-rev (list-of-zeros bin1-len) 0)
+            (multiply
+                (cdr bin2-rev)
+                (multiply-by-term bin1 (car bin2-rev) 0)
+                1
+            )
         )
     )
 )
