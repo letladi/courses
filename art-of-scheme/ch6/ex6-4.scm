@@ -27,14 +27,8 @@
 
 (define change
     (lambda ()
-        (display "For what amount of money do you want change? $")
         (letrec*
             (
-                (amount (read))
-                (rounded-amt (exact (round amount)))
-                (small-change
-                    (exact (round (* 100 (- amount rounded-amt))))
-                )
                 (display-change (lambda (count msg)
                     (display (round count))
                     (display " ")
@@ -65,23 +59,23 @@
                         )
                     )
                 ))
-                (compute-change (lambda (amt)
+                (compute-change (lambda (amt small-change)
                     (cond
                         ((>= amt 100)
                             (display-change (quotient amt 100) "100-dollar bill")
-                            (compute-change (remainder amt 100))
+                            (compute-change (remainder amt 100) small-change)
                         )
                         ((>= amt 20)
                             (display-change (quotient amt 20) "20-dollar bill")
-                            (compute-change (remainder amt 20))
+                            (compute-change (remainder amt 20) small-change)
                         )
                         ((>= amt 10)
                             (display-change (quotient amt 10) "10-dollar bill")
-                            (compute-change (remainder amt 10))
+                            (compute-change (remainder amt 10) small-change)
                         )
                         ((>= amt 5)
                             (display-change (quotient amt 5) "5-dollar bill")
-                            (compute-change (remainder amt 5))
+                            (compute-change (remainder amt 5) small-change)
                         )
                         ((>= amt 1)
                             (display-change amt "1-dollar bill")
@@ -92,10 +86,32 @@
                         )
                     )
                 ))
+                (make-change (lambda (inv-count)
+                    (display (if (zero? inv-count)
+                        "For what amount of money do you want change? $"
+                        "Do you want to enter another amount? (enter 'no' to exit) $"
+                    ))
+                    (let
+                        ((amount (read)))
+
+                        (cond
+                            ((eq? amount 'no) (newline))
+                            (else
+                                (letrec*
+                                    (
+                                        (rounded-amt (exact (floor amount)))
+                                        (small-change (exact (round (* 100 (- amount rounded-amt)))))
+                                    )
+
+                                    (compute-change rounded-amt small-change)
+                                    (make-change (1+ inv-count))
+                                )
+                            )
+                        )
+                    )
+                ))
             )
-
-            (compute-change rounded-amt)
-
+            (make-change 0)
         )
     )
 )
