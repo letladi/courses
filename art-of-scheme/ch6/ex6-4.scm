@@ -116,4 +116,112 @@
     )
 )
 
-(define days-of-the-week '(Sunday Monday Tuesday Wednesday Thursday Friday Saturday))
+
+
+(define day-of-week-program (lambda ()
+    (letrec*
+        (
+            (days-of-the-week '(Sunday Monday Tuesday Wednesday Thursday Friday Saturday))
+            (month-to-month-table '(11 12 1 2 3 4 5 6 7 8 9 10))
+            (get-input (lambda (msg)
+                (newline)
+                (display msg)
+                (let
+                    ((input (read)))
+                    input
+                )
+            ))
+            (get-c (lambda (year)
+                (let
+                    ((century  (substring (number->string year) 0 2)))
+                    (string->number century)
+                )
+            ))
+            (get-y (lambda (year)
+            (let
+                ((yr  (substring (number->string year) 2 4)))
+                (string->number yr)
+            )
+            ))
+            (get-m (lambda (month)
+                (list-ref month-to-month-table (1- month))
+            ))
+            (format-date (lambda (month day year)
+                (let
+                    (
+                        (yr (number->string year))
+                        (m (number->string month))
+                        (d (number->string day))
+                    )
+                    (string-append m "/" d "/" yr)
+                )
+            ))
+            (show (lambda (num msg)
+                (display msg)
+                (display ": ")
+                (display num)
+                (newline)
+            ))
+            (compute-day (lambda (month day year)
+                (let*
+                    (
+                        (m (get-m month))
+                        (y (get-y year))
+                        (c (get-c year))
+                        (d day)
+                        (a (floor (/ (- (* 13 m) 1) 5.0)))
+                        (b (floor (/ y 4.0)))
+                        (e (floor (/ c 4.0)))
+                        (f (- (+ a b e d y) (* 2 c)))
+                        (r (exact (remainder f 7)))
+                    )
+                    (show m "m")
+                    (show d "d")
+                    (show y "y")
+                    (show c "c")
+                    (list-ref days-of-the-week r)
+                )
+            ))
+            (prompt-user (lambda (inv-count)
+                (display (if (zero? inv-count)
+                    "Welcome: "
+                    "Enter another date? (Enter 'no' to exit, 'yes' key to continue): "
+                ))
+                (let
+                    (
+                        (response (if (zero? inv-count)
+                            "yes"
+                            (read)
+                        ))
+                    )
+
+                    (cond
+                        ((eq? response 'no)
+                            (display "Goodbye.")
+                            (newline)
+                        )
+                        (else
+                            (let
+                                (
+                                    (month (get-input "Please enter the month: "))
+                                    (day (get-input "Please enter the day: "))
+                                    (year (get-input "Please enter the year: "))
+                                )
+                                (newline)
+                                (display (format-date month day year))
+                                (display " is a ")
+                                (display (compute-day month day year))
+                                (display ".")
+                                (newline)
+                                (prompt-user (1+ inv-count))
+                            )
+                        )
+                    )
+                )
+            ))
+        )
+
+        (prompt-user 0)
+
+    )
+))
