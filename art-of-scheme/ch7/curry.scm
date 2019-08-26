@@ -1,3 +1,5 @@
+(load "index.scm")
+
 (define curried+
     (lambda (m)
         (lambda (n)
@@ -112,6 +114,125 @@
     (lambda (x)
         (lambda (y)
             (swapper-m x y)
+        )
+    )
+)
+
+(define round-n-places
+    (lambda (n)
+        (lambda (dec-num)
+            (let
+                ((scale-factor (expt 10 n)))
+
+                (/ (round (* dec-num scale-factor)) scale-factor)
+            )
+        )
+    )
+)
+
+(define subst-all-m
+    (lambda (new old)
+        (letrec
+            ((subst-all (lambda (ls)
+                (cond
+                    ((null? ls) '())
+                    ((equal? (car ls) old)
+                        (cons new (subst-all (cdr ls)))
+                    )
+                    ((pair? (car ls))
+                        (cons
+                            (subst-all (car ls))
+                            (subst-all (cdr ls))
+                        )
+                    )
+                    (else
+                        (cons
+                            (car ls)
+                            (subst-all (cdr ls))
+                        )
+                    )
+                )
+            )))
+
+            subst-all
+        )
+    )
+)
+
+(load "../ch3/ratl.scm")
+
+(define extreme-value-c
+    (lambda (pred)
+        (lambda args
+            (cond
+                ((null? args) (error "At least one argument is required"))
+                (else
+                    (letrec
+                        ((helper (lambda (a*)
+                            (cond
+                                ((= (length a*) 1) (car a*))
+                                (pred
+                                    (car a*)
+                                    (helper (cdr a*))
+                                )
+                            )
+                        )))
+
+                        (helper args)
+                    )
+                )
+            )
+        )
+    )
+)
+
+(define rmax
+    (lambda (x y)
+        ((extreme-value-c r>) x y)
+    )
+)
+
+(define rmin
+    (lambda (x y)
+        ((extreme-value-c r<) x y)
+    )
+)
+
+(define between?
+    (lambda (x y z)
+        (and
+            (> y x)
+            (< y z)
+        )
+    )
+)
+
+(define between?-c
+    (lambda (x)
+        (lambda (y)
+            (lambda (z)
+                (between? x y z)
+            )
+        )
+    )
+)
+
+(define andmap-c
+    (lambda (pred)
+        (letrec
+            ((and-help (lambda (ls)
+                (cond
+                    ((null? ls) #t)
+                    (else
+                        (and
+                            (pred (car ls))
+                            (and-help (cdr ls))
+                        )
+                    )
+                )
+            )))
+
+            and-help
         )
     )
 )

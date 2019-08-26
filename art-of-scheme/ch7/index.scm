@@ -327,11 +327,3 @@
         )
     )
 )
-
-(letrec ((a (let ((a (lambda (b c)
-    (if (zero? b) c (a (1- b)))
-)))
-    (lambda (x) (a x x))
-)))
-    (display (a 3))
-)
