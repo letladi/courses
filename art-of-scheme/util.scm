@@ -31,3 +31,19 @@
         )
     )
 )
+
+(define writeln
+    (lambda args
+        (for-each display args)
+        (newline)
+    )
+)
+
+(define error
+    (lambda args
+        (display "Error: ")
+        (for-each (lambda (value) (display " ") (display value)) args)
+        (newline)
+        (reset)
+    )
+)
