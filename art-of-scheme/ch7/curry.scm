@@ -236,3 +236,38 @@
         )
     )
 )
+
+(define is-divisible-by?
+    (lambda (n)
+        (lambda (k)
+            (zero? (remainder n k))
+        )
+    )
+)
+
+(define prime?
+    (lambda (n)
+        (cond
+            ((or (= n 2) (= n 3)) #t)
+            ((or (even? n) (< n 2)) #f)
+            (else
+                (letrec*
+                    (
+                        (square-root (exact (floor (sqrt n))))
+                        (x (if (even? square-root) (1- square-root) square-root))
+                        (is-divisible-by-n? (is-divisible-by? n))
+                        (helper (lambda (x)
+                            (cond
+                                ((= x 1) #t)
+                                ((is-divisible-by-n? x) #t)
+                                (else (helper (- x 2)))
+                            )
+                        ))
+                    )
+
+                    (helper x)
+                )
+            )
+        )
+    )
+)
