@@ -1,3 +1,7 @@
+(load "../util.scm")
+(load "quant.scm")
+(load "set-definition.scm")
+
 (define make-set
     (lambda args
         (letrec
