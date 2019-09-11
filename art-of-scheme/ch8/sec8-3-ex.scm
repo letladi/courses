@@ -94,3 +94,9 @@
         )
     )
 )
+
+(define power-set
+    (lambda (s)
+        
+    )
+)
