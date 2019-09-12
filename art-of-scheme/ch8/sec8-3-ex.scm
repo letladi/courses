@@ -97,6 +97,60 @@
 
 (define power-set
     (lambda (s)
-        
+        (letrec*
+            (
+                (one-el-subsets (lambda (s)
+                    (if (empty-set? s)
+                        the-empty-set
+                        (let
+                            (
+                                (elem (pick s))
+                            )
+
+                            (adjoin
+                                (make-set elem)
+                                (power-set ((residue elem) s))
+                            )
+                        )
+                    )
+                ))
+                (subsets (one-el-subsets s))
+            )
+
+            subsets
+        )
+    )
+)
+
+(define select-by-cardinal
+    (lambda (n)
+        (lambda (s)
+            (letrec
+                ((helper (lambda (set)
+                    (let
+                        (
+                            (elem (pick set))
+                            (rest ((residue elem) set))
+                            (len (1- (length elem)))
+                        )
+
+                        (cond
+                            ((empty-set? set) the-empty-set)
+                            ((= n len)
+                                (adjoin
+                                    elem
+                                    (helper rest)
+                                )
+                            )
+                            (else
+                                (helper rest)
+                            )
+                        )
+                    )
+                )))
+
+                (helper s)
+            )
+        )
     )
 )
