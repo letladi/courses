@@ -97,6 +97,35 @@
 
 (define power-set
     (lambda (s)
-        
+    (display s)
+    (newline)
+        (cond
+            ((= (length s) 2)
+                (adjoin
+                    (make-set (pick s))
+                    (adjoin
+                        the-empty-set
+                        the-empty-set
+                    )
+                )
+            )
+            (else
+                (letrec*
+                    (
+                        (elem (pick s))
+                        (rest ((residue elem) s))
+                        (power-set-res (power-set rest))
+                        (car-of-power-set (pick power-set-res))
+                    )
+                    (adjoin
+                        (make-set elem)
+                        (adjoin 
+                            (union (make-set elem) car-of-power-set)
+                            power-set-res
+                        )
+                    )
+                )
+            )
+        )
     )
 )
