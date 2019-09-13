@@ -95,29 +95,33 @@
     )
 )
 
-(define power-set
-    (lambda (s)
-        (letrec*
-            (
-                (one-el-subsets (lambda (s)
-                    (if (empty-set? s)
-                        the-empty-set
-                        (let
-                            (
-                                (elem (pick s))
-                            )
-
-                            (adjoin
-                                (make-set elem)
-                                (power-set ((residue elem) s))
-                            )
+(define set-map
+    (lambda (s proc)
+        (cond
+            ((empty-set? s) the-empty-set)
+            (else
+                (let
+                    ((elem (pick s)))
+                    (adjoin
+                        (proc elem)
+                        (set-map
+                            ((residue elem) s)
+                            proc
                         )
                     )
-                ))
-                (subsets (one-el-subsets s))
+                )
             )
+        )
+    )
+)
 
-            subsets
+(define power-set
+    (lambda (s)
+        (cond
+            ((empty-set? s) (make-set the-empty-set))
+            (else
+                
+            )
         )
     )
 )
