@@ -10,12 +10,12 @@
 )
 
 (define set-fn-builder
-    (lambda (helper-seed-getter combination-predicate)
+    (lambda (seed-getter combination-predicate)
         (letrec*
             ((fn (lambda args
                 (cond
                     ((null? args) the-empty-set)
-                    ((= (length args) 1) args)
+                    ((= (length args) 1) (car args))
                     (else
                         (letrec*
                             (
@@ -24,7 +24,7 @@
                                 (rest (cddr args))
                                 (helper (lambda (s1)
                                     (if (empty-set? s1)
-                                        (helper-seed-getter s1 s2)
+                                        (seed-getter s1 s2)
                                         (let ((elem (pick s1)))
                                             (if (combination-predicate s2 elem)
                                                 (adjoin elem (helper ((residue elem) s1)))
@@ -117,10 +117,32 @@
 
 (define power-set
     (lambda (s)
+
         (cond
             ((empty-set? s) (make-set the-empty-set))
             (else
-                
+                (letrec*
+                    (
+                        (elem (pick s))
+                        (elem-set (make-set elem))
+                        (rest ((residue elem) s))
+                        (subset (power-set rest))
+                        (set-union (union
+                            subset
+                            (set-map subset (lambda (set)
+                                (adjoin elem set)
+                            ))
+                        ))
+                    )
+                    (display "subset: ")
+                    (display subset)
+                    (newline)
+                    (display "set-union: ")
+                    (display set-union)
+                    (newline)(newline)
+
+                    set-union
+                )
             )
         )
     )
