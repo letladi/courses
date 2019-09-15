@@ -124,24 +124,45 @@
                 (letrec*
                     (
                         (elem (pick s))
-                        (elem-set (make-set elem))
                         (rest ((residue elem) s))
                         (subset (power-set rest))
-                        (set-union (union
-                            subset
-                            (set-map subset (lambda (set)
-                                (adjoin elem set)
-                            ))
+                    )
+
+                    (union
+                        subset
+                        (set-map subset (lambda (set)
+                            (adjoin elem set)
                         ))
                     )
-                    (display "subset: ")
-                    (display subset)
-                    (newline)
-                    (display "set-union: ")
-                    (display set-union)
-                    (newline)(newline)
+                )
+            )
+        )
+    )
+)
 
-                    set-union
+(define cardinality
+    (lambda (s)
+        (1- (length s))
+    )
+)
+
+(define filter-set
+    (lambda (s filter-proc)
+        (cond
+            ((empty-set? s) the-empty-set)
+            (else
+                (letrec*
+                    (
+                        (elem (pick s))
+                        (rest ((residue elem) s))
+                    )
+                    (if (filter-proc elem)
+                        (adjoin
+                            elem
+                            (filter-set rest filter-proc)
+                        )
+                        (filter-set rest filter-proc)
+                    )
                 )
             )
         )
@@ -151,31 +172,11 @@
 (define select-by-cardinal
     (lambda (n)
         (lambda (s)
-            (letrec
-                ((helper (lambda (set)
-                    (let
-                        (
-                            (elem (pick set))
-                            (rest ((residue elem) set))
-                            (len (1- (length elem)))
-                        )
-
-                        (cond
-                            ((empty-set? set) the-empty-set)
-                            ((= n len)
-                                (adjoin
-                                    elem
-                                    (helper rest)
-                                )
-                            )
-                            (else
-                                (helper rest)
-                            )
-                        )
-                    )
-                )))
-
-                (helper s)
+            (filter-set
+                s
+                (lambda (subset)
+                    (= (cardinality subset) n)
+                )
             )
         )
     )
