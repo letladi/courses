@@ -149,22 +149,42 @@
 
 (define relation-compose
     (lambda (q r)
+    (if (empty-set? r)
+        (make-relation)
         (letrec*
             (
-                (range-r (range r))
-                (subrelations-of-range-r
-                    (set-map
-                        (lambda (z)
-                            ((subrelation/1st q) z)
-                        )
-                        range-r
+                (elem (pick r))
+                (rest-r ((residue elem) r))
+                (x (op-1st elem))
+                (z (op-2nd elem))
+                (ops-of-q-with-z-as-1st ((subrelation/1st q) z))
+                (res (set-map
+                    (lambda (op)
+                        (make-op x (op-2nd op))
                     )
+                    ops-of-q-with-z-as-1st
+                ))
+            )
+            (union
+                res
+                (relation-compose
+                    (difference q ops-of-q-with-z-as-1st)
+                     rest-r
                 )
             )
-            (family-union subrelations-of-range-r)
         )
+    )
     )
 )
 
-(define r (make-relation '(1 6) '(2 4) '(3 3) '(5 4) '(6 7)))
-(define q (make-relation '(4 2) '(3 6) '(7 7) '(8 6) '(9 9) '(10 10)))
+(define transitive?
+    (lambda (rel)
+        ((subset
+            (relation-compose r r)
+        ) rel)
+    )
+)
+
+(define r (make-relation '(1 2) '(1 3) '(1 4) '(2 3) '(2 4) '(3 4)))
+(define p (make-relation '(0 0) '(1 1) '(2 2) '(3 3) '(4 4)))
+(define q (make-relation '(1 1) '(1 2) '(3 2) '(2 1)))
