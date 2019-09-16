@@ -1,5 +1,5 @@
-(load "sec8-3-ex.scm")
 (load "ordered-pair.scm")
+(load "sec8-3-ex.scm")
 
 (define relation?
     (lambda (rel)
@@ -70,6 +70,36 @@
                     )
                 )
             )
+        )
+    )
+)
+
+(define reflexive?
+    (lambda (rel)
+        (letrec*
+            (
+                (dom (domain rel))
+                (rel-contains? (contains rel))
+                (helper (lambda (rel-domain)
+                    (cond
+                        ((empty-set? rel-domain) #t)
+                        (else
+                            (letrec*
+                                (
+                                    (elem (pick rel-domain))
+                                    (rest-domain ((residue elem) rel-domain))
+                                    (elem-op (make-op elem elem))
+                                )
+                                (and
+                                    (rel-contains? elem-op)
+                                    (helper rest-domain)
+                                )
+                            )
+                        )
+                    )
+                ))
+            )
+            (helper dom)
         )
     )
 )

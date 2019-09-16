@@ -95,25 +95,25 @@
     )
 )
 
-(define set-map
-    (lambda (s proc)
-        (cond
-            ((empty-set? s) the-empty-set)
-            (else
-                (let
-                    ((elem (pick s)))
-                    (adjoin
-                        (proc elem)
-                        (set-map
-                            ((residue elem) s)
-                            proc
-                        )
-                    )
-                )
-            )
-        )
-    )
-)
+; (define set-map
+;     (lambda (s proc)
+;         (cond
+;             ((empty-set? s) the-empty-set)
+;             (else
+;                 (let
+;                     ((elem (pick s)))
+;                     (adjoin
+;                         (proc elem)
+;                         (set-map
+;                             ((residue elem) s)
+;                             proc
+;                         )
+;                     )
+;                 )
+;             )
+;         )
+;     )
+; )
 
 (define power-set
     (lambda (s)
@@ -130,9 +130,12 @@
 
                     (union
                         subset
-                        (set-map subset (lambda (set)
-                            (adjoin elem set)
-                        ))
+                        (set-map
+                            (lambda (set)
+                                (adjoin elem set)
+                            )
+                            subset
+                        )
                     )
                 )
             )
