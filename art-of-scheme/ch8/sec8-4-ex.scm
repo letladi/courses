@@ -147,8 +147,24 @@
     )
 )
 
-(define g1 (make-relation '(1 1) '(2 2) '(3 6)))
-(define f1 (make-relation '(1 5) '(2 4) '(6 8)))
+(define relation-compose
+    (lambda (q r)
+        (letrec*
+            (
+                (range-r (range r))
+                (subrelations-of-range-r
+                    (set-map
+                        (lambda (z)
+                            ((subrelation/1st q) z)
+                        )
+                        range-r
+                    )
+                )
+            )
+            (family-union subrelations-of-range-r)
+        )
+    )
+)
 
-(define g2 (make-relation '(1 1) '(2 2) '(1 3)))
-(define f2 (make-relation '(0 5) '(3 4) '(4 6)))
+(define r (make-relation '(1 6) '(2 4) '(3 3) '(5 4) '(6 7)))
+(define q (make-relation '(4 2) '(3 6) '(7 7) '(8 6) '(9 9) '(10 10)))
