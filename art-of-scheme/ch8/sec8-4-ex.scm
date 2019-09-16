@@ -115,3 +115,40 @@
         )
     )
 )
+
+(define function-compose
+    (lambda (f g)
+        (letrec*
+            (
+                (range-g (range g))
+                (dom-f (domain f))
+                (range-g-is-subset? (subset range-g))
+            )
+            (cond
+                ((range-g-is-subset? dom-f)
+                    (lambda (x)
+                        (let
+                            (
+                                (g-val ((value g) x))
+                            )
+                            ((value f) g-val)
+                        )
+                    )
+                )
+                (else
+                    (raise
+                        (condition
+                            (make-message-condition "g's range must be in the domain of f")
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+(define g1 (make-relation '(1 1) '(2 2) '(3 6)))
+(define f1 (make-relation '(1 5) '(2 4) '(6 8)))
+
+(define g2 (make-relation '(1 1) '(2 2) '(1 3)))
+(define f2 (make-relation '(0 5) '(3 4) '(4 6)))
