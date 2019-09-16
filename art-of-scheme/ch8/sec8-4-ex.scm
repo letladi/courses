@@ -103,3 +103,15 @@
         )
     )
 )
+
+(define symmetric?
+    (lambda (rel)
+        (let
+            (
+                (inverse-rel (inverse-relation rel))
+                (equal-to-rel? (set-equal rel))
+            )
+            (equal-to-rel? inverse-rel)
+        )
+    )
+)
