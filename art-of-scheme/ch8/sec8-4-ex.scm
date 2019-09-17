@@ -25,7 +25,6 @@
 (define inverse-relation
     (lambda (rel)
         (set-map
-            rel
             (lambda (op)
                 (let
                     (
@@ -35,6 +34,7 @@
                     (make-op y x)
                 )
             )
+            rel
         )
     )
 )
@@ -165,14 +165,7 @@
                         ops-of-q-with-z-as-1st
                     ))
                 )
-                (union
-                    res
-                    (relation-compose
-                        q
-                        ; (difference q ops-of-q-with-z-as-1st)
-                         rest-r
-                    )
-                )
+                (union res (relation-compose q rest-r))
             )
         )
     )
@@ -186,6 +179,16 @@
     )
 )
 
-(define r (make-relation '(1 2) '(1 3) '(1 4) '(2 3) '(2 4) '(3 4)))
-(define p (make-relation '(0 0) '(1 1) '(2 2) '(3 3) '(4 4)))
-(define q (make-relation '(1 1) '(1 2) '(3 2) '(2 1)))
+(define equivalence-relation?
+    (lambda (rel)
+        (and
+            (reflexive? rel)
+            (transitive? rel)
+            (symmetric? rel)
+        )
+    )
+)
+
+(define r (make-relation '(0 0) '(1 1) '(2 2) '(3 3)))
+(define p (make-relation '(0 0) '(0 1) '(1 0) '(1 1)))
+(define q (make-relation '(0 0) '(0 1) '(1 1) '(2 2)))
