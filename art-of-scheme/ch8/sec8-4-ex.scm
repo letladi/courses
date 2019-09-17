@@ -149,38 +149,39 @@
 
 (define relation-compose
     (lambda (q r)
-    (if (empty-set? r)
-        (make-relation)
-        (letrec*
-            (
-                (elem (pick r))
-                (rest-r ((residue elem) r))
-                (x (op-1st elem))
-                (z (op-2nd elem))
-                (ops-of-q-with-z-as-1st ((subrelation/1st q) z))
-                (res (set-map
-                    (lambda (op)
-                        (make-op x (op-2nd op))
+        (if (empty-set? r)
+            (make-relation)
+            (letrec*
+                (
+                    (elem (pick r))
+                    (rest-r ((residue elem) r))
+                    (x (op-1st elem))
+                    (z (op-2nd elem))
+                    (ops-of-q-with-z-as-1st ((subrelation/1st q) z))
+                    (res (set-map
+                        (lambda (op)
+                            (make-op x (op-2nd op))
+                        )
+                        ops-of-q-with-z-as-1st
+                    ))
+                )
+                (union
+                    res
+                    (relation-compose
+                        q
+                        ; (difference q ops-of-q-with-z-as-1st)
+                         rest-r
                     )
-                    ops-of-q-with-z-as-1st
-                ))
-            )
-            (union
-                res
-                (relation-compose
-                    (difference q ops-of-q-with-z-as-1st)
-                     rest-r
                 )
             )
         )
-    )
     )
 )
 
 (define transitive?
     (lambda (rel)
         ((subset
-            (relation-compose r r)
+            (relation-compose rel rel)
         ) rel)
     )
 )
