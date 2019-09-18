@@ -1,4 +1,63 @@
-; (load "../util.scm")
+(load "../util.scm")
+
+(define vector-tag "vector")
+
+(define vector?
+    (lambda (arg)
+        (and
+            (pair? arg)
+            (eq? (car arg) vector-tag)
+        )
+    )
+)
+
+(define vector-length
+    (lambda (vec)
+        (cadr vec)
+    )
+)
+
+(define vector-ref
+    (lambda (vec i)
+        ((cddr vec) i)
+    )
+)
+
+(define vector-generator
+    (lambda (gen-proc)
+        (lambda (size)
+            (cons vector-tag (cons size gen-proc))
+        )
+    )
+)
+
+(define vector-ref
+    (lambda (vec i)
+        (list-ref (cddr vec) i)
+    )
+)
+
+(define vector-generator
+    (lambda (gen-proc)
+        (lambda (size)
+            (cons vector-tag
+                (cons size
+                    (letrec
+                        ((loop (lambda (i)
+                            (cond
+                                ((= i size) '())
+                                (else
+                                    (cons (gen-proc i) (loop (1+ i)))
+                                )
+                            )
+                        )))
+                        (loop 0)
+                    )
+                )
+            )
+        )
+    )
+)
 
 (define view
     (lambda (vec)
@@ -239,6 +298,59 @@
 
                 (loop 0)
             )
+        )
+    )
+)
+
+(define dot-product
+    (lambda (vec1 vec2)
+        (let
+            ((size (vector-length vec1)))
+            (letrec
+                ((loop (lambda (i acc)
+                    (if (= i size)
+                        acc
+                        (loop
+                            (1+ i)
+                            (+ acc (* (vector-ref vec1 i) (vector-ref vec2 i)))
+                        )
+                    )
+                )))
+
+                (loop 0 0)
+            )
+        )
+    )
+)
+
+(define swap-maker
+    (lambda (vec)
+        (lambda (i1 i2)
+            (let
+                ((temp (vector-ref vec i1)))
+                (vector-update
+                    (vector-update vec i1 (vector-ref vec i2))
+                    i2
+                    temp
+                )
+            )
+        )
+    )
+)
+
+(define vector-reverse
+    (lambda (vec)
+        (letrec
+            ((switch (lambda (v i j)
+                (if (>= i j)
+                    v
+                    (let
+                        ((swapv (swap-maker v)))
+                        (switch (swapv i j) (1+ i) (1- j))
+                    )
+                )
+            )))
+            (switch vec 0 (1- (vector-length vec)))
         )
     )
 )

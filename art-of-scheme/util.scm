@@ -55,3 +55,12 @@
         )
     )
 )
+
+(define singleton-list?
+    (lambda (ls)
+        (and
+            (pair? ls)
+            (null? (cdr ls))
+        )
+    )
+)
