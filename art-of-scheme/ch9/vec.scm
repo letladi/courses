@@ -61,23 +61,27 @@
 
 (define view
     (lambda (vec)
-        (let
-            ((highest-index (1- (vector-length vec))))
+        (if (= (vector-length vec) 0)
+            (display "#()")
 
-            (letrec
-                ((loop (lambda (i)
-                    (display (vector-ref vec i))
-                    (if (< i highest-index)
-                        (begin
-                            (display " ")
-                            (loop (1+ i))
+            (let
+                ((highest-index (1- (vector-length vec))))
+
+                (letrec
+                    ((loop (lambda (i)
+                        (display (vector-ref vec i))
+                        (if (< i highest-index)
+                            (begin
+                                (display " ")
+                                (loop (1+ i))
+                            )
                         )
-                    )
-                )))
+                    )))
 
-                (display "#(")
-                (loop 0)
-                (display ")")
+                    (display "#(")
+                    (loop 0)
+                    (display ")")
+                )
             )
         )
     )
