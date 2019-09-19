@@ -99,3 +99,44 @@
         )
     )
 )
+
+(define vector-append
+    (lambda (vec obj)
+        (letrec*
+            (
+                (old-len (vector-length vec))
+                (new-len (1+ old-len))
+                (gen (lambda (i)
+                    (if (= i old-len)
+                        obj
+                        (vector-ref vec i)
+                    )
+                ))
+
+            )
+            ((vector-generator gen) new-len)
+        )
+    )
+)
+
+(define vector-reverse
+    (lambda (vec)
+        (letrec*
+            (
+                (len (vector-length vec))
+                (last-el-index (1- len))
+                (gen (lambda (i)
+                    (let
+                        (
+                            (i-el (vector-ref vec i))
+                            (j (- last-el-index i))
+                        )
+                        (vector-ref vec j)
+                    )
+                ))
+            )
+
+            ((vector-generator gen) len)
+        )
+    )
+)
