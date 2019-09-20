@@ -64,3 +64,9 @@
         )
     )
 )
+
+(define throw
+    (lambda (msg)
+        (raise (condition (make-message-condition msg)))
+    )
+)
