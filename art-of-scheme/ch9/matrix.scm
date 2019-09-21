@@ -139,10 +139,11 @@
         (let
             (
                 (ncols-a (num-cols mat-a))
+                (nrows-b (num-rows mat-b))
                 (a-ref (matrix-ref mat-a))
                 (b-ref (matrix-ref mat-b))
             )
-            (if (not (= ncols-a (num-rows mat-b)))
+            (if (not (= ncols-a nrows-b))
                 (throw "matrix-product: The matrices are not compatible.")
                 (let
                     ((gen-proc (lambda (i j)

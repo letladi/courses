@@ -81,3 +81,26 @@
         )
     )
 )
+
+(define dot-product
+    (lambda (vec1 vec2)
+        (let
+            ((size (vector-length vec1)))
+            (letrec
+                ((loop (lambda (i acc)
+                    (if (= i size)
+                        acc
+                        (let
+                            (
+                                (v1 (vector-ref vec1 i))
+                                (v2 (vector-ref vec2 i))
+                            )
+                            (+ acc (* v1 v2))
+                        )
+                    )
+                )))
+                (loop 0 0)
+            )
+        )
+    )
+)
