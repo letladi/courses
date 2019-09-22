@@ -13,8 +13,11 @@
 (define num-rows
     (lambda (mat)
         (let
-            ((size (1- (vector-length mat))))
-            (/ size (vector-ref mat size))
+            (
+                (size (1- (vector-length mat)))
+                (ncols (vector-ref mat size))
+            )
+            (/ size ncols)
         )
     )
 )
@@ -151,7 +154,8 @@
                             ((loop (lambda (r acc)
                                 (if (= r ncols-a)
                                     acc
-                                    (loop (1+ r)
+                                    (loop
+                                        (1+ r)
                                         (+ acc (* (a-ref i r) (b-ref r j)))
                                     )
                                 )
