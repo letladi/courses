@@ -13,11 +13,8 @@
 (define num-rows
     (lambda (mat)
         (let
-            (
-                (size (1- (vector-length mat)))
-                (ncols (vector-ref mat size))
-            )
-            (/ size ncols)
+            ((size (1- (vector-length mat))))
+            (/ size (vector-ref mat size))
         )
     )
 )
@@ -226,3 +223,47 @@
         )
     )
 )
+
+(define mat+
+    (lambda (mat-a mat-b)
+        (let
+            (
+                (assert-equal-dimension (lambda (dim1 dim2 dim-name)
+                    (if (not (= dim1 dim2))
+                        (throw (string-append "matrices must have equal " dim-name))
+                    )
+                ))
+                (ncols-a (num-cols mat-a))
+                (ncols-b (num-cols mat-b))
+                (nrows-a (num-rows mat-a))
+                (nrows-b (num-rows mat-b))
+            )
+
+            (begin
+                (assert-equal-dimension ncols-a ncols-b "columns")
+                (assert-equal-dimension nrows-a nrows-b "rows")
+                (letrec*
+                    (
+                        (ref-a (matrix-ref mat-a))
+                        (ref-b (matrix-ref mat-b))
+                        (gen-proc (lambda (i j)
+                            (+ (ref-a i j) (ref-b i j))
+                        ))
+                    )
+                    ((matrix-generator gen-proc) nrows-a ncols-a)
+                )
+            )
+        )
+    )
+)
+
+(define a ((matrix 3 3) 1 1 1
+    1 1 1
+    1 1 1
+))
+(define b a)
+(define c ((matrix 3 2) 1 2
+    3 4
+    5 6
+))
+(define d ((matrix 2 3) 1 2 1 1 2 1))
