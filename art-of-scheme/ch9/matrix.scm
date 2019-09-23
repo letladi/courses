@@ -174,3 +174,55 @@
         )
     )
 )
+
+(define matrix-set!
+    (lambda (mat)
+        (lambda (i j obj)
+            (let
+                (
+                    (ncols (num-cols mat))
+                    (vec-index (+ (* i ncols) j))
+                )
+                (vector-set! mat vec-index obj)
+            )
+        )
+    )
+)
+
+(define matrix
+    (lambda (m n)
+        (lambda args
+            (let
+                (
+                    (size (* m n))
+                    (args-len (length args))
+
+                )
+                (cond
+                    ((= size args-len)
+                        (letrec*
+                            (
+                                (len (1+ size))
+                                (vec (make-vector len))
+                                (loop (lambda (i ls v)
+                                    (if (null? ls)
+                                        (vector-update! v i n)
+                                        (loop
+                                            (1+ i)
+                                            (cdr ls)
+                                            (vector-update! v i (car ls))
+                                        )
+                                    )
+                                ))
+                            )
+                            (loop 0 args vec)
+                        )
+                    )
+                    (else
+                        (throw "the number of elements must fill the matrix")
+                    )
+                )
+            )
+        )
+    )
+)
