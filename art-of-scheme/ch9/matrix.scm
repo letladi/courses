@@ -257,6 +257,22 @@
     )
 )
 
+(define matrix-multiply-by-scalar
+    (lambda (c mat-a)
+        (letrec*
+            (
+                (ref-a (matrix-ref mat-a))
+                (gen-proc (lambda (i j)
+                    (* c (ref-a i j))
+                ))
+                (ncols-a (num-cols mat-a))
+                (nrows-a (num-rows mat-a))
+            )
+            ((matrix-generator gen-proc) nrows-a ncols-a)
+        )
+    )
+)
+
 (define a ((matrix 3 3) 1 1 1
     1 1 1
     1 1 1
