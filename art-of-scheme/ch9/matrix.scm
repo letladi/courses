@@ -273,6 +273,39 @@
     )
 )
 
+(define matrix-view
+    (lambda (mat)
+        (letrec*
+            (
+                (ncols (num-cols mat))
+                (nrows (num-rows mat))
+                (size (* ncols nrows))
+                (ref-mat (matrix-ref mat))
+                (loop (lambda (k)
+                    (let*
+                        (
+                            (i (quotient k ncols))
+                            (j (remainder k ncols))
+                            (end-of-column? (= j (1- ncols)))
+                        )
+                        (if (< k size)
+                            (begin
+                                (display (ref-mat i j))
+                                (display " ")
+                                (if end-of-column?
+                                    (newline)
+                                )
+                                (loop (1+ k))
+                            )
+                        )
+                    )
+                ))
+            )
+            (loop 0)
+        )
+    )
+)
+
 (define a ((matrix 3 3) 1 1 1
     1 1 1
     1 1 1
