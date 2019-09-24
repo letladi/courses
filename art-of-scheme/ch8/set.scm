@@ -1,6 +1,4 @@
-(load "../util.scm")
-(load "quant.scm")
-(load "set-definition.scm")
+(load "set-definition-2.scm")
 
 (define make-set
     (lambda args

@@ -1,4 +1,5 @@
 (load "../ch2/rec.scm")
+(load "quant.scm")
 (load "set-definition.scm")
 
 (define residue
@@ -22,6 +23,33 @@
             (else
                 (cons set-tag (cons elem (cdr s)))
             )
+        )
+    )
+)
+
+(define view-set
+    (lambda (s)
+        (let
+            ((loop (lambda (s)
+                    (if (not (empty-set? s))
+                        (let
+                            (
+                                (elem (pick s))
+                                (rest ((residue elem) s))
+                            )
+                            (display elem)
+                            (if (not (empty-set? rest))
+                                (display ", ")
+                            )
+                            (loop rest)
+                        )
+                    )
+            )))
+            (newline)
+            (display "{")
+            (loop s)
+            (display "}")
+            (newline)
         )
     )
 )
