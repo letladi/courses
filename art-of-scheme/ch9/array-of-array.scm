@@ -5,7 +5,7 @@
 ; In general, to get the index i in the vector for any array of arrays with dimension M1xM2...xMn, given indices i1, i2, i3,..., in,
 ; we perfom the following computation; i = i1xM1 + ... + inxMn
 
-; On the other hand, to perform the computation the other way around; that given an index i the vector, how do we get the i,j,k
+; On the other hand, to perform the computation the other way around; that is, given an index i in the vector, how do we get the i,j,k
 ; in the array of arrays of arrays
 (define size-dim-1
     (lambda (arr)
@@ -42,8 +42,67 @@
     )
 )
 
-(define array-ref
-    (lambda (arr)
+(define get-vec-index
+    (lambda (arr i j k)
+        (+
+            (* (size-dim-1 arr) i)
+            (* (size-dim-2 arr) j)
+            (* (size-dim-3 arr) k)
+        )
+    )
+)
 
+(define array-ref
+    (lambda (arr i j k)
+        (vector-ref
+            arr
+            (get-vec-index arr i j k)
+        )
+    )
+)
+
+(define array-set!
+    (lambda (arr i j k obj)
+        (let
+            ((index (get-vec-index arr i j k)))
+            (vector-update! arr index obj)
+        )
+    )
+)
+
+(define get-array-of-array-indices
+    (lambda (vec-size vec-index m1 m2 m3)
+        (let
+            (
+                (k (vec-size vec-index))
+                (j (/ (- vec-size m3) m2))
+                (m2-times-m3 (* m2 m3))
+                (i (/ (- vec-size m2-times-m3) m1))
+            )
+            (list i j k)
+        )
+    )
+)
+
+(define array-generator
+    (lambda (gen-proc)
+        (lambda (m1 m2 m3)
+            (let
+                (
+                    (size (+ 2 (* m1 m2 m3)))
+                    (m2-times-m3 (* m2 m3))
+                    (array-proc (lambda (vec-index)
+                        (cond
+                            ((= vec-index (1- size)) m2-times-m3)
+                            ((= vec-index (- size 2)) m2)
+                            (else
+                                (apply gen-proc (get-array-of-array-indices size vec-index m1 m2 m3))
+                            )
+                        )
+                    ))
+                )
+
+            )
+        )
     )
 )
