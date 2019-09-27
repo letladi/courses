@@ -5,7 +5,8 @@
 ; In general, to get the index i in the vector for any array of arrays with dimension M1xM2...xMn, given indices i1, i2, i3,..., in,
 ; we perfom the following computation; i = i1xM1 + ... + inxMn
 
-; On the other hand, to perform the computation the other way around; that given an index i the vector, how do we get the i,j,k
+; On the other hand, to perform the computation the other way around; that given an index i
+ in the vector, how do we get the i,j,k
 ; in the array of arrays of arrays
 (define size-dim-1
     (lambda (arr)
