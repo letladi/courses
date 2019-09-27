@@ -47,7 +47,21 @@
         (+
             (* (size-dim-1 arr) i)
             (* (size-dim-2 arr) j)
-            (* (size-dim-3 arr) k)
+            k
+        )
+    )
+)
+
+(define get-array-of-array-indices
+    (lambda (vec-size vec-index m1 m2 m3)
+        (let
+            (
+                (k (vec-size vec-index))
+                (j (/ (- vec-size m3) m2))
+                (m2-times-m3 (* m2 m3))
+                (i (/ (- vec-size m2-times-m3) m1))
+            )
+            (list i j k)
         )
     )
 )
@@ -66,20 +80,6 @@
         (let
             ((index (get-vec-index arr i j k)))
             (vector-update! arr index obj)
-        )
-    )
-)
-
-(define get-array-of-array-indices
-    (lambda (vec-size vec-index m1 m2 m3)
-        (let
-            (
-                (k (vec-size vec-index))
-                (j (/ (- vec-size m3) m2))
-                (m2-times-m3 (* m2 m3))
-                (i (/ (- vec-size m2-times-m3) m1))
-            )
-            (list i j k)
         )
     )
 )
