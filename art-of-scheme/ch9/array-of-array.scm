@@ -54,12 +54,14 @@
 
 (define get-array-of-array-indices
     (lambda (vec-size vec-index m1 m2 m3)
-        (let
+        (letrec*
             (
-                (k (vec-size vec-index))
-                (j (/ (- vec-size m3) m2))
                 (m2-times-m3 (* m2 m3))
-                (i (/ (- vec-size m2-times-m3) m1))
+                (m1-sized-divisions (quotient vec-size m2))
+                (m2-sized-divisions (quotient vec-size m2))
+                (i (quotient vec-index m1-sized-divisions))
+                (k (remainder vec-index m3))
+                (j (quotient vec-index m2-sized-divisions))
             )
             (list i j k)
         )
