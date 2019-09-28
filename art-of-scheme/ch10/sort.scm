@@ -18,15 +18,6 @@
         )
     )
 )
-(define vector-insertsort
-    (lambda (vec)
-        (let
-            ((v (vector-copy vec)))
-            (vector-insertsort! v)
-            v
-        )
-    )
-)
 
 (define vector-insertsort!
     (lambda (v)
@@ -54,7 +45,7 @@
             (letrec
                 ((insert-h (lambda (m)
                     (if (zero? m)
-                        (vector-set! vec 0 val)
+                        (vector-set! vec m val)
                         (let
                             ((comp (vector-ref vec (1- m))))
                             (if (< val comp)
@@ -69,6 +60,16 @@
                 )))
                 (insert-h k)
             )
+        )
+    )
+)
+
+(define vector-insertsort
+    (lambda (vec)
+        (let
+            ((v (vector-copy vec)))
+            (vector-insertsort! v)
+            v
         )
     )
 )
