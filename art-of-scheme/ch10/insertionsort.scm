@@ -45,7 +45,7 @@
             (letrec
                 ((insert-h (lambda (m)
                     (if (zero? m)
-                        (vector-set! vec m val)
+                        (vector-set! vec 0 val)
                         (let
                             ((comp (vector-ref vec (1- m))))
                             (if (< val comp)
