@@ -1,4 +1,5 @@
 (load "test-data.scm")
+(load "natural-mergesort.scm")
 (load "../util.scm")
 (define nat-mergesort
     (lambda (field-name asc?)
@@ -13,25 +14,23 @@
                         (string-ci=? field-name "year employed")
                         (string-ci=? field-name "supervisor")
                         (string-ci=? field-name "salary")
-                        (throw (string-append "field-name " field-name " does not exist in the list"))
-
+                        (throw (string-append "field-name '" field-name "' does not exist in the list"))
                     )
                 ))
                 (get-rel (lambda ()
                     (cond
                         ((or
                             (string-ci=? field-name "name")
-                            (string-ci=? field-name "supervisor")
-                        )
-                            (if asc? string<? string>?)
+                            (string-ci=? field-name "supervisor"))
+                                (if asc? string<? string>?)
                         )
                         ((or
+                            (string-ci=? field-name "age")
                             (string-ci=? field-name "id")
                             (string-ci=? field-name "yr. emp")
                             (string-ci=? field-name "year employed")
-                            (string-ci=? field-name "salary")
-                        )
-                            (if asc? < >)
+                            (string-ci=? field-name "salary"))
+                                (if asc? < >)
                         )
                     )
                 ))
@@ -64,17 +63,20 @@
             (assert-field-name-exists)
 
             (lambda (ls)
-                (if (null? ls)
-                    '()
-                    (letrec
-                        ((sort (lambda (gps rel)
-                            (if (null? (cdr gps))
-                                (car gps)
-                                (sort (pair-merge gps rel))
-                            )
-                        )))
+                (let
+                    ((compare (rel-help)))
+                    (if (null? ls)
+                        '()
+                        (letrec
+                            ((sort (lambda (gps)
+                                (if (null? (cdr gps))
+                                    (car gps)
+                                    (sort (pair-merge gps compare))
+                                )
+                            )))
 
-                        (sort (make-groups ls (rel-help)))
+                            (sort (make-groups ls compare))
+                        )
                     )
                 )
             )
