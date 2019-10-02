@@ -9,7 +9,6 @@
                 )
             )
         )))
-
         (lambda (ls)
             (if (or (null? ls) (null? (cdr ls)))
                 ls
