@@ -63,3 +63,12 @@
 (define over45-set
     ((set-builder over-45? the-empty-set) set10-17)
 )
+
+(define find-supervisor
+    (unlist
+        (lambda (name id age yr-emp supervisor salary)
+            (lambda (v)
+                (if (string=? name v) supervisor #f))
+        )
+    )
+)
