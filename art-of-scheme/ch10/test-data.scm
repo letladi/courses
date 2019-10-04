@@ -13,3 +13,41 @@
         ("Blue, Benjamin J." 3630 26 1984  "Williams, John" 18500)
     )
 )
+
+(define deep-list->vector
+    (lambda (ls)
+        (letrec
+            (
+                (len (length ls))
+                (convert (lambda (ls vec i)
+                    (if (null? ls)
+                        vec
+                        (let*
+                            (
+                                (first (car ls))
+                                (rest (cdr ls))
+                            )
+                            (cond
+                                ((list? first)
+                                    (let
+                                        ((first-vec (make-vector (length first))))
+                                        (vector-set! vec i first-vec)
+                                        (convert first first-vec 0)
+                                        (convert rest vec (1+ i))
+                                    )
+                                )
+                                (else
+                                    (vector-set! vec i first)
+                                    (convert rest vec (1+ i))
+                                )
+                            )
+                        )
+                    )
+                ))
+            )
+            (convert ls (make-vector len) 0)
+        )
+    )
+)
+
+(define vector-table10-17 (deep-list->vector table10-17))
