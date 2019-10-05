@@ -9,7 +9,7 @@
         ("Jones, John Paul" 1990 55 1965 "Jones, Maury Ann" 63700)
         ("Wilson, William W." 2455 46 1970 "August, Elizabeth" 41050)
         ("Black, Burton P." 3195 38 1978 "Smith, Harold W." 31420)
-        ("Fox, Charles q." 2400 41 1981 "Jones, John Paul" 52200)
+        ("Fox, Charles Q." 2400 41 1981 "Jones, John Paul" 52200)
         ("Blue, Benjamin J." 3630 26 1984  "Williams, John" 18500)
     )
 )
