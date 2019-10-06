@@ -21,9 +21,6 @@
                 ))
                 (item-index ((binary-search rel) sorted-table10-17 name))
             )
-            (display "item-index: ")
-            (display item-index)
-            (newline)
             (if (>= item-index 0)
                 (vector-ref
                     sorted-vector-table10-17
