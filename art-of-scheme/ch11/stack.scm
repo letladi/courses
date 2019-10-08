@@ -1,4 +1,4 @@
-(load "../util.scm")
+(load "util.scm")
 
 (define stk '())
 

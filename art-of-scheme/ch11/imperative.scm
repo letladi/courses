@@ -1,4 +1,4 @@
-(load "stack.scm")
+(load "ch11/stack.scm")
 
 (define member?
     (lambda (item ls)
@@ -87,10 +87,9 @@
                 (lambda ()
                     (cond
                         ((equal? (car ls*) a) (push! b))
-                        ((equal (car ls*) b) (push! a))
+                        ((equal? (car ls*) b) (push! a))
                         (else (push! (car ls*)))
                     )
-                    (print-stack)
                     (set! ls* (cdr ls*))
                 )
             )
@@ -98,10 +97,7 @@
                 (lambda () (not (empty?)))
                 (lambda ()
                     (set! ans (cons (top) ans))
-                    (display "Answer = ")
-                    (display ans)
                     (pop!)
-                    (print-stack)
                 )
             )
             ans
