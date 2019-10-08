@@ -1,5 +1,6 @@
 (load "ch11/vector-memoize.scm")
 (load "ch11/memoize.scm")
+(load "ch11/imperative.scm")
 
 (define pascal-triangle
     (lambda (row col)
@@ -69,8 +70,19 @@
             (display "took ")
             (cond
                 ((zero? diff)
-                    (display (time-diff end start "ms"))
-                    (display " milliseconds\n")
+                    (let
+                        ((diff-ms (time-diff end start "ms")))
+                        (if (zero? diff-ms)
+                            (begin
+                                (display diff-ms)
+                                (display " milliseconds\n")
+                            )
+                            (begin
+                                (display (time-diff end start "ns"))
+                                (display " nanoseconds\n")
+                            )
+                        )
+                    )
                 )
                 (else
                     (display diff)
@@ -187,18 +199,55 @@
     )
 )
 
-; (define memo-pascal-triangle
-;     ((memoize2 100)
-;         (lambda (n k)
-;             (pascal-triangle n k)
-;         )
-;     )
-; )
-
 (define memo-pascal-triangle
     ((pascal-memo 100)
         (lambda (n k)
             (pascal-triangle n k)
+        )
+    )
+)
+
+(define timer*
+    (lambda args
+        (let
+            (
+                (proc (car args))
+                (start (current-time))
+                (diff 0)
+                (end 0)
+            )
+            (apply proc (cdr args))
+            (set! end (current-time))
+            (set! diff (time-diff end start "s"))
+
+            (display "took ")
+            (cond
+                ((zero? diff)
+                    (display (time-diff end start "ms"))
+                    (display " milliseconds\n")
+                )
+                (else
+                    (display diff)
+                    (display " seconds\n")
+                )
+            )
+        )
+    )
+)
+
+(define swapper
+    (lambda (a b ls)
+        (let
+            (
+                (stk '())
+                (empty? (lambda () (null? stk)))
+                (top (lambda ()
+                    (if (empty?)
+                        (throw "top: the stack is empty.")
+                        (car stk)
+                    )
+                ))
+            )
         )
     )
 )
