@@ -17,8 +17,6 @@
                 ((out-of-range? row col) 0)
                 ((or
                     (and (zero? row) (zero? col))
-                    (and (zero? row) (zero? col))
-                    (and (zero? row) (= col 1))
                 ) 1)
                 (else
                     (+
@@ -127,6 +125,80 @@
                 )
             )
         )
+    )
+)
 
+(define memoize2
+    (lambda (max-arg)
+        (lambda (proc)
+            (let
+                ((table (make-vector (1+ max-arg) '())))
+
+                (lambda (a b)
+                    (if (> a max-arg)
+                        (proc a b)
+                        (let
+                            ((item-stored (vector-ref table a)))
+
+                            (if (pair? item-stored)
+                                (car item-stored)
+                                (let
+                                    ((val (proc a b)))
+                                    (vector-set! table a (list val))
+                                    val
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+(define pascal-memo
+    (lambda (max-row)
+        (lambda (proc)
+            (let
+                ((table (make-vector (1+ max-row) 0)))
+
+                (lambda (row col)
+                    (if (> row max-row)
+                        (proc row col)
+                        (let*
+                            ((row-stored (vector-ref table row)))
+                            (if (vector? row-stored)
+                                (vector-ref row-stored col)
+                                (let
+                                    (
+                                        (val (proc row col))
+                                        (fresh-row-store (make-vector (1+ row) 0))
+                                    )
+                                    (vector-set! table row fresh-row-store)
+                                    (vector-set! fresh-row-store col val)
+                                    val
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)
+
+; (define memo-pascal-triangle
+;     ((memoize2 100)
+;         (lambda (n k)
+;             (pascal-triangle n k)
+;         )
+;     )
+; )
+
+(define memo-pascal-triangle
+    ((pascal-memo 100)
+        (lambda (n k)
+            (pascal-triangle n k)
+        )
     )
 )
