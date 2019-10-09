@@ -1,6 +1,7 @@
 (load "ch11/vector-memoize.scm")
 (load "ch11/memoize.scm")
 (load "ch11/imperative.scm")
+(load "ch11/stack.scm")
 
 (define pascal-triangle
     (lambda (row col)
@@ -282,6 +283,48 @@
                 )
             )
             ans
+        )
+    )
+)
+; this function swap 'a' and 'b' inside ls, so that `(mystery 'a z' '(c r a z y)) return (c r z a y)`
+(define mystery
+    (lambda (a b ls)
+        (let
+            (
+                (ls* ls)
+                (ans '())
+                (goto (lambda (label) (label)))
+            )
+            (letrec
+                (
+                    (push (lambda ()
+                        (cond
+                            ((null? ls*) (goto pop))
+                            ((eq? (car ls*) a) (push! b) (goto reduce))
+                            ((eq? (car ls*) b) (push! a) (goto reduce))
+                            (else
+                                (push! (car ls*))
+                                (goto reduce)
+                            )
+                        )
+                    ))
+                    (reduce (lambda ()
+                        (set! ls* (cdr ls*))
+                        (goto push)
+                    ))
+                    (pop (lambda ()
+                        (cond
+                            ((empty?) ans)
+                            (else
+                                (set! ans (cons (top) ans))
+                                (pop!)
+                                (goto pop)
+                            )
+                        )
+                    ))
+                )
+                (goto push)
+            )
         )
     )
 )
