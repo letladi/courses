@@ -59,11 +59,9 @@
             )
             ((pair? (car ls))
                 (set-car! ls (remove-cycle (car ls)))
-                ; (set-cdr! ls (remove-cycle (cdr ls)))
                 (cons (car ls) (remove-cycle (cdr ls)))
             )
             ((pair? (cdr ls))
-                ; (set-cdr! ls (remove-cycle (cdr ls)))
                 (cons (car ls) (remove-cycle (cdr ls)))
             )
             (else
