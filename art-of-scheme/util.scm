@@ -70,3 +70,16 @@
         (raise (condition (make-message-condition msg)))
     )
 )
+
+(define writeln
+    (lambda args
+        (if (not (null? args))
+            (let
+                ((first (car args)) (rest (cdr args)))
+                (display first)
+                (newline)
+                (apply writeln rest)
+            )
+        )
+    )
+)
