@@ -85,71 +85,71 @@
 (define ans (mystery (list 'a 'b 'c 'd)))
 ; the is x = (a b c d x), a list whose last item (cdr refers to itself)
 
-(define get-cycles
-    (lambda (ls)
-        (letrec
-            ((get-cycle-indices (lambda (ls-search ls-to-search ls-search-i count)
-                (if (= ls-search-i count)
-                    (get-cycle-indices ls-search (cdr ls-to-search) ls-search-i (1+ count))
-                    (cond
-                        ((null? ls-to-search) '())
-                        ((and (pair? (car ls-to-search)) (eq? ls-search (car ls-to-search)))
-                            (if (eq? ls-search (cdr ls-to-search))
-                                (cons
-                                    (list ls-search-i count)
-                                    (cons
-                                        (list ls-search-i (1+ count))
-                                        '()
-                                    )
-                                )
-                                (cons
-                                    (list ls-search-i count)
-                                    (get-cycle-indices ls-search (cdr ls-to-search) ls-search-i (1+ count))
-                                )
-                            )
-                        )
-                        ((eq? ls-search (cdr ls-to-search))
-                            (cons
-                                (list ls-search-i (1+ count))
-                                '()
-                            )
-                        )
-                        (else
-                            (get-cycle-indices ls-search (cdr ls-to-search) ls-search-i (1+ count))
-                        )
-                    )
-                )
-            )))
+; (define get-cycles
+;     (lambda (ls)
+;         (letrec
+;             ((get-cycle-indices (lambda (ls-search ls-to-search ls-search-i count)
+;                 (if (= ls-search-i count)
+;                     (get-cycle-indices ls-search (cdr ls-to-search) ls-search-i (1+ count))
+;                     (cond
+;                         ((null? ls-to-search) '())
+;                         ((and (pair? (car ls-to-search)) (eq? ls-search (car ls-to-search)))
+;                             (if (eq? ls-search (cdr ls-to-search))
+;                                 (cons
+;                                     (list ls-search-i count)
+;                                     (cons
+;                                         (list ls-search-i (1+ count))
+;                                         '()
+;                                     )
+;                                 )
+;                                 (cons
+;                                     (list ls-search-i count)
+;                                     (get-cycle-indices ls-search (cdr ls-to-search) ls-search-i (1+ count))
+;                                 )
+;                             )
+;                         )
+;                         ((eq? ls-search (cdr ls-to-search))
+;                             (cons
+;                                 (list ls-search-i (1+ count))
+;                                 '()
+;                             )
+;                         )
+;                         (else
+;                             (get-cycle-indices ls-search (cdr ls-to-search) ls-search-i (1+ count))
+;                         )
+;                     )
+;                 )
+;             )))
+;
+;             (get-cycle-indices ls ls -1 0)
+;         )
+;     )
+; )
 
-            (get-cycle-indices ls ls -1 0)
-        )
-    )
-)
-
-(define cycle?
-    (lambda (ls)
-        (if (null? ls)
-            #f
-            (letrec
-                ((contains? (lambda (a ls)
-                    (cond
-                        ((null? ls) #f)
-                        (else
-                            (or
-                                (eq? a (car ls))
-                                (contains? a (cdr ls))
-                            )
-                        )
-                    )
-                )))
-                (or
-                    (contains? ls ls)
-                    (cycle? (cdr ls))
-                )
-            )
-        )
-    )
-)
+; (define cycle?
+;     (lambda (ls)
+;         (if (null? ls)
+;             #f
+;             (letrec
+;                 ((contains? (lambda (a ls)
+;                     (cond
+;                         ((null? ls) #f)
+;                         (else
+;                             (or
+;                                 (eq? a (car ls))
+;                                 (contains? a (cdr ls))
+;                             )
+;                         )
+;                     )
+;                 )))
+;                 (or
+;                     (contains? ls ls)
+;                     (cycle? (cdr ls))
+;                 )
+;             )
+;         )
+;     )
+; )
 
 (define efface
     (lambda (x ls)

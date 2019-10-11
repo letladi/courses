@@ -83,3 +83,6 @@
         )
     )
 )
+
+(define 1st car)
+(define 2nd cadr)
