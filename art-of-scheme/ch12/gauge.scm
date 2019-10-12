@@ -1,3 +1,5 @@
+(load "ch12/box.scm")
+
 (define gauge-maker
     (lambda (init-value unary-proc-up unary-proc-down)
         (let

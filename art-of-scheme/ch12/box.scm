@@ -1,10 +1,13 @@
 (load "util.scm")
+(load "ch12/case.scm")
 
 (define box-maker
     (lambda (init-value)
         (let
             ((contents init-value))
             (lambda msg
+                (display "\ninside box-maker: ")
+                (display (1st msg))
                 (case (1st msg)
                     ((type) "box")
                     ((show) contents)
@@ -43,8 +46,12 @@
     (lambda args
         (let
             ((object (car args)) (message (cdr args)))
+            (display "\nHERE IS THE MESSAGE: ")
+            (display message)(newline)
             (let
                 ((try (apply object message)))
+                (display "\ntry: ")
+                (display try)(newline)
                 (if (eq? invalid-method-name-indicator try)
                     (throw (string-append
                         "Bad method name: "

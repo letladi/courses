@@ -1,4 +1,3 @@
-(load "util.scm")
 (load "ch12/box.scm")
 
 (define accumulator-maker
