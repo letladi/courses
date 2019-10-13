@@ -60,3 +60,39 @@
         )
     )
 )
+
+(define accumulator-maker
+    (lambda (init-value binary-proc)
+        (let
+            ((total (box-maker init-value)))
+
+            (lambda msg
+                (case (1st msg)
+                    ((type) "accumulator")
+                    ((update!) (send total 'update! (binary-proc (send total 'show) (2nd msg))))
+                    ((show) (send total 'show))
+                    ((reset!) (send total 'reset!))
+                    (else (delegate total msg))
+                )
+            )
+        )
+    )
+)
+
+(define gauge-maker
+    (lambda (init-value unary-proc-up unary-proc-down)
+        (let
+            ((total (box-maker init-value)))
+            (lambda msg
+                (case (1st msg)
+                    ((type) "gauge")
+                    ((up!) (send total 'update! (unary-proc-up (send total 'show))))
+                    ((down!) (send total 'update! (unary-proc-down (send total 'show))))
+                    ((show) (send total 'show))
+                    ((reset!) (send total 'reset!))
+                    (else (delegate total msg))
+                )
+            )
+        )
+    )
+)

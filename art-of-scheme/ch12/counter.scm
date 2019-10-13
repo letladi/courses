@@ -20,3 +20,40 @@
         )
     )
 )
+
+(define restricted-counter-maker
+    (lambda (init-value unary-proc pred)
+        (let
+            ((total (box-maker init-value)))
+
+            (lambda msg
+                (case (1st msg)
+                    ((type) "restricted-counter")
+                    ((update!)
+                        (let*
+                            (
+                                (res (unary-proc (send total 'show)))
+                                (can-update? (pred res))
+                            )
+                            (if can-update?
+                                (send total 'update! res)
+                                (send total 'reset!)
+                            )
+                        )
+                    )
+                    ((show) (send total 'show))
+                    ((reset!) (send total 'reset!))
+                    (else (delegate base-object msg))
+                )
+            )
+        )
+    )
+)
+
+(define clock
+    (restricted-counter-maker
+        1
+        (lambda (n) (1+ n))
+        (lambda (n) (and (>= n 1) (<= n 12)))
+    )
+)
