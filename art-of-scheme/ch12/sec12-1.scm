@@ -20,25 +20,17 @@
                 (left-box (box-maker init-left))
                 (right-box (box-maker init-right))
                 (getbox-msg (lambda (db-msg)
-                    (cond
-                        ((or (string=? db-msg "show-left") (string=? db-msg "show-right"))
-                            "show"
-                        )
-                        ((or (string=? db-msg "update-left!") (string=? db-msg "update-right!"))
-                            "update!"
-                        )
-                        ((string=? db-msg "reset!") "reset!")
+                    (case db-msg
+                        ((show-left "show-left" show-right "show-right") 'show)
+                        ((update-left! "update-left!" update-right! "update-right!") 'update!)
+                        ((reset! "reset!") 'reset!)
                         (else db-msg)
                     )
                 ))
                 (get-box (lambda (db-msg)
-                    (cond
-                        ((or (string=? db-msg "show-left") (string=? db-msg "update-left!"))
-                            left-box
-                        )
-                        ((or (string=? db-msg "show-right") (string=? db-msg "update-right!"))
-                            right-box
-                        )
+                    (case db-msg
+                        ((show-left "show-left" update-left! "update-left!") left-box)
+                        ((show-right "show-right" update-right! "update-right!") right-box)
                         (else #f)
                     )
                 ))
@@ -51,12 +43,17 @@
                         (method-to-call (getbox-msg mthd))
                         (call-args (cons box-to-use (cons method-to-call (cdr msg))))
                     )
-                    (display "\ninside box maker. call args: ")
-                    (display call-args)(newline)
-
-                    (if box-to-use
-                        (apply send call-args)
-                        (apply delegate (cons base-object msg))
+                    (case mthd
+                        ((reset!)
+                            (apply send left-box (list 'reset!))
+                            (apply send right-box (list 'reset!))
+                        )
+                        (else
+                            (if box-to-use
+                                (apply send call-args)
+                                (apply delegate (cons base-object msg))
+                            )
+                        )
                     )
                 )
            )
