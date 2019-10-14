@@ -43,17 +43,17 @@
 (define send
     (lambda args
         (let
-            ((object (car args)) (message (cdr args)))
+            (
+                (object (car args))
+                (message (cdr args))
+                (get-exception-message (lambda (mthd obj-type)
+                    (string-append "Bad method name: " mthd " send to object of " obj-type " type.")
+                ))
+            )
             (let
                 ((try (apply object message)))
                 (if (eq? invalid-method-name-indicator try)
-                    (throw (string-append
-                        "Bad method name: "
-                        (car message)
-                            " send to object of "
-                            (object 'type)
-                            " type."
-                    ))
+                    (throw (get-exception-message (car message) (object 'type)))
                     try
                 )
             )
