@@ -57,3 +57,80 @@
         (lambda (n) (and (>= n 1) (<= n 12)))
     )
 )
+
+(define modified-restricted-counter-maker
+    (lambda (init-value unary-proc pred reset-proc)
+        (let
+            ((total (box-maker init-value)))
+
+            (lambda msg
+                (case (1st msg)
+                    ((type) "modified-restricted-counter")
+                    ((update!)
+                        (let*
+                            (
+                                (res (unary-proc (send total 'show)))
+                                (can-update? (pred res))
+                            )
+                            (if can-update?
+                                (send total 'update! res)
+                                (send total 'update! (reset-proc))
+                            )
+                        )
+                    )
+                    ((show) (send total 'show))
+                    ((reset) (send total))
+                    (else (delegate base-object msg))
+                )
+            )
+        )
+    )
+)
+
+(define clock-maker
+    (lambda (hr min)
+        (let*
+            (
+                (hr-hand
+                    (restricted-counter-maker
+                        hr
+                        (lambda (h) (1+ h))
+                        (lambda (h) (and (>= h 1) (<= h 12)))
+                    )
+                )
+                (min-hand
+                    (modified-restricted-counter-maker
+                        min
+                        (lambda (m) (1+ m))
+                        (lambda (m) (and (>= m 0) (<= m 59)))
+                        (lambda ()
+                            (send hr-hand 'update!)
+                            0
+                        )
+                    )
+                )
+            )
+
+            (lambda msg
+                (case (1st msg)
+                    ((type) "clock-maker")
+                    ((update!)
+                        (send min-hand 'update!)
+                    )
+                    ((show)
+                        (string-append
+                            (number->string (send hr-hand 'show))
+                            ":"
+                            (number->string (send min-hand 'show))
+                        )
+                    )
+                    ((reset!)
+                        (send hr-hand 'reset!)
+                        (send min-hand 'reset!)
+                    )
+                    (else (delegate base-object msg))
+                )
+            )
+        )
+    )
+)
