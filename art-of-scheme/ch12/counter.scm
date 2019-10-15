@@ -89,46 +89,69 @@
 
 (define clock-maker
     (lambda (hr min)
-        (let*
+        (let
             (
-                (hr-hand
-                    (restricted-counter-maker
-                        hr
-                        (lambda (h) (1+ h))
-                        (lambda (h) (and (>= h 1) (<= h 12)))
-                    )
-                )
-                (min-hand
-                    (modified-restricted-counter-maker
-                        min
-                        (lambda (m) (1+ m))
-                        (lambda (m) (and (>= m 0) (<= m 59)))
-                        (lambda ()
-                            (send hr-hand 'update!)
-                            0
-                        )
-                    )
-                )
+                (hr-pred (lambda (h) (and (>= h 1) (<= h 12))))
+                (min-pred (lambda (m) (and (>= m 0) (<= m 59))))
+            )
+            (if (not (hr-pred hr))
+                (throw "the hour value may only be between 1 and 12")
+            )
+            (if (not (min-pred min))
+                (throw "the minute value may only be between 0 and 59")
             )
 
-            (lambda msg
-                (case (1st msg)
-                    ((type) "clock-maker")
-                    ((update!)
-                        (send min-hand 'update!)
-                    )
-                    ((show)
-                        (string-append
-                            (number->string (send hr-hand 'show))
-                            ":"
-                            (number->string (send min-hand 'show))
+            (letrec*
+                (
+                    (hr-hand
+                        (restricted-counter-maker
+                            1
+                            (lambda (h) (1+ h))
+                            hr-pred
                         )
                     )
-                    ((reset!)
-                        (send hr-hand 'reset!)
-                        (send min-hand 'reset!)
+                    (min-hand
+                        (modified-restricted-counter-maker
+                            min
+                            (lambda (m) (1+ m))
+                            min-pred
+                            (lambda ()
+                                (send hr-hand 'update!)
+                                0
+                            )
+                        )
                     )
-                    (else (delegate base-object msg))
+                    (catch-up-clock (lambda (time-obj up-bound)
+                        (if (< (send time-obj 'show) up-bound)
+                            (begin
+                                (send time-obj 'update!)
+                                (catch-up-clock time-obj up-bound)
+                            )
+                        )
+                    ))
+                )
+
+                (catch-up-clock hr-hand hr)
+
+                (lambda msg
+                    (case (1st msg)
+                        ((type) "clock-maker")
+                        ((update!)
+                            (send min-hand 'update!)
+                        )
+                        ((show)
+                            (string-append
+                                (number->string (send hr-hand 'show))
+                                ":"
+                                (number->string (send min-hand 'show))
+                            )
+                        )
+                        ((reset!)
+                            (send hr-hand 'reset!)
+                            (send min-hand 'reset!)
+                        )
+                        (else (delegate base-object msg))
+                    )
                 )
             )
         )
