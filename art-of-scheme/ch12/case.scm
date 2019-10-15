@@ -1,3 +1,5 @@
+(define object-tag "object")
+
 (define vowel-or-consonant
     (lambda (letter)
         (cond

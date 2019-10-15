@@ -1,4 +1,5 @@
 (load "ch12/box.scm")
+(load "ch12/acc.scm")
 
 (define counter-maker
     (lambda (init-value unary-proc)
@@ -15,6 +16,27 @@
                     )
                     ((swap!) (delegate base-object msg))
                     (else (delegate total msg))
+                )
+            )
+        )
+    )
+)
+
+; ex 12.8
+(define counter-maker
+    (lambda (init-value unary-proc)
+        (let
+            ((total (accumulator-maker init-value (lambda (ac val)
+                (unary-proc val)
+            ))))
+            (lambda msg
+                (case (1st msg)
+                    ((type) "counter")
+                    ((update!)
+                        (let
+                            ((result (unary-proc)))
+                        )
+                    )
                 )
             )
         )
