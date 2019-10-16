@@ -71,3 +71,35 @@
 
 ; ex12.10. We don't append in the method 'enqueue-list!'. In addition to breaking current implementation,
 ; this would also make the queue inefficient.
+
+; ex12.12
+(define queue->list
+    (lambda (q)
+        (letrec*
+            (
+                (sentinel (list "sentinel" (random 100)))
+                (loop (lambda (que)
+                    (let
+                        ((front (send que 'front)))
+                        (cond
+                            ((eq? front sentinel)
+                                (send que 'dequeue!)
+                                '()
+                            )
+                            (else
+                                (send que 'enqueue! front)
+                                (send que 'dequeue!)
+                                (cons
+                                    front
+                                    (loop que)
+                                )
+                            )
+                        )
+                    )
+                ))
+            )
+            (send q 'enqueue! sentinel)
+            (loop q)
+        )
+    )
+)
