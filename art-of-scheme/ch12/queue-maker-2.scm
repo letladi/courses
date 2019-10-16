@@ -6,18 +6,26 @@
     (lambda ()
         (let
             ((q (cons '() '())))
-            (let
-                ((rear q))
+            (letrec*
+                (
+                    (rear q)
+                    (add-items-to-queue (lambda (ls)
+                        (if (not (null? ls))
+                            (let
+                                ((list-of-item (cons (1st ls) '())))
+                                (set-cdr! rear list-of-item)
+                                (set! rear list-of-item)
+                                (add-items-to-queue (cdr ls))
+                            )
+                        )
+                    ))
+                )
                 (lambda msg
                     (case (1st msg)
                         ((type) "queue")
                         ((empty?) (eq? rear q))
                         ((enqueue!) (for-effect-only
-                            (let
-                                ((list-of-item (cons (2nd msg) '())))
-                                (set-cdr! rear list-of-item)
-                                (set! rear list-of-item)
-                            )
+                            (add-items-to-queue (list (2nd msg)))
                         ))
                         ((front) (if (eq? rear q)
                             (throw "front: The queue is empty.")
@@ -45,16 +53,12 @@
                         )
                         ((enqueue-list!)
                             (for-effect-only
-                                (for-each
-                                    (lambda (item)
-                                        (let
-                                            ((list-of-item (cons item '())))
-                                            (set-cdr! rear list-of-item)
-                                            (set! rear list-of-item)
-                                        )
-                                    )
-                                    (2nd msg)
-                                )
+                                (add-items-to-queue (2nd msg))
+                            )
+                        )
+                        ((enqueue-many!)
+                            (for-effect-only
+                                (add-items-to-queue (cdr msg))
                             )
                         )
                         (else (delegate base-object msg))
