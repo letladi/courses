@@ -39,7 +39,7 @@
                             (lambda (x) (display x) (display " "))
                             q
                         )
-                        q
+                        (newline)
                     )
                     (else (delegate base-object msg))
                 )
