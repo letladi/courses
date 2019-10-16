@@ -103,3 +103,16 @@
         )
     )
 )
+
+(define queue->list!
+    (lambda (q)
+        (if (zero? (send q 'size))
+            '()
+            (let
+                ((front (send q 'front)))
+                (send q 'dequeue!)
+                (cons front (queue->list! q))
+            )
+        )
+    )
+)
