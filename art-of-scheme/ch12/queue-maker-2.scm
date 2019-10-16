@@ -116,3 +116,9 @@
         )
     )
 )
+
+; ex12.14 if the code is replaced with '(append q list-of-item)', then the code becomes
+; more inefficient because we have to create a new list to append to instead of modifying our
+; existing list.
+; If, on the other hand, we use '(set! q (append q list-of-item))' the efficiency is the same, the only
+; difference being that we know re-assign our 'q' variable.
