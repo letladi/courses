@@ -8,7 +8,7 @@
                 (case (1st msg)
                     ((type) "gauge")
                     ((up!) (send total 'update! (unary-proc-up (send total 'show))))
-                    ((down!) (send totoal 'update! (unary-proc-down (send total 'show))))
+                    ((down!) (send total 'update! (unary-proc-down (send total 'show))))
                     ((swap! update!) (delegate base-object msg))
                     (else (delegate total msg))
                 )
