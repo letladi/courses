@@ -3,10 +3,21 @@
 
 (define circular-list-maker
     (lambda ()
-        (let
+        (letrec
             (
                 (marker '())
                 (size-gauge (gauge-maker 0 1+ 1-))
+                (reverse-help (lambda (ls res)
+                    (cond
+                        ((null? ls) res)
+                        (else
+                            (reverse-help
+                                (cdr ls)
+                                (cons (car ls) res)
+                            )
+                        )
+                    )
+                ))
             )
             (lambda msg
                 (case (1st msg)
@@ -59,6 +70,16 @@
                             )
                         )
                         (newline)
+                    )
+                    ((reverse)
+                        (if (not (null? marker))
+                            (for-effect-only
+                                (let ((next (cdr marker)))
+                                    (set-cdr! marker '())
+                                    (set-cdr! marker (reverse-help next '()))
+                                )
+                            )
+                        )
                     )
                     (else (delegate base-object msg))
                 )
