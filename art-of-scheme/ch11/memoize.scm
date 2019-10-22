@@ -1,14 +1,4 @@
-(define 1st
-    (lambda (pr)
-        (car pr)
-    )
-)
-
-(define 2nd
-    (lambda (pr)
-        (cadr pr)
-    )
-)
+(load "util.scm")
 
 (define lookup
     (lambda (obj table success-proc failure-proc)
