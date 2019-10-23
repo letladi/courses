@@ -30,13 +30,18 @@
                         )
                     )
                     ((update!-lookup)
-                        (let ((key (2nd msg)) (updater (3rd msg)) (initializer (4th msg)))
+                        (let ((key (2nd msg)) (success-proc (3rd msg)) (initializer (4th msg)))
                             (lookup key table
                                 (lambda (pr)
                                     (set-cdr! pr (updater (cdr pr)))
-                                    (cdr pr)
+                                    (success-proc (cdr pr))
                                 )
-                                (lambda ())
+                                (lambda ()
+                                    (let ((pr (cons key (initializer key))))
+                                        (set! table (cons pr table))
+                                        (success-proc (cdr pr))
+                                    )
+                                )
                             )
                         )
                     )
@@ -46,3 +51,27 @@
         )
     )
 )
+
+(define memoize
+    (lambda (proc)
+        (let ((bucket (bucket-maker)))
+            (lambda (arg)
+                (send bucket 'update!-lookup arg (lambda (val) val) proc)
+            )
+        )
+    )
+)
+
+(define word-frequency
+    (lambda (string-list)
+        (let ((b (bucket-maker)))
+            (for-each
+                (lambda (s) (send b 'update! s 1+ (lambda (s) 1)))
+                string-list
+            )
+            b
+        )
+    )
+)
+
+(define string-list '("four" "score" "and" "seven" "years" "ago" "our" "fathers"))
