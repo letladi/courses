@@ -7,7 +7,7 @@
             ((v ((vector-generator (lambda (i) (bucket-maker))) size)))
             (lambda msg
                 (case (1st msg)
-                    ((type) "hash table")
+                    ((type) "hash-table")
                     (else
                         (delegate (vector-ref v (hash-fn (2nd msg))) msg)
                     )
