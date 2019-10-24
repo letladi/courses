@@ -4,8 +4,27 @@
 
 (define bucket-maker
     (lambda ()
-        (let
-            ((table '()))
+        (letrec
+            (
+                (table '())
+                (remove (lambda (ls key)
+                    (cond
+                        ((null? ls) '())
+                        (else
+                            (let
+                                (
+                                    (pr (car ls))
+                                    (rest (cdr ls))
+                                )
+                                (if (eq? (car pr) key)
+                                    rest
+                                    (cons pr (remove rest key))
+                                )
+                            )
+                        )
+                    )
+                ))
+            )
             (lambda msg
                 (case (1st msg)
                     ((type) "bucket")
@@ -47,6 +66,11 @@
                     )
                     ((re-initialize!)
                         (set! table '())
+                    )
+                    ((remove!)
+                        (let ((key (2nd msg)))
+                            (set! (remove table key))
+                        )    
                     )
                     (else (delegate base-object msg))
                 )
