@@ -2,6 +2,12 @@
 (load "ch11/memoize.scm")
 (load "ch12/box.scm")
 
+(define make-pair
+    (lambda (a b)
+        (cons a b)
+    )
+)
+
 (define bucket-maker
     (lambda ()
         (letrec
@@ -70,6 +76,14 @@
                     ((remove!)
                         (let ((key (2nd msg)))
                             (set! table (remove table key))
+                        )
+                    )
+                    ((image)
+                        (map
+                            (lambda (pr)
+                                (make-pair (car pr) (cdr pr))
+                            )
+                            table
                         )
                     )
                     (else (delegate base-object msg))
