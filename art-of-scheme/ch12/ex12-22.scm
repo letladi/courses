@@ -15,20 +15,21 @@
 (define word-frequency
     (letrec* (
             (vec-size 101)
-            (hash-function (lambda (s)
-                (hash-loop s 0 0)
-            ))
-            (hash-loop (lambda (s i res)
+            (hash-loop (lambda (s i len res)
                 (cond
-                    ((= i vec-size) (remainder res 26))
+                    ((= i len) (remainder res 26))
                     (else
                         (hash-loop
                             s
                             (1+ i)
+                            len
                             (+ res (char->integer (string-ref s i)))
                         )
                     )
                 )
+            ))
+            (hash-function (lambda (s)
+                (hash-loop s 0 (string-length s) 0)
             ))
         )
         (let ((h (hash-table-maker 26 hash-function)))

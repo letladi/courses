@@ -86,6 +86,7 @@
                             table
                         )
                     )
+                    ((empty?) (null? table))
                     (else (delegate base-object msg))
                 )
             )
