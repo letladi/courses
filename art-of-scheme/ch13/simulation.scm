@@ -1,41 +1,33 @@
-(define unif-rand-var-0-1
-    (let ((big 1000000.0))
-        (lambda ()
-            (/ (+ 1 (random big)) big)
-        )
-    )
-)
-
-(define exponential-random-variable
-    (lambda (mean)
-        (* mean (- (log (unif-rand-var-0-1))))
-    )
-)
-
-(define arrival-time-generator
-    (lambda (av-arr-time)
-        (+ 1 (round (exponential-random-variable (- av-arr-time 1))))
-    )
-)
-
-(define normal-random-variable
-    (lambda (mean std-dev)
-        (letrec
-            ((compute (lambda (i)
-                (if (zero? i)
-                    0
-                    (+ (- (unif-rand-var-0-1) 0.5)
-                        (compute (1- i))
-                    )
+(define simulation-setup&run
+    (lambda (close-time %-self-service av-arr-time profit-self profit-full extra-time@self-pump extra-time@full-pump pump-rate)
+        (let
+            (
+                (self-service (service-maker "Self" profit-self))
+                (full-service (service-maker "Full" profit-full))
+            )
+            (simulation
+                (station-maker
+                    %-self-service
+                    self-service
+                    full-service
+                    extra-time@self-pump
+                    extra-time@full-pump
+                    pump-rate
                 )
-            )))
-            (+ mean (* std-dev (compute 12)))
+                (counter-maker 0 1+)
+                av-arr-time
+                (* 60 close-time)
+            )
         )
     )
 )
 
-(define gallons-generator
-    (lambda ()
-        (max 1 (round (normal-random-variable 12 4)))
+(define simulation
+    (lambda (station clock av-arr-time close-time)
+        (let
+            ((arrival (box-maker (+ (send clock 'show)
+                (arrival-time-generator av-arr-time)
+            ))))
+        )
     )
 )

@@ -84,3 +84,42 @@
         )
     )
 )
+
+; I don't quite understand what is being asked in 13.3b
+; (define count-runs
+;     (lambda (nums-to-gen num-range)
+;         (letrec
+;             (
+;                 (up-run "asc")
+;                 (down-run "desc")
+;                 (loop (lambda (val gen-count run-bucket run)
+;                     (cond
+;                         ((zero? gen-count) (send run-bucket 'image))
+;                         (else
+;                             (let ((num (random num-range)))
+;                                 (cond
+;                                     ((>= num val)
+;                                         (if (string=? up-run run)
+;                                             (begin
+;                                                 (send run-bucket 'update!
+;                                                     up-run
+;                                                     1+
+;                                                     (lambda (s) 1)
+;                                                 )
+;                                                 (loop )
+;                                             )
+;
+;                                             (send run-bucket 'update!
+;
+;                                             )
+;                                         )
+;                                     )
+;                                 )
+;                             )
+;                         )
+;                     )
+;                 ))
+;             )
+;         )
+;     )
+; )
