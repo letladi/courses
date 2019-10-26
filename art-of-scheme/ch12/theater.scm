@@ -21,6 +21,7 @@
                         (send vacancies 'up!)
                         (throw "leave!: The theater is empty.")
                     ))
+                    ((reset! update! down! up! dequeue!) (delegate base-object msg))
                     (else (delegate (combine ticket-line vacancies) msg))
                 )
             )
@@ -76,3 +77,5 @@
 )
 
 ; ex12-31
+; If 'show' were used in queue instead of 'front' then the first expression would return the first
+; person in line, the second expression would return the number of vacancies.

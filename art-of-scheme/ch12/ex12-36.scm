@@ -1,0 +1,27 @@
+(load "ch12/ex12-33.scm")
+
+(define cartesian-origin-maker
+    (lambda ()
+        (let ((x-coord 0) (y-coord 0))
+            (lambda message
+                (let ((self (car message)) (msg (cdr message)))
+                    (case (1st msg)
+                        ((type) "Cartesian point")
+                        ((distance) (sqrt (+ (square x-coord) (square y-coord))))
+                        ((current-coordinates) (list x-coord y-coord))
+                        ((moveto!)
+                            (for-effect-only
+                                (let ((new-x (2nd msg)) (new-y (3rd msg)))
+                                    (set! x-coord new-x)
+                                    (set! y-coord new-y)
+                                )
+                            )
+                        )
+                        ((closer?) (< (send self 'distance) (send (2nd msg) 'distance)))
+                        (else (delegate base-object message))
+                    )
+                )
+            )
+        )
+    )
+)

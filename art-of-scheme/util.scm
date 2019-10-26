@@ -88,3 +88,9 @@
 (define 2nd cadr)
 (define 3rd caddr)
 (define 4th cadddr)
+
+(define square
+    (lambda (x)
+        (* x x)
+    )
+)
