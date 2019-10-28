@@ -1,6 +1,6 @@
-(load "test-data.scm")
-(load "ex10-3.scm")
-(load "../ch7/index.scm")
+(load "ch10/test-data.scm")
+(load "ch10/ex10-3.scm")
+(load "ch7/index.scm")
 
 (define age (lambda (vec) (vector-ref vec (get-field-index "age"))))
 (define get-value (lambda (vec name) (vector-ref vec (get-field-index name))))

@@ -34,8 +34,13 @@
 
 (define writeln
     (lambda args
-        (for-each display args)
-        (newline)
+        (cond
+            ((null? args) (newline))
+            (else
+                (display (car args))
+                (writeln (cdr args))
+            )
+        )
     )
 )
 

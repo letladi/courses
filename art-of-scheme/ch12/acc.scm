@@ -1,5 +1,4 @@
 (load "ch12/box.scm")
-(load "ch12/counter.scm")
 
 (define accumulator-maker
     (lambda (init-value binary-proc)

@@ -23,25 +23,25 @@
 )
 
 ; ex 12.8
-(define counter-maker
-    (lambda (init-value unary-proc)
-        (let
-            ((total (accumulator-maker init-value (lambda (ac val)
-                (unary-proc val)
-            ))))
-            (lambda msg
-                (case (1st msg)
-                    ((type) "counter")
-                    ((update!)
-                        (let
-                            ((result (unary-proc)))
-                        )
-                    )
-                )
-            )
-        )
-    )
-)
+; (define counter-maker
+;     (lambda (init-value unary-proc)
+;         (let
+;             ((total (accumulator-maker init-value (lambda (ac val)
+;                 (unary-proc val)
+;             ))))
+;             (lambda msg
+;                 (case (1st msg)
+;                     ((type) "counter")
+;                     ((update!)
+;                         (let
+;                             ((result (unary-proc)))
+;                         )
+;                     )
+;                 )
+;             )
+;         )
+;     )
+; )
 
 (define restricted-counter-maker
     (lambda (init-value unary-proc pred)

@@ -1,4 +1,4 @@
-(load "index.scm")
+(load "ch7/index.scm")
 
 (define curried+
     (lambda (m)
@@ -159,7 +159,7 @@
     )
 )
 
-(load "../ch3/ratl.scm")
+(load "ch3/ratl.scm")
 
 (define extreme-value-c
     (lambda (pred)
