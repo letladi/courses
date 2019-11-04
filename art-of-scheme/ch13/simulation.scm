@@ -2,6 +2,23 @@
 (load "ch13/service.scm")
 (load "ch13/random.scm")
 (load "ch13/customer.scm")
+(load "ch13/read.scm")
+
+(define gas-station-simulator
+    (letrec
+        ((loop (lambda (ls)
+            (if (null? ls)
+                '()
+                (let ((v (prompt-read (car ls))))
+                    (cons v (loop (cdr ls)))
+                )
+            )
+        )))
+        (lambda ()
+            (apply simulation-setup&run (loop station-prompts))
+        )
+    )
+)
 
 (define simulation-setup&run
     (lambda (close-time %-self-service av-arr-time profit-self profit-full extra-time@self-pump extra-time@full-pump pump-rate)
