@@ -37,3 +37,16 @@
         ]
     )
 )
+
+; ex3.1.4
+(define-syntax when2
+    (syntax-rules ()
+        [(_ test b1 b2 ...) (if test (begin b1 b2 ...))]
+    )
+)
+
+(define-syntax until2
+    (syntax-rules ()
+        [(_ test b1 b2 ...) (if (not test) (begin b1 b2 ...))]
+    )
+)
