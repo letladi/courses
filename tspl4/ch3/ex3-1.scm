@@ -45,7 +45,7 @@
     )
 )
 
-(define-syntax until2
+(define-syntax unless2
     (syntax-rules ()
         [(_ test b1 b2 ...) (if (not test) (begin b1 b2 ...))]
     )
