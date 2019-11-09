@@ -98,5 +98,34 @@
     )
 )
 
-; ex3.2.7 This version of `or` is not correct because it does not properly terminate
+; ex3.2.6 This version of `or` is not correct because it does not properly terminate
 ; That is to say it does not have a base case for when there is only one expression.
+
+; ex3.2.7
+(define factor
+    (lambda (x)
+        (letrec
+            ((f (lambda (n i res n-sqrt)
+                (let
+                    [
+                        (quot (/ n i))
+                        (next-i (if (= x n) (1+ i) (+ 2 i)))
+                    ]
+
+                    (cond
+                        [(>= i n-sqrt) (cons x res)]
+                        [(integer? quot) (f
+                            quot
+                            next-i
+                            (cons i res)
+                            n-sqrt
+                        )]
+                        [else (f n next-i res n-sqrt)]
+                    )
+                )
+            )))
+
+            (f x 2 '() (exact (ceiling (sqrt x))))
+        )
+    )
+)
