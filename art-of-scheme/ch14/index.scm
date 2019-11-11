@@ -13,3 +13,14 @@
         (thunk)
     )
 )
+
+(define cycle-proc
+    (lambda (th)
+        (letrec ((loop (lambda ()
+            (thaw th)
+            (loop)
+        )))
+            (loop)
+        )
+    )
+)

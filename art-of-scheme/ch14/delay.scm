@@ -16,3 +16,9 @@
         )
     ))
 )
+
+(define-syntax delay
+    (syntax-rules ()
+        [(_ expr1 expr2 ...) (make-promise (freeze expr1 expr2 ...))]
+    )
+)
