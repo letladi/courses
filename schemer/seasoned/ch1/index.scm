@@ -133,3 +133,9 @@
         )
     )
 )
+
+(define scramble
+    (lambda (tup)
+        (scramble-b tup (quote ()))
+    )
+)
