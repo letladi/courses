@@ -1,6 +1,0 @@
-{
-  "test": "jest ch1/**/*.spec.js",
-  "devDependencies": {
-    "jest": "^23.6.0"
-  }
-}
