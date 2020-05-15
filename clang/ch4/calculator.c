@@ -19,7 +19,7 @@ int main()
 
    while ((type = getop(s)) != EOF) {
       switch (type) {
-         case NEGATIVE_NUMBER: 
+         case NEGATIVE_NUMBER:
             push(-1 * atof(s)); break;
          case NUMBER: push(atof(s)); break;
          case '+': push(pop() + pop()); break;
@@ -56,7 +56,7 @@ double val[MAXVAL]; // value stack
 void push(double f)
 {
    if (sp < MAXVAL) val[sp++] = f;
-   else 
+   else
       printf("error: stack full, can't push %g\n", f);
 }
 
@@ -77,30 +77,41 @@ void ungetch(int);
 // get next operator or numeric operand
 int getop(char s[])
 {
-   int i, c;
+   int i, c, start_i = 0;
    bool isneg = false;
    while ((s[0] = c = getch()) == ' ' || c == '\t')
       ;
    s[1] = '\0';
 
-   if (!isdigit(c) && c != '.' && c != '-') 
+   if (!isdigit(c) && c != '.' && c != '-')
       return c; // not a number
-   
+
    if (c == '-') {
-      int d = c;
-      c = getch();
-      if (c == ' ' || (c != '.' && !isdigit(c))) {
-         ungetch(c);
-         return d;
-      }
-      else {
-         // ungetch(c);
-         // c = d;
-         isneg = true;
+      int d = getch();
+      if (isdigit(d) || d == '.') {
+         s[2] = '\0';
+         s[1] = d;
+         s[0] = c;
+         c = d;
+         start_i = 1;
+      } else {
+         ungetch(d);
+         return c;
       }
    }
 
-   i = 0;
+   // if (c == '-') {
+   //    int d = c;
+   //    c = getch();
+   //    if (c == '.' || isdigit(c))) {
+   //       ungetch(c);
+   //       return d;
+   //    } else {
+   //
+   //    }
+   // }
+
+   i = start_i;
    if (isdigit(c))   // collect integer part
       while (isdigit(s[++i] = c = getch()))
          ;
@@ -108,11 +119,11 @@ int getop(char s[])
    if (c == '.') // collect fraction part
       while (isdigit(s[++i] = c = getch()))
          ;
-   
+
    s[i] = '\0';
    if (c != EOF) ungetch(c);
 
-   return isneg ? NEGATIVE_NUMBER : NUMBER;
+   return NUMBER;
 }
 
 #define BUFSIZE 100
@@ -125,7 +136,7 @@ int getch(void) // get a (possibly pushed back) character
    return (bufp > 0) ? buf[--bufp] : getchar();
 }
 
-void ungetch(int c) // push character back on input 
+void ungetch(int c) // push character back on input
 {
    if (bufp >= BUFSIZE) printf("ungetch: too many characters\n");
    else buf[bufp++] = c;
