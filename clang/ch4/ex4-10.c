@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h> // for atof()
 #include <math.h>
+#include "../util.h"
 
 #define MAXOP 100 // maximum of operand/operator
 #define NUMBER '0' // signal that a number was found
@@ -16,14 +17,22 @@ void swap_top();
 double top();
 void clear();
 
+char line[MAXLINE];
+
+
 // reverse Polish calculator
+// int main()
+// {
+//
+// }
 int main()
 {
+   getLine(line, MAXLINE);
    int type;
    double op2;
    char s[MAXOP];
    double last = 0.0;
-   while ((type = getop(s)) != EOF) {
+   while ((type = getop(s)) != '\0') {
       switch (type) {
          case NUMBER: push(atof(s)); break;
          case LAST: push(last); break;
@@ -162,15 +171,13 @@ int bufp = 0; // next free position in buf
 
 int getch(void) // get a (possibly pushed back) character
 {
-   return (bufp > 0) ? buf[--bufp] : getchar();
+   return line[bufp++];
 }
 
-void ungetch(int c) // push character back on input
+void ungetch(int c) // push character back on line
 {
-   // we don't push back an EOF
-   if (c == EOF) return;
-   if (bufp >= BUFSIZE) printf("ungetch: too many characters\n");
-   else buf[bufp++] = c;
+   if (bufp >= MAXLINE) printf("ungetch: end of line reached\n");
+   else line[--bufp] = c;
 }
 
 void ungets(char s[])
