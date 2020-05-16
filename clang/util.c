@@ -5,7 +5,6 @@
 #include <math.h>
 #include "util.h"
 
-#define MAXLINE 1000
 #define MAX_EXPONENT_LEN 4
 
 // reverse string in place

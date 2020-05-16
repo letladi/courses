@@ -7,6 +7,7 @@ int strrindex(char s[], char t[]);
 double stof(char s[]);
 
 #define NUMBER '0'
+#define MAXLINE 1000
 
 int getch(void);
 void ungetch(int);
