@@ -2,15 +2,14 @@
 
 int reverse_impl(char s[], int n)
 {
-   int i, c;
+   int i;
    if (s[n] == '\0') {
       i = -1;
    } else {
-      c = s[n];
+      int c = s[n];
       i = reverse_impl(s, n + 1);
       s[i] = c;
    }
-   printf("\ni = %d (c = %c)\n", i, c);
    return i + 1;
 }
 
