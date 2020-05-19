@@ -120,3 +120,74 @@ int stoi(char s[])
 {
    return (int) stof(s);
 }
+
+#define BUFSIZE 100
+
+char buf[BUFSIZE]; // buffer for ungetch
+int bufp = 0; // next free position in buf
+
+int getch(void) // get a (possibly pushed back) character
+{
+   return (bufp > 0) ? buf[--bufp] : getchar();
+}
+
+void ungetch(int c) // push character back on input
+{
+   // we don't push back an EOF
+   if (c == EOF) return;
+   if (bufp >= BUFSIZE) printf("ungetch: too many characters\n");
+   else buf[bufp++] = c;
+}
+
+int strlen(char *s)
+{
+   int n;
+   for (n = 0; *s != '\0'; s++) n++;
+   return n;
+}
+
+int strlen(char *s)
+{
+   char *p = s;
+   while (*p != '\0') p++;
+   return p - s;
+}
+
+// copy t to s; pointer version
+void strcpy(char *s, char *t)
+{
+   int i;
+   i = 0;
+   while ((s[i] = t[i]) != '\0') i++;
+}
+
+void strcpy(char *s, char *t)
+{
+   while (*s++ = *t++)
+      ;
+}
+
+// return <0 is s<t, 0 if s==t, >0 if s>t
+int strcmp(char *s, char *t)
+{
+   int i;
+   for (i = 0; s[i] == t[i]; i++)
+      if (s[i] == '\0') return 0;
+
+   return s[i] - t[i];
+}
+
+int strcmp(char *s, char *t)
+{
+   for ( ; *s == *t; s++, t++)
+      if (*s == '\0') return 0;
+
+   return *s - *t;
+}
+
+void strcat(char *s, char *t)
+{
+   while (*s++);
+   s--;
+   while (*s++ = *t++);
+}
