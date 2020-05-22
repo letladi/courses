@@ -1,4 +1,3 @@
-#include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
@@ -6,6 +5,13 @@
 #include "util.h"
 
 #define MAX_EXPONENT_LEN 4
+
+int strlen(char *s)
+{
+   char *p = s;
+   while (*p != '\0') p++;
+   return p - s;
+}
 
 // reverse string in place
 void reverse(char s[])
@@ -42,14 +48,14 @@ int trim(char s[])
    return n;
 }
 
-int getLine(char s[], int lim)
+int getLine(char *s, int lim)
 {
-   int c, i;
-   i = 0;
-   while (--lim > 0 && (c = getchar()) != EOF && c != '\n') s[i++] = c;
-   if (c == '\n') s[i++] = c;
-   s[i] = '\0';
-   return i;
+   int c;
+   char *start = s;
+   while (--lim > 0 && (c = getchar()) != EOF && c != '\n') *s++ = c;
+   if (c == '\n') *s++ = c;
+   *s = '\0';
+   return s - start;
 }
 
 // return index of t in s, -1 if none
@@ -139,44 +145,13 @@ void ungetch(int c) // push character back on input
    else buf[bufp++] = c;
 }
 
-int strlen(char *s)
-{
-   int n;
-   for (n = 0; *s != '\0'; s++) n++;
-   return n;
-}
-
-int strlen(char *s)
-{
-   char *p = s;
-   while (*p != '\0') p++;
-   return p - s;
-}
-
 // copy t to s; pointer version
 void strcpy(char *s, char *t)
 {
-   int i;
-   i = 0;
-   while ((s[i] = t[i]) != '\0') i++;
-}
-
-void strcpy(char *s, char *t)
-{
-   while (*s++ = *t++)
-      ;
+   while ((*s++ = *t++));
 }
 
 // return <0 is s<t, 0 if s==t, >0 if s>t
-int strcmp(char *s, char *t)
-{
-   int i;
-   for (i = 0; s[i] == t[i]; i++)
-      if (s[i] == '\0') return 0;
-
-   return s[i] - t[i];
-}
-
 int strcmp(char *s, char *t)
 {
    for ( ; *s == *t; s++, t++)
@@ -189,5 +164,5 @@ void strcat(char *s, char *t)
 {
    while (*s++);
    s--;
-   while (*s++ = *t++);
+   while ((*s++ = *t++));
 }

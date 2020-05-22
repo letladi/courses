@@ -14,8 +14,6 @@ bool strend(char *s, char *t)
    }
 
    while (*s++);
-
    while (t != start_t && s != start_s && (*t-- == *s--));
-
    return start_t == t && *t == *s;
 }
