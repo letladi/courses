@@ -19,3 +19,5 @@ int getop(char s[]);
 void push(double);
 double pop(void);
 int stoi(char s[]);
+
+char *month_name(int n);
