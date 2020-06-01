@@ -14,8 +14,3 @@ int to_int(char s[])
 
    return sign * n;
 }
-
-int main()
-{
-   printf("to_int('-9532') = %d\n", to_int("-9532"));
-}

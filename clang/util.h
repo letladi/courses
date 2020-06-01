@@ -21,3 +21,5 @@ double pop(void);
 int stoi(char s[]);
 
 char *month_name(int n);
+
+int to_int(char s[]);
