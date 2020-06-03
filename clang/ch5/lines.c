@@ -30,8 +30,7 @@ int readlines(char *lineptr[], int maxlines)
 // }
 void writelines(char *lineptr[], int nlines)
 {
-   while (nlines-- > 0)
-      printf("%s\n", *lineptr++);
+   while (nlines-- > 0) printf("%s\n", *lineptr++);
 }
 
 // quick sort v[left]...v[right] into increasing order
