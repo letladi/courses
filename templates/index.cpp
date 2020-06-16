@@ -1,13 +1,23 @@
 #include <iostream>
+#include <array>
 using namespace std;
 
-template<typename T1, typename T2>
-auto max(T1 a, T2 b) -> decltype(true?a:b)
+template <char... cs>
+void operator"" _B7()
 {
-   return b < a ? a : b;
+   std::array<char, sizeof...(cs)> chars{cs...};
+   for (char c : chars) {
+      cout << "'" << c << "'";
+   }
+   cout << endl;
 }
 
 int main()
 {
-   cout << "max(5.5, 6) = " << ::max(5.5, 6) << endl;
+   01.3_B7;
+   0xFF00_B7;
+   // auto d = 0815_B7;
+
+
+   return 0;
 }
