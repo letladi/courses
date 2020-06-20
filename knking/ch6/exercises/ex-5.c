@@ -1,0 +1,4 @@
+/*
+   c is not equivalent to the other statements because it executes before
+   performing the test condition
+*/
