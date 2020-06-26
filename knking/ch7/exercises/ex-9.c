@@ -1,0 +1,3 @@
+/*
+   the expression result is an integer
+*/
