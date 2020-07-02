@@ -71,12 +71,13 @@ class Parser
    string line() { return mLine; }
    void parse();
    void processQuery();
+   void clearLine() { mLine.clear(); }
    size_t tag_count() { return tags.size(); }
    friend ostream& operator<<(ostream& os, const Parser& ps);
 
    protected: 
       string mLine;
-      string root{""};
+      vector<string> roots{};
       vector<Tag> tags{};
 };
 
@@ -85,9 +86,27 @@ void Parser::processQuery()
    string tag_name{}, attr_name{};
    bool tag_found = true, in_tag_name = true;
    Tag* current = nullptr;
+   int c_count = 0, tag_count = 0;
    for (string::iterator it = mLine.begin(), strEnd = mLine.end(); it != strEnd; it++) {
+      if (++c_count >= 200) break;
+
       char c = *it;
+      if (c == '\n') {
+         c_count = 0;
+         continue;
+      }
       if (c == '.' || c == '~') {
+
+         // we must first ensure the first tag name is the same as the root tag
+         if (tag_count == 0) {
+            auto in_root = find(roots.begin(), roots.end(), tag_name);
+            if (in_root == roots.end()) {
+               tag_found = false;
+               break;
+            }
+         }
+
+         tag_count++;
          
          if (current) {
             auto child_name = find_if(current->children.begin(), current->children.end(), [&tag_name](auto& name) {
@@ -165,16 +184,21 @@ void Parser::parse()
       in_closing_tag = false,
       in_tag_name = false,
       in_attribute_name = false,
-      in_tag_body = false,
       in_attribute_val = false;
 
    string tag_name = "", attribute_name = "", attribute_val = "";
    Tag tag;
    vector<vector<string>> tag_attrs{};
    stack<string> tag_stack;
-
+   int c_count = 0;
    for (string::iterator it = mLine.begin(), strEnd = mLine.end(); it != strEnd; it++) {
+      if (++c_count >= 200) break;
+      
       char c = *it;
+      if (c == '\n') {
+         c_count = 0;
+         continue;
+      }
       // on the opening tag (we read the name of the tag and the attributes and their values)
       if (c == '<') {
          in_opening_tag = true;
@@ -185,7 +209,6 @@ void Parser::parse()
             in_tag_name = false;
             in_attribute_name = false;
             in_attribute_val = false;
-            in_tag_body = true;
             // create tag and add it to the list of tags
             Tag tg{tag_name};
             // if there is one last attribute, add it to the list of 
@@ -195,7 +218,6 @@ void Parser::parse()
             }
             tg.attrs.swap(tag_attrs);
             tag_attrs.clear();
-            if (root.empty()) root = tag_name;
             tag_name = attribute_name = attribute_val = "";
 
             tag_stack.push(tg.name);
@@ -204,7 +226,6 @@ void Parser::parse()
             in_closing_tag = true;
             in_opening_tag = false;
             in_tag_name = false;
-            in_tag_body = false;
 
          } else if (in_tag_name) {
             if (tag_name.empty()) {
@@ -258,7 +279,18 @@ void Parser::parse()
                      tag.children.push_back(child);
                   }
                }
+            } else {
+               // This is a root tag
+               roots.push_back(child);
+               in_opening_tag = false;
+               in_closing_tag = false;
+               in_tag_name = false;
+               in_attribute_name = false;
+               in_attribute_val = false;
             }
+            tag_name.clear();
+            attribute_name.clear();
+            attribute_val.clear();
          }
       }
    }
@@ -277,6 +309,7 @@ class FileParser : public Parser
          string str = "";
          getline(file, str);
          mLine += str;
+         mLine += '\n';
          return str.size();
       }
 
@@ -293,6 +326,7 @@ class StreamParser : public Parser
          string str = "";
          getline(cin, str);
          mLine += str;
+         mLine += '\n';
          return str.size();
       }
 };
@@ -318,7 +352,6 @@ int main(void)
 
       // show queries
       n = 0;
-      cout << "Q = " << Q << endl;
       while (n < Q) {
          parser.readLine();
          parser.processQuery();
