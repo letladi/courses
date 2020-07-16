@@ -9,8 +9,6 @@
 #define RANK 0
 #define INVALID_VALUE -1
 
-// int num_in_rank[NUM_RANKS];
-// int num_in_suit[NUM_SUITS];
 int hand[NUM_CARDS][2];
 bool straight, flush, four, three;
 int pairs; /* can be 0, 1, or 2 */
@@ -86,16 +84,8 @@ void read_cards(void)
    bool bad_card;
    int cards_read = 0;
 
-   // for (rank = 0; rank < NUM_RANKS; rank++) {
-   //    num_in_rank[rank] = 0;
-   //    for (suit = 0; suit < NUM_SUITS; suit++) {
-   //       card_exists[rank][suit] = false;
-   //    }
-   // }
    int i, j;
    for (suit = 0; suit < NUM_SUITS; suit++) {
-      // num_in_suit[suit] = 0;
-
       while (cards_read < NUM_CARDS) {
          bad_card = false;
          printf("Enter a card: ");
@@ -115,11 +105,7 @@ void read_cards(void)
             printf("Bad card; ignored.\n");
          else if (card_in_hand(rank, suit))
             printf("Duplicate card; ignored.\n");
-         else {
-            // num_in_rank[rank]++;
-            // num_in_suit[suit]++;
-            // card_exists[rank][suit] = true;
-            
+         else {            
             j = current_hand;
             i = j - 1;
             while (j > 0 && hand[i][RANK] > rank) {
@@ -174,20 +160,21 @@ int count_kinds(int hand[][2])
    return max_kind_count;
 }
 
+// this function assumes that the array is sorted by the RANK index
 int count_pairs(int hand[][2])
 {
-   int count = 0;
-   int ret = 0;
-   int i, j, card_rank;
-   for (i = 0; i < NUM_CARDS; i++) {
-      card_rank = hand[i][RANK];
-      count = 0;
-      for (j = i + 1; j < NUM_CARDS; j++) {
-         if (hand[j][RANK] == hand[i][RANK]) count++;
-      }
-      if (count == 1) ret++;
+   // we have already sorted by rank, so we can rank the ranks upwards
+   int i, j;
+   int ret = 0, count = 0;
+   int current_rank = hand[0][RANK];
+   j = 1;
+   i = j - 1;
+   while (j < NUM_CARDS) {
+      if (hand[j][RANK] == hand[i][RANK]) count++;
+      i++; j++;
    }
-   return ret;
+
+   return ret + count;
 }
 
 /* 
@@ -197,12 +184,6 @@ int count_pairs(int hand[][2])
 */
 void analyze_hand(void)
 {
-   printf("Cards we have on hand\n ");
-   for (int i = 0; i < NUM_CARDS; i++) {
-      printf("%d,%d\n", hand[i][RANK], hand[i][SUIT]);
-   }
-   printf("\n");
-
    // check for flush
    flush = is_flush(hand);
    // check for straight
