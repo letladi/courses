@@ -37,6 +37,7 @@ int main(void)
 
       scanf(" %2d:%2d", &hr, &min);
       
+
       sprintf(day_str, "%2d", day);
       sprintf(msg_str, " %.2d:%.2d  ", hr, min);
       read_line(msg_str + TIME_LEN + 1, MSG_LEN);
