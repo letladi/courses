@@ -3,48 +3,26 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include <string.h>
 #include "readline.h"
 
 #define NAME_LEN 25
 #define NAME_SPACES "                " /* 25-9=16 spaces */
 #define MAX_PARTS 100
-#define INITIAL_INVENTORY_SIZE 10
+#define PART_SPACE_INCR 5 /* The amount by which the parts array increases, this is also the initial amount */
 #define PART_SPACES "   " /* 3 spaces */
 
-#define TEST_PARTS_NUM 15
 
-
-
-struct part {
+typedef struct {
    int number;
    char name[NAME_LEN + 1];
    int on_hand;
-};
+} part;
 
-struct part test_inventory[TEST_PARTS_NUM] = {
-   {1, "aa", 1},
-   {2, "bb", 2},
-   {3, "cc", 3},
-   {4, "dd", 4},
-   {5, "ee", 5},
-   {6, "ff", 6},
-   {7, "gg", 7},
-   {8, "hh", 8},
-   {9, "ii", 9},
-   {10, "jj", 10},
-   {11, "kk", 11},
-   {12, "ll", 12},
-   {13, "mm", 13},
-   {14, "nn", 14},
-   {15, "oo", 15}
-};
-int insert_i = 0;
+
 
 int num_parts = 0; /* number of parts currently stored */
-int inventory_size = INITIAL_INVENTORY_SIZE;
-
-struct part *inventory;
+int store_len = PART_SPACE_INCR;
+part *inventory = NULL;
 
 int find_part(int number);
 void insert(void);
@@ -62,28 +40,22 @@ void print(void);
  int main(void)
  {
     char code;
-    inventory = malloc(inventory_size * sizeof(struct part));
 
-    for (; insert_i < TEST_PARTS_NUM;) {
-       insert();
-       print();
-    }
-
-   //  for (;;) {
-   //    printf("Enter operation code: ");
-   //    scanf(" %c", &code);
-   //    while (getchar() != '\n') /* skips to end of line */
-   //       ;
-   //    switch(code) {
-   //       case 'i': insert(); break;
-   //       case 's': search(); break;
-   //       case 'u': update(); break;
-   //       case 'p': print(); break;
-   //       case 'q': return 0;
-   //       default: printf("Illegal code\n");
-   //    }
-   //    printf("\n");
-   // }
+    for (;;) {
+      printf("Enter operation code: ");
+      scanf(" %c", &code);
+      while (getchar() != '\n') /* skips to end of line */
+         ;
+      switch(code) {
+         case 'i': insert(); break;
+         case 's': search(); break;
+         case 'u': update(); break;
+         case 'p': print(); break;
+         case 'q': return 0;
+         default: printf("Illegal code\n");
+      }
+      printf("\n");
+   }
 }
 
 /***********************************************************************
@@ -107,54 +79,40 @@ void print(void);
  *         and returns prematurely if the part already exists or the   *
  *          database is full.                                          *
  ***********************************************************************/
-//  void insert(void)
-//  {
-//     int part_number;
-//    if (num_parts == inventory_size) {
-//       inventory = realloc(inventory, inventory_size * 2);
-//       if (inventory == NULL) {
-//          printf("Database is full; can't add more parts.\n");
-//          return;
-//       } else {
-//          inventory_size *= 2;
-//       }
-//    }
-
-//    printf("Enter part number: ");
-//    scanf("%d", &part_number);
-
-//    if (find_part(part_number) >= 0) {
-//       printf("Part already exists.\n");
-//       return;
-//    }
-
-//    inventory[num_parts].number = part_number;
-//    printf("Enter part name: ");
-//    read_line(inventory[num_parts].name, NAME_LEN);
-//    printf("Enter quantity on hand: ");
-//    scanf("%d", &inventory[num_parts].on_hand);
-//    num_parts++;
-// }
-
  void insert(void)
  {
-    int part_number;
-   if (num_parts == inventory_size) {
-      inventory = realloc(inventory, inventory_size * 2);
-      if (inventory == NULL) {
-         printf("Database is full; can't add more parts.\n");
+    // allocate space for the storage if this is our first insert
+    if (inventory == NULL) {
+       inventory = malloc(sizeof(part) * store_len);
+    } else if (num_parts == store_len) { // if the space is full, increase it
+      part *new_inventory = realloc(inventory, sizeof(part) * (num_parts + PART_SPACE_INCR));
+      if (new_inventory == NULL) {
+         printf("Can't add more parts.\n");
          return;
       } else {
-         inventory_size *= 2;
+         inventory = new_inventory;
+         store_len += PART_SPACE_INCR;
       }
    }
+    
+    int part_number;
+    
 
-   inventory[num_parts].number = test_inventory[insert_i].number;
-   strcpy(inventory[num_parts].name, test_inventory[insert_i].name);
-   inventory[num_parts].on_hand = test_inventory[insert_i].on_hand;
-   num_parts++; insert_i++;
+   printf("Enter part number: ");
+   scanf("%d", &part_number);
+
+   if (find_part(part_number) >= 0) {
+      printf("Part already exists.\n");
+      return;
+   }
+
+   inventory[num_parts].number = part_number;
+   printf("Enter part name: ");
+   read_line(inventory[num_parts].name, NAME_LEN);
+   printf("Enter quantity on hand: ");
+   scanf("%d", &inventory[num_parts].on_hand);
+   num_parts++;
 }
-
 
 /***********************************************************************
  * search: Prompts the user to enter a part number, then looks up the  *
