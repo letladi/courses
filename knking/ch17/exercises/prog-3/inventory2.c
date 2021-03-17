@@ -96,14 +96,14 @@ void insert(void)
       free(new_node);
       return;
    }
-   do {
+   // do {
       printf("Enter part name: ");
       read_line(new_node->name, NAME_LEN);
-      if (strlen(new_node->name)) break;
-      else {
-         printf("\nName cannot be empty\n");
-      }
-   } while (1);  
+      // if (strlen(new_node->name)) break;
+      // else {
+      //    printf("\nName cannot be empty\n");
+      // }
+   // } while (1);  
    
    printf("Enter quantity on hand: ");
    scanf("%d", &new_node->on_hand);
