@@ -1,5 +1,5 @@
 default: inventory2.o util.o
-	gcc -o app inventory2.o util.o
+	gcc inventory2.o util.o
 
 inventory.o:  inventory2.c 
 	gcc -c inventory2.c

@@ -186,6 +186,8 @@ void erase(void)
    struct part* prev = NULL;
    while (pt) {
       if (pt->number == part_number) break;
+      prev = pt;
+      pt = pt->next;
    }
 
    if (pt) { // there's a part to be deleted...
