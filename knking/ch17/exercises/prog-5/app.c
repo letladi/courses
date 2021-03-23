@@ -40,18 +40,7 @@ int main(void) {
       }
    } while (true);
 
-   printf("Pointers: ");
-   for (int j = 0; j < len; j++) {
-      printf("%p ", &word_list[j]);
-   }
-   putchar('\n');
-
-   printf("\nDefault order: ");
-   for (int j = 0; j < len; j++) {
-      printf("%s ", word_list[j]);
-   }
-   putchar('\n');
-   printf("In sorted order: ");
+   printf("\nIn sorted order: ");
    qsort(word_list, len, sizeof(char*), compare_word);
    for (int j = 0; j < len; j++) {
       printf("%s ", word_list[j]);
@@ -63,8 +52,7 @@ int main(void) {
 
 int compare_word(const void* word1, const void* word2)
 { 
-   const char* pt1 = word1;
-   printf("test string: %s (%p) (%p)\n", pt1 , pt1, word2);
-   // printf("[result = %d]\n", strcmp((const char *)word1, (const char *) word2));
-   return strcmp((const char *)word1, (const char *) word2);  
+   const char* pt1 = *(const char**)word1;
+   const char* pt2 = *(const char**)word2;
+   return strcmp(pt1, pt2);  
 }
