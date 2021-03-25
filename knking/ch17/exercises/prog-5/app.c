@@ -11,7 +11,7 @@ int compare_word(const void*, const void*);
 int main(void) {
    char *word;
 
-   char* *word_list = malloc(sizeof(char*) * WORD_LIST_INCR);
+   char **word_list = malloc(sizeof(char*) * WORD_LIST_INCR);
    int size = WORD_LIST_INCR;
    size_t len = 0, word_len;
 
