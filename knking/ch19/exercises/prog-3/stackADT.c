@@ -9,6 +9,7 @@ struct node {
 
 struct stack_type {
    struct node *top;
+   size_t length;
 };
 
 static void terminate(const char* message)
@@ -21,8 +22,9 @@ Stack create(void)
 {
    Stack s = malloc(sizeof(struct stack_type));
    if (s == NULL)
-      return NULL;
+      terminate("Error in create: stack could not be created.");
    s->top = NULL;
+   s->length = 0;
    return s;
 }
 
@@ -34,13 +36,12 @@ void destroy(Stack s)
 
 void make_empty(Stack s)
 {
-   while (!is_empty(s))
-      pop(s);
+   while (!is_empty(s)) pop(s);
 }
 
 bool is_empty(Stack s)
 {
-   return s->top == NULL;
+   return s->length == 0;
 }
 
 bool is_full(Stack s)
@@ -48,16 +49,16 @@ bool is_full(Stack s)
    return false;
 }
 
-bool push(Stack s, Item i)
+void push(Stack s, Item i)
 {
    struct node *new_node = malloc(sizeof(struct node));
    if (new_node == NULL)
-     return false;
+      terminate("Error in push: stack is full.");
 
    new_node->data = i;
    new_node->next = s->top;
    s->top = new_node;
-   return true;
+   s->length++;
 }
 
 Item pop(Stack s)
@@ -66,19 +67,22 @@ Item pop(Stack s)
    Item i;
 
    if (is_empty(s))
-      return '\0';
+      terminate("Error in pop: stack is empty.");
 
    old_top = s->top;
    i = old_top->data;
    s->top = old_top->next;
+   s->length--;
    free(old_top);
    return i;
 }
 
 Item peek(Stack s)
 {
-   if (is_empty(s))
-      return '\0';
-
    return s->top->data;
+}
+
+size_t length(Stack s)
+{
+   return s->length;
 }

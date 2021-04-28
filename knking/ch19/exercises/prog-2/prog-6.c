@@ -10,6 +10,11 @@ int main(void)
    bool is_num, is_op;
    Stack s = create();
 
+   if (!s) {
+      printf("Error initializing calculator\n");
+      exit(EXIT_FAILURE);
+   }
+
    do {
       printf("Enter an RPN expression: ");
       while (true) {

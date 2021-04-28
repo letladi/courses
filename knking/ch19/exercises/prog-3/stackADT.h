@@ -2,17 +2,19 @@
 #define STACKADT_H
 
 #include <stdbool.h>
+#include <stddef.h>
 
 typedef struct stack_type *Stack;
-typedef char Item;
+typedef int Item;
 
 Stack create();
 void destroy(Stack s);
 void make_empty(Stack s);
 bool is_empty(Stack s);
 bool is_full(Stack s);
-bool push(Stack s, Item i);
+void push(Stack s, Item i);
 Item pop(Stack s);
 Item peek(Stack s);
+size_t length(Stack s);
 
 #endif
